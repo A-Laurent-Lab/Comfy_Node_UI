@@ -55,15 +55,20 @@ This version attaches App Views to native subgraph nodes. Inspect or create the
 appropriate subgraph before binding a UI; do not claim direct attachment to an
 arbitrary ordinary node.
 
-Return the prepared workflow JSON and the UI's own `.js` files and assets,
-plus an exact list of `subgraph -> renderer ID -> entry file -> required files`.
-For workflows with several UIs, collect their dependencies and deduplicate
-shared files. Never tell the user to copy every file from `renderers`.
-Preserve paths relative to `ComfyUI-AppView/web/renderers`. Use imports
-relative to that destination, such as `../app-view-core.js`, and include local
-dependencies. The recipient installs ComfyUI-AppView once, then copies these
-UI files into its `web/renderers` folder and restarts ComfyUI. There is no need
-to resend the framework or require a wrapper folder named `custom_nodes`.
+Return the prepared workflow JSON and one self-contained, named folder per UI.
+Use an author-qualified folder name to avoid colliding with other installed UIs.
+Keep its entrypoint, helpers and assets together inside that folder. Use relative
+imports and asset URLs so the folder can be renamed. Register the renderer's
+readable `name` and `source: import.meta.url`; the framework
+derives the folder from that module's location and exposes it in **UI files…**.
+For workflows with several UIs, include each required folder once. Explain the
+delivery using subgraph names, folder names and exact destination paths, not
+renderer IDs or a file-by-file scavenger hunt. Never tell the user to copy all
+of `renderers` or overwrite an unrelated same-named folder.
+
+The recipient installs ComfyUI-AppView once, copies each supplied UI folder
+whole into `ComfyUI/custom_nodes/ComfyUI-AppView/web/renderers`, and restarts.
+There is no need to resend the framework or a wrapper named `custom_nodes`.
 A JSON import carries graph values and renderer ID, not JavaScript. If the UI
 is already installed, the JSON alone is sufficient. A skill is for authoring,
 not for using a finished UI.
@@ -71,8 +76,12 @@ not for using a finished UI.
 The renderer ID belongs to each subgraph, not to the JSON filename. Match it to
 the ID registered by the UI module; filenames are not inferred from IDs.
 Use distinct namespaced IDs for different UIs and a new version for incompatible
-bindings. Reuse the same ID only for the same UI implementation. Keep instance
-values in the host workflow so several subgraphs using that UI remain independent.
+bindings. Duplicate registrations are rejected, not replaced. Reuse the same
+installed UI across workflows and keep values in each host. Bind by stable
+roles or promoted widget names, not workflow filenames or numeric node IDs.
+Preserve the binding through edits unrelated to its controls. Retarget affected
+bindings when the controlled nodes/settings change; do not clone the UI just
+because the surrounding workflow differs.
 
 Keep author-facing APIs and code examples in the skill references. Keep the
 root README brief: where the extension goes, where additional UI files go,
