@@ -7,8 +7,10 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const required = [
   "custom_nodes/ComfyUI-AppView/__init__.py",
+  "custom_nodes/ComfyUI-AppView/web/app-view-core.js",
   "custom_nodes/ComfyUI-AppView/web/app-view.js",
   "custom_nodes/ComfyUI-AppView/web/crossview-widget-compat.js",
+  "custom_nodes/ComfyUI-AppView/web/renderers/minimax-h3-i2v.js",
   "custom_nodes/ComfyUI-AppView/web/renderers/reshoot.js",
   "custom_nodes/ComfyUI-CrossViewWarp/__init__.py",
   "custom_nodes/ComfyUI-CrossViewWarp/crossview_warp_node.py",
@@ -28,6 +30,25 @@ async function inspect(directory, prefix = "") {
   }
 }
 await inspect(root);
+
+const frameworkSource = await readFile(
+  path.join(root, "custom_nodes/ComfyUI-AppView/web/app-view-core.js"),
+  "utf8",
+);
+assert.match(frameworkSource, /export function registerAppViewRenderer\(/);
+
+const rendererSources = await Promise.all([
+  readFile(
+    path.join(root, "custom_nodes/ComfyUI-AppView/web/renderers/minimax-h3-i2v.js"),
+    "utf8",
+  ),
+  readFile(
+    path.join(root, "custom_nodes/ComfyUI-AppView/web/renderers/reshoot.js"),
+    "utf8",
+  ),
+]);
+assert.match(rendererSources[0], /id:\s*RENDERER/);
+assert.match(rendererSources[1], /id:\s*RENDERER/);
 
 const manifestLines = (await readFile(path.join(root, "MANIFEST.sha256"), "utf8"))
   .trim()
@@ -57,6 +78,16 @@ const modelEntries = subgraph.nodes.flatMap((node) => node.properties?.models ??
 assert.equal(modelEntries.length, 7);
 assert.ok(modelEntries.every((model) => model.name && model.directory && model.url));
 
-console.log(JSON.stringify({ portable: true, manifestFiles: manifestLines.length,
-  renderer: "reshoot@1", inputs: 14, outputs: 3, innerNodes: 26,
-  innerLinks: 56, modelDownloads: 7 }, null, 2));
+console.log(JSON.stringify({
+  portable: true,
+  framework: "Comfy_Node_UI",
+  manifestFiles: manifestLines.length,
+  exampleRenderers: ["minimax-h3-i2v@1", "reshoot@1"],
+  reshootExample: {
+    inputs: 14,
+    outputs: 3,
+    innerNodes: 26,
+    innerLinks: 56,
+    modelDownloads: 7,
+  },
+}, null, 2));
