@@ -1,6 +1,7 @@
 import { app } from "../../../../scripts/app.js";
 import { api } from "../../../../scripts/api.js";
 import { registerAppViewRenderer } from "../../app-view-core.js";
+import { repairLegacyReshootWorkflow } from "./workflow.js";
 
 const RENDERER = "reshoot@1";
 const APP_HEIGHT = 790;
@@ -606,6 +607,7 @@ function buildApp({ host }) {
 
   const fileWidget = widget(source, "file");
   let lastSource = null;
+  let active = false;
   const sync = () => {
     promotedBridge.syncFromHost();
     const selected = String(fileWidget?.value ?? "");
@@ -633,9 +635,9 @@ function buildApp({ host }) {
     if (document.activeElement !== prompt) prompt.value = String(promptWidget?.value ?? "");
     borrowCameraWidgets(
       cameraWidgets,
-      host.properties?.app_view_mode === "app" && root.isConnected,
+      active && root.isConnected,
     );
-    if (host.properties?.app_view_mode === "app") {
+    if (active) {
       camera._crossviewOrbit?.render?.(true);
     }
     root.dataset.cameraExecutionId = executionId(camera) ?? "";
@@ -656,15 +658,19 @@ function buildApp({ host }) {
     cameraMount,
     sync,
     onShow() {
+      active = true;
       requestAnimationFrame(() => {
+        if (!active) return;
         cameraWidgets.borrow();
         sync();
       });
     },
     onHide() {
+      active = false;
       cameraWidgets.restore();
     },
     dispose() {
+      active = false;
       window.clearInterval(timer);
       cameraWidgets.restore();
       promotedBridge.dispose();
@@ -684,4 +690,11 @@ export const reshootRenderer = {
 };
 
 registerAppViewRenderer(reshootRenderer);
+
+app.registerExtension({
+  name: "comfy.nativeAppView.reshootWorkflowRepair",
+  beforeConfigureGraph(workflow) {
+    repairLegacyReshootWorkflow(workflow);
+  },
+});
 
