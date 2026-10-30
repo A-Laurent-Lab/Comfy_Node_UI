@@ -10,6 +10,39 @@ export function reserveReshootVideoSpace(definition, source) {
   if (offset) for (const node of below) node.pos[1] += offset;
 }
 
+// Used when preparing the example, not as a load hook on arbitrary user graphs.
+// The final generated SaveVideo remains outside as a visible output.
+export function containAuxiliaryOutputs(workflow) {
+  const host = workflow.nodes?.find(n => n.properties?.app_view_renderer === 'reshoot@1');
+  const definition = workflow.definitions?.subgraphs?.find(g => g.id === host?.type);
+  if (!definition) return workflow;
+  for (const role of ['warp-save', 'original-audio-save']) {
+    const node = workflow.nodes.find(n => n.properties?.reshoot_role === role);
+    if (!node || node.type !== 'SaveVideo') continue;
+    if (node.inputs.some((input,index) => index > 0 && input.link != null) ||
+        node.outputs?.some(output => output.links?.length)) continue;
+    const link = workflow.links.find(l => l[1] === host.id && l[3] === node.id && l[4] === 0);
+    if (!link || definition.nodes.some(n => n.id === node.id)) continue;
+    const boundary = definition.links.find(l => l.target_id === -20 && l.target_slot === link[2]);
+    if (!boundary) continue;
+    const id = ++definition.state.lastLinkId;
+    definition.links.push({id,origin_id:boundary.origin_id,origin_slot:boundary.origin_slot,target_id:node.id,target_slot:0,type:'VIDEO'});
+    definition.nodes.find(n => n.id === boundary.origin_id).outputs[boundary.origin_slot].links.push(id);
+    node.inputs[0].link = id;
+    node.properties.reshoot_app_member = true;
+    node.pos = [3900, role === 'warp-save' ? 350 : 850];
+    definition.nodes.push(node);
+    workflow.nodes = workflow.nodes.filter(n => n !== node);
+    workflow.links = workflow.links.filter(l => l !== link);
+    host.outputs[link[2]].links = host.outputs[link[2]].links.filter(n => n !== link[0]);
+  }
+  host.properties.app_view_layout ??= 'expanded';
+  host.pos = [100,100];
+  const final = workflow.nodes.find(n => n.properties?.reshoot_role === 'generated-save');
+  if (final) final.pos = [1340,100];
+  return workflow;
+}
+
 export function repairLegacyReshootWorkflow(workflow) {
   const definitions = workflow?.definitions?.subgraphs ?? [];
   const containers = [workflow, ...definitions];

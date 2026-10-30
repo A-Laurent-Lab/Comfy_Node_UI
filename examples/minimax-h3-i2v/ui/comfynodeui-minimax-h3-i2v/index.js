@@ -162,6 +162,14 @@ function build({ host, api }) {
   change.textContent = "Choose first frame";
   source.append(image, change);
   root.appendChild(source);
+  const detail = document.createElement('section');
+  detail.className = 'h3-i2v-app';
+  const detailHeading = document.createElement('h3');
+  detailHeading.textContent = 'First frame';
+  const largeImage = document.createElement('img');
+  largeImage.alt = 'First frame preview';
+  largeImage.style.cssText = 'display:block;width:100%;max-height:600px;object-fit:contain';
+  detail.append(detailHeading, largeImage);
 
   const prompt = document.createElement("textarea");
   prompt.placeholder = "Describe the video";
@@ -201,6 +209,7 @@ function build({ host, api }) {
     if (selected !== lastImage) {
       lastImage = selected;
       image.src = inputMediaUrl(api, selected);
+      largeImage.src = image.src;
     }
     root.dataset.firstFrameNode = String(loadImage?.id ?? "");
   };
@@ -209,6 +218,7 @@ function build({ host, api }) {
   sync();
   return {
     root,
+    panels: [{id:'image',label:'Image preview',element:detail}],
     sync,
     onShow: sync,
     dispose() {

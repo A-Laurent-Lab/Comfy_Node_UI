@@ -9,3 +9,7 @@ want to open `reshoot-app-view.json` with its custom interface.
 3. Restart ComfyUI and open `reshoot-app-view.json`.
 
 Model download links are stored in the workflow JSON.
+
+In App, expand the right panel for **Preview & keyframes** or **Output**.
+Use ComfyUI's Run button to prepare the warp preview and generate results.
+The final Save Video node remains outside the subgraph.

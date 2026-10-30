@@ -23,6 +23,10 @@ existing App source being adapted.
   App names or bindings to the generic host layer.
 - Use the Selection Toolbox command supplied by the generic extension for
   `Node ↔ App`; do not add a second switch inside the node.
+- Use the shared one/two-panel shell: keep essential controls in `root` and
+  return named `panels` for previews, timelines or results on the right. The
+  host owns the layout icon, navigation, saved choice and sizing. A UI package
+  may contain several files; keep its application logic inside its own folder.
 - Let ComfyUI's own Run control execute the graph. Do not add Sign in, Analyze,
   Generate, or `queuePrompt` controls merely because the source standalone App
   had them.

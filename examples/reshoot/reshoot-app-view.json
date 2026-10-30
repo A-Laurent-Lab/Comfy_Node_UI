@@ -8,8 +8,8 @@
       "id": 38,
       "type": "SaveVideo",
       "pos": [
-        3694.9462890625005,
-        390
+        1340,
+        100
       ],
       "size": [
         328.007421875,
@@ -102,205 +102,11 @@
       }
     },
     {
-      "id": 41,
-      "type": "SaveVideo",
-      "pos": [
-        2255.1042968750003,
-        130
-      ],
-      "size": [
-        280.91796875,
-        130
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [
-        {
-          "localized_name": "видео",
-          "name": "video",
-          "type": "VIDEO",
-          "link": 44
-        },
-        {
-          "localized_name": "префикс_имени_файла",
-          "name": "filename_prefix",
-          "type": "STRING",
-          "widget": {
-            "name": "filename_prefix"
-          },
-          "link": null
-        },
-        {
-          "localized_name": "формат",
-          "name": "format",
-          "type": "COMFY_DYNAMICCOMBO_V3",
-          "widget": {
-            "name": "format"
-          },
-          "link": null
-        },
-        {
-          "localized_name": "кодек",
-          "name": "format.codec",
-          "type": "COMFY_DYNAMICCOMBO_V3",
-          "widget": {
-            "name": "format.codec"
-          },
-          "link": null
-        },
-        {
-          "localized_name": "encoding",
-          "name": "format.codec.encoding",
-          "shape": 7,
-          "type": "COMFY_DYNAMICCOMBO_V3",
-          "widget": {
-            "name": "format.codec.encoding"
-          },
-          "link": null
-        },
-        {
-          "localized_name": "кодек",
-          "name": "codec",
-          "shape": 7,
-          "type": "COMFY_DYNAMICCOMBO_V3",
-          "widget": {
-            "name": "codec"
-          },
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "localized_name": "видео",
-          "name": "video",
-          "type": "VIDEO",
-          "links": null
-        }
-      ],
-      "title": "[Reshoot/warp-save] Warp guide",
-      "properties": {
-        "reshoot_role": "warp-save",
-        "reshoot_app_member": false
-      },
-      "widgets_values": [
-        "crossview/warp",
-        "mp4",
-        "h264",
-        "auto",
-        "auto"
-      ],
-      "widgets_values_named": {
-        "filename_prefix": "crossview/warp",
-        "format": "mp4",
-        "format.codec": "h264",
-        "format.codec.encoding": "auto",
-        "codec": "auto"
-      }
-    },
-    {
-      "id": 43,
-      "type": "SaveVideo",
-      "pos": [
-        3694.9462890625005,
-        130
-      ],
-      "size": [
-        407.331640625,
-        130
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [
-        {
-          "localized_name": "видео",
-          "name": "video",
-          "type": "VIDEO",
-          "link": 45
-        },
-        {
-          "localized_name": "префикс_имени_файла",
-          "name": "filename_prefix",
-          "type": "STRING",
-          "widget": {
-            "name": "filename_prefix"
-          },
-          "link": null
-        },
-        {
-          "localized_name": "формат",
-          "name": "format",
-          "type": "COMFY_DYNAMICCOMBO_V3",
-          "widget": {
-            "name": "format"
-          },
-          "link": null
-        },
-        {
-          "localized_name": "кодек",
-          "name": "format.codec",
-          "type": "COMFY_DYNAMICCOMBO_V3",
-          "widget": {
-            "name": "format.codec"
-          },
-          "link": null
-        },
-        {
-          "localized_name": "encoding",
-          "name": "format.codec.encoding",
-          "shape": 7,
-          "type": "COMFY_DYNAMICCOMBO_V3",
-          "widget": {
-            "name": "format.codec.encoding"
-          },
-          "link": null
-        },
-        {
-          "localized_name": "кодек",
-          "name": "codec",
-          "shape": 7,
-          "type": "COMFY_DYNAMICCOMBO_V3",
-          "widget": {
-            "name": "codec"
-          },
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "localized_name": "видео",
-          "name": "video",
-          "type": "VIDEO",
-          "links": null
-        }
-      ],
-      "title": "[Reshoot/original-audio-save] Result with original audio",
-      "properties": {
-        "reshoot_role": "original-audio-save",
-        "reshoot_app_member": false
-      },
-      "widgets_values": [
-        "crossview/original-audio",
-        "mp4",
-        "h264",
-        "auto",
-        "auto"
-      ],
-      "widgets_values_named": {
-        "filename_prefix": "crossview/original-audio",
-        "format": "mp4",
-        "format.codec": "h264",
-        "format.codec.encoding": "auto",
-        "codec": "auto"
-      }
-    },
-    {
       "id": 44,
       "type": "be0351c1-5fb5-420e-8ac9-73c12f8f3ff8",
       "pos": [
-        1777.4731445312502,
-        844
+        100,
+        100
       ],
       "size": [
         420,
@@ -443,18 +249,14 @@
           "localized_name": "ВИДЕО_1",
           "name": "Warp guide",
           "type": "VIDEO",
-          "links": [
-            44
-          ]
+          "links": []
         },
         {
           "label": "Original audio",
           "localized_name": "ВИДЕО_2",
           "name": "Original audio",
           "type": "VIDEO",
-          "links": [
-            45
-          ]
+          "links": []
         }
       ],
       "properties": {
@@ -464,7 +266,8 @@
           "folder": "comfynodeui-reshoot",
           "name": "Re-shoot"
         },
-        "app_view_mode": "node"
+        "app_view_mode": "node",
+        "app_view_layout": "expanded"
       },
       "widgets_values_named": {
         "duration": 5,
@@ -506,22 +309,6 @@
       38,
       0,
       "VIDEO"
-    ],
-    [
-      44,
-      44,
-      1,
-      41,
-      0,
-      "VIDEO"
-    ],
-    [
-      45,
-      44,
-      2,
-      43,
-      0,
-      "VIDEO"
     ]
   ],
   "groups": [],
@@ -533,7 +320,7 @@
         "state": {
           "lastGroupId": 0,
           "lastNodeId": 44,
-          "lastLinkId": 55,
+          "lastLinkId": 57,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -2750,7 +2537,8 @@
                 "name": "VIDEO",
                 "type": "VIDEO",
                 "links": [
-                  37
+                  37,
+                  56
                 ]
               }
             ],
@@ -2847,7 +2635,8 @@
                 "name": "VIDEO",
                 "type": "VIDEO",
                 "links": [
-                  40
+                  40,
+                  57
                 ]
               }
             ],
@@ -2943,6 +2732,200 @@
               "preview_size": 384,
               "jpeg_quality": 88,
               "filename_prefix": "crossview/geometry"
+            }
+          },
+          {
+            "id": 41,
+            "type": "SaveVideo",
+            "pos": [
+              3900,
+              350
+            ],
+            "size": [
+              280.91796875,
+              130
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "видео",
+                "name": "video",
+                "type": "VIDEO",
+                "link": 56
+              },
+              {
+                "localized_name": "префикс_имени_файла",
+                "name": "filename_prefix",
+                "type": "STRING",
+                "widget": {
+                  "name": "filename_prefix"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "формат",
+                "name": "format",
+                "type": "COMFY_DYNAMICCOMBO_V3",
+                "widget": {
+                  "name": "format"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "кодек",
+                "name": "format.codec",
+                "type": "COMFY_DYNAMICCOMBO_V3",
+                "widget": {
+                  "name": "format.codec"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "encoding",
+                "name": "format.codec.encoding",
+                "shape": 7,
+                "type": "COMFY_DYNAMICCOMBO_V3",
+                "widget": {
+                  "name": "format.codec.encoding"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "кодек",
+                "name": "codec",
+                "shape": 7,
+                "type": "COMFY_DYNAMICCOMBO_V3",
+                "widget": {
+                  "name": "codec"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "видео",
+                "name": "video",
+                "type": "VIDEO",
+                "links": null
+              }
+            ],
+            "title": "[Reshoot/warp-save] Warp guide",
+            "properties": {
+              "reshoot_role": "warp-save",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "crossview/warp",
+              "mp4",
+              "h264",
+              "auto",
+              "auto"
+            ],
+            "widgets_values_named": {
+              "filename_prefix": "crossview/warp",
+              "format": "mp4",
+              "format.codec": "h264",
+              "format.codec.encoding": "auto",
+              "codec": "auto"
+            }
+          },
+          {
+            "id": 43,
+            "type": "SaveVideo",
+            "pos": [
+              3900,
+              850
+            ],
+            "size": [
+              407.331640625,
+              130
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "видео",
+                "name": "video",
+                "type": "VIDEO",
+                "link": 57
+              },
+              {
+                "localized_name": "префикс_имени_файла",
+                "name": "filename_prefix",
+                "type": "STRING",
+                "widget": {
+                  "name": "filename_prefix"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "формат",
+                "name": "format",
+                "type": "COMFY_DYNAMICCOMBO_V3",
+                "widget": {
+                  "name": "format"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "кодек",
+                "name": "format.codec",
+                "type": "COMFY_DYNAMICCOMBO_V3",
+                "widget": {
+                  "name": "format.codec"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "encoding",
+                "name": "format.codec.encoding",
+                "shape": 7,
+                "type": "COMFY_DYNAMICCOMBO_V3",
+                "widget": {
+                  "name": "format.codec.encoding"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "кодек",
+                "name": "codec",
+                "shape": 7,
+                "type": "COMFY_DYNAMICCOMBO_V3",
+                "widget": {
+                  "name": "codec"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "видео",
+                "name": "video",
+                "type": "VIDEO",
+                "links": null
+              }
+            ],
+            "title": "[Reshoot/original-audio-save] Result with original audio",
+            "properties": {
+              "reshoot_role": "original-audio-save",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "crossview/original-audio",
+              "mp4",
+              "h264",
+              "auto",
+              "auto"
+            ],
+            "widgets_values_named": {
+              "filename_prefix": "crossview/original-audio",
+              "format": "mp4",
+              "format.codec": "h264",
+              "format.codec.encoding": "auto",
+              "codec": "auto"
             }
           }
         ],
@@ -3387,6 +3370,22 @@
             "target_id": 30,
             "target_slot": 0,
             "type": "INT"
+          },
+          {
+            "id": 56,
+            "origin_id": 40,
+            "origin_slot": 0,
+            "target_id": 41,
+            "target_slot": 0,
+            "type": "VIDEO"
+          },
+          {
+            "id": 57,
+            "origin_id": 42,
+            "origin_slot": 0,
+            "target_id": 43,
+            "target_slot": 0,
+            "type": "VIDEO"
           }
         ],
         "extra": {}
