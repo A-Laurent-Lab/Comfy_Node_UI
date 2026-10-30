@@ -6,9 +6,9 @@
   Selection Toolbox command, mounting, view switching, and sizing.
 - `custom_nodes/ComfyUI-AppView/web/crossview-widget-compat.js` — bounded
   compatibility fix for the reused CrossView DOM canvas sizing.
-- `custom_nodes/ComfyUI-AppView/web/renderers/reshoot.js` — renderer that
+- `custom_nodes/ComfyUI-AppView/web/renderers/comfynodeui-reshoot/index.js` — renderer that
   addresses inner workflow nodes by stable roles and reuses a custom DOM widget.
-- `custom_nodes/ComfyUI-AppView/web/renderers/minimax-h3-i2v.js` — renderer
+- `custom_nodes/ComfyUI-AppView/web/renderers/comfynodeui-minimax-h3-i2v/index.js` — renderer
   that works mostly through promoted host widgets.
 - `working/workflows/reshoot-app-view.json` in the source checkout, or
   `workflows/reshoot-app-view.json` in the portable folder — accepted example.
@@ -24,6 +24,7 @@ The host remains an ordinary native `SubgraphNode`. Bind a renderer with:
 {
   "properties": {
     "app_view_renderer": "example@1",
+    "app_view_package": { "folder": "author-example", "name": "Example UI" },
     "app_view_mode": "node"
   }
 }
@@ -37,8 +38,15 @@ There is no lookup by workflow filename or renderer filename. Each host can
 select a different ID; several hosts can also reuse the same registered renderer.
 `build` receives the selected host, so bindings must resolve within that host's
 workflow rather than retain another instance's nodes in module-global state.
-The registry is shared by loaded workflows; a different UI must not register
-the same ID (registration currently replaces an existing entry with that ID).
+The registry is shared by loaded workflows. A second implementation registered
+with the same ID is rejected; the first is not overwritten. Distinct UIs and
+incompatible versions need distinct IDs and folders. An in-place update of the
+same compatible UI replaces its folder files and is loaded after a reload.
+
+`app_view_package` is a delivery hint, not renderer selection. The framework
+refreshes it from the registered module's actual source directory when mounting.
+Include it when preparing a JSON so **UI files…** can name a missing UI's folder
+on another machine. It lets users find folders without reading IDs or code.
 
 Stable inner roles belong in the relevant node's ordinary properties when node
 IDs are likely to change:
@@ -51,16 +59,18 @@ Do not use screen position or translated title text as identity.
 
 ## Renderer contract
 
-Create a module under `custom_nodes/ComfyUI-AppView/web/renderers`. ComfyUI loads
+Create `custom_nodes/ComfyUI-AppView/web/renderers/<author-ui>/index.js`. ComfyUI loads
 the `.js` files in the package's `WEB_DIRECTORY`; each UI module self-registers
 with the shared registry. Do not add per-App imports to the generic entrypoint.
 For the layout in this repository, registration looks like this:
 
 ```js
-import { registerAppViewRenderer } from "../app-view-core.js";
+import { registerAppViewRenderer } from "../../app-view-core.js";
 
 registerAppViewRenderer({
   id: "example@1",
+  name: "Example UI",
+  source: import.meta.url,
   width: 520,
   height: 640,
   build({ host, app, api }) {
@@ -77,7 +87,9 @@ registerAppViewRenderer({
 
 The renderer can inspect `host.subgraph`, the host's promoted widgets, and the
 root graph. Keep App-specific selectors, labels, field mapping, and visual code
-inside this module.
+inside this UI's folder. Use module-relative imports and asset URLs; renaming
+the folder must preserve the binding. `source` allows the generic framework to derive the
+folder shown to the user; it must be the real module URL, not a guessed path.
 
 The generic host owns the `Node ↔ App` command, renderer lookup, DOM widget,
 natural-height measurement, and disposal. Do not fork those mechanisms inside a
@@ -139,18 +151,18 @@ Distribution is:
 
 ```text
 workflow JSON
-+ UI modules/assets for the installed ComfyUI-AppView/web/renderers folder
++ named, self-contained UI folders for ComfyUI-AppView/web/renderers
 + normal custom-node/model dependencies of the workflow
 ```
 
 The workflow does not embed JavaScript. Install the ComfyUI-AppView extension
-once under ComfyUI's `custom_nodes`. To add a UI, copy its `.js` files and assets
-into `ComfyUI-AppView/web/renderers`, preserving relative subpaths, restart,
+once under ComfyUI's `custom_nodes`. To add a UI, copy its whole named folder
+into `ComfyUI-AppView/web/renderers`, restart,
 and open the JSON. Reusing an already-installed UI needs only the JSON.
 If the extension or renderer is missing, the workflow still opens as a native
 subgraph; this fallback does not supply missing computational nodes or models.
 
-Ship the UI's own modules and assets, not a replacement copy of the framework.
+Ship the UI's own folder, not a replacement copy of the framework.
 ComfyUI loads these modules through the extension's existing `WEB_DIRECTORY`.
 Make dependencies and imports resolve at the installed destination; the source
 folder's name is not a protocol. For a standalone ComfyUI package outside this
@@ -158,15 +170,25 @@ layout, implement and verify its entrypoint and imports before documenting it
 as installable directly into `custom_nodes`.
 
 Before delivery, walk the workflow's native subgraph instances (including nested
-definitions) and collect their `app_view_renderer` IDs. Match each ID to the
-actual module registration; do not guess a filename from the ID. Collect that
-module's local imports and resource files, deduplicate shared dependencies, and
-report the exact files and their destinations relative to `web/renderers`.
-Exclude unrelated installed UIs and the already-installed generic core. Keep
-assets at the relative locations expected by the UI. Report missing renderer
-IDs or unresolved file dependencies instead of claiming a complete transfer.
-The file list can be included in the delivery response; no new runtime manifest
-or naming convention is needed.
+definitions) and match their `app_view_renderer` values to the actual registered
+modules. Check that every module, local import and asset needed by each UI is
+inside its own folder, except the generic framework and declared computational
+extensions. Do not leave a hidden dependency on a sibling UI's files. Include
+each required folder once and report its name, the subgraphs using it, and the
+exact installation destination. Keep internal IDs out of user-facing instructions.
+Report missing modules or assets instead of claiming a complete transfer.
+
+The node context menu's **UI files…** lists the current workflow's UI folders.
+Their names are derived from `source: import.meta.url`, with saved metadata used
+when a renderer is absent. The flat `reshoot.js` and `minimax-h3-i2v.js` files are
+compatibility forwarding modules for existing installs; they are not UI packages
+and do not need to accompany a shared workflow.
+
+Reusing a UI does not require copying its files again. Test the same renderer
+against two host instances or an edited workflow; unrelated graph edits must
+not retarget its controls or share values between hosts. Preserve semantic
+roles/promoted names used for binding. If controlled nodes/settings change,
+retarget the binding or version an incompatible UI explicitly.
 
 The distribution contains `workflows/reshoot-app-view.json` and the UI code for
 both examples. The MiniMax workflow is in the full development checkout only;
