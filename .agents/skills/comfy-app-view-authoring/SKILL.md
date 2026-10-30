@@ -56,7 +56,10 @@ appropriate subgraph before binding a UI; do not claim direct attachment to an
 arbitrary ordinary node.
 
 Return the prepared workflow JSON and the UI's own `.js` files and assets,
-preserving their paths relative to `ComfyUI-AppView/web/renderers`. Use imports
+plus an exact list of `subgraph -> renderer ID -> entry file -> required files`.
+For workflows with several UIs, collect their dependencies and deduplicate
+shared files. Never tell the user to copy every file from `renderers`.
+Preserve paths relative to `ComfyUI-AppView/web/renderers`. Use imports
 relative to that destination, such as `../app-view-core.js`, and include local
 dependencies. The recipient installs ComfyUI-AppView once, then copies these
 UI files into its `web/renderers` folder and restarts ComfyUI. There is no need
@@ -64,6 +67,12 @@ to resend the framework or require a wrapper folder named `custom_nodes`.
 A JSON import carries graph values and renderer ID, not JavaScript. If the UI
 is already installed, the JSON alone is sufficient. A skill is for authoring,
 not for using a finished UI.
+
+The renderer ID belongs to each subgraph, not to the JSON filename. Match it to
+the ID registered by the UI module; filenames are not inferred from IDs.
+Use distinct namespaced IDs for different UIs and a new version for incompatible
+bindings. Reuse the same ID only for the same UI implementation. Keep instance
+values in the host workflow so several subgraphs using that UI remain independent.
 
 Keep author-facing APIs and code examples in the skill references. Keep the
 root README brief: where the extension goes, where additional UI files go,
