@@ -4,17 +4,11 @@
 
 - `custom_nodes/ComfyUI-AppView/web/app-view-core.js` — generic registry,
   Selection Toolbox command, mounting, view switching, and sizing.
-- `custom_nodes/ComfyUI-AppView/web/crossview-widget-compat.js` — bounded
-  compatibility fix for the reused CrossView DOM canvas sizing.
-- `custom_nodes/ComfyUI-AppView/web/renderers/comfynodeui-reshoot/index.js` — renderer that
-  addresses inner workflow nodes by stable roles and reuses a custom DOM widget.
-- `custom_nodes/ComfyUI-AppView/web/renderers/comfynodeui-minimax-h3-i2v/index.js` — renderer
+- `examples/reshoot/ui/comfynodeui-reshoot/` — optional renderer that addresses
+  inner workflow nodes by stable roles and reuses a custom DOM widget.
+- `examples/minimax-h3-i2v/ui/comfynodeui-minimax-h3-i2v/` — optional renderer
   that works mostly through promoted host widgets.
-- `working/workflows/reshoot-app-view.json` in the source checkout, or
-  `workflows/reshoot-app-view.json` in the portable folder — accepted example.
-- `tools/build-app-view-workflows.mjs`,
-  `tools/verify-app-view-workflows.mjs`, and
-  `tools/smoke-app-view.mjs` — repeatable build and verification routes.
+- Each example's JSON beside its `ui` folder — accepted workflow binding.
 
 ## Workflow binding
 
@@ -185,9 +179,8 @@ Report missing modules or assets instead of claiming a complete transfer.
 
 The node context menu's **UI files…** lists the current workflow's UI folders.
 Their names are derived from `source: import.meta.url`, with saved metadata used
-when a renderer is absent. The flat `reshoot.js` and `minimax-h3-i2v.js` files are
-compatibility forwarding modules for existing installs; they are not UI packages
-and do not need to accompany a shared workflow.
+when a renderer is absent. The installable generic extension contains no example
+renderer; copy only the named UI folders required by the workflow.
 
 Reusing a UI does not require copying its files again. Test the same renderer
 against two host instances or an edited workflow; unrelated graph edits must
@@ -195,12 +188,12 @@ not retarget its controls or share values between hosts. Preserve semantic
 roles/promoted names used for binding. If controlled nodes/settings change,
 retarget the binding or version an incompatible UI explicitly.
 
-The distribution contains `workflows/reshoot-app-view.json` and the UI code for
-both examples. The MiniMax workflow is in the full development checkout only;
-do not describe it as a bundled runnable workflow. CrossView and the model
-weights are dependencies of the Re-shoot example, not of the generic extension.
-Keep download URLs in workflow model metadata rather than duplicating a list
-in a separate Markdown file.
+The optional examples live under `examples`, outside the installable
+`custom_nodes/ComfyUI-AppView` folder. Each example keeps its workflow JSON and
+named UI folder together. CrossView and the model weights are dependencies of
+the Re-shoot example, not of the generic extension. Keep download URLs in
+workflow model metadata rather than duplicating a list in a separate Markdown
+file.
 
 For external agents, use clear slot labels and a normal `MarkdownNote` in the
 workflow. Official local Comfy MCP can read workflow slots and notes, inspect
@@ -209,18 +202,9 @@ source files; the coding agent applies this skill to those files.
 
 ## Checks
 
-From the full source checkout:
-
-```powershell
-node tools/build-app-view-workflows.mjs
-node tools/verify-app-view-workflows.mjs
-$env:COMFY_URL='http://127.0.0.1:8188'
-node tools/smoke-app-view.mjs
-```
-
-From the portable folder, run `node tools/validate-package.mjs`, then operate
-the workflow in the real frontend. The portable folder intentionally omits the
-source-only workflow builder and its pinned upstream inputs.
+From the repository root, run `node tools/test-ui-packages.mjs` and
+`node tools/validate-package.mjs`, then operate the selected example in the real
+frontend.
 
 Also inspect the resulting screenshots in `.tmp`. Confirm:
 

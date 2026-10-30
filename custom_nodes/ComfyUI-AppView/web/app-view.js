@@ -1,6 +1,5 @@
 import { app } from "../../scripts/app.js";
 import { api } from "../../scripts/api.js";
-import "./crossview-widget-compat.js";
 import { createAppViewExtension, listAppViewPackages } from "./app-view-core.js";
 
 const extension = createAppViewExtension({ app, api });

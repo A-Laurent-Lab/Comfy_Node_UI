@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { repairLegacyReshootWorkflow } from "../custom_nodes/ComfyUI-AppView/web/renderers/comfynodeui-reshoot/workflow.js";
+import { repairLegacyReshootWorkflow } from "../examples/reshoot/ui/comfynodeui-reshoot/workflow.js";
 
 const fixturePath = process.argv[2];
 if (!fixturePath) throw new Error("Pass an old reshoot-app-view.json to check its migration");
