@@ -131,21 +131,23 @@ Distribution is:
 
 ```text
 workflow JSON
-+ custom_nodes/ComfyUI-AppView (extension + matching UI modules/assets)
++ UI modules/assets for the installed ComfyUI-AppView/web/renderers folder
 + normal custom-node/model dependencies of the workflow
 ```
 
-The workflow does not embed JavaScript. Users copy the extension folder into
-their active ComfyUI installation's `custom_nodes`, restart, and then drag the
-JSON into ComfyUI. Reusing an already-installed exact UI needs only the JSON.
+The workflow does not embed JavaScript. Install the ComfyUI-AppView extension
+once under ComfyUI's `custom_nodes`. To add a UI, copy its `.js` files and assets
+into `ComfyUI-AppView/web/renderers`, preserving relative subpaths, restart,
+and open the JSON. Reusing an already-installed UI needs only the JSON.
 If the extension or renderer is missing, the workflow still opens as a native
 subgraph; this fallback does not supply missing computational nodes or models.
 
-Shipping a complete updated `ComfyUI-AppView` folder is the existing delivery
-route. Include new renderer modules, imports and static assets; instruct users
-to merge the files while keeping any additional local UIs. For a separate UI
-package, first implement and verify its extension imports and installation
-steps instead of assuming a bare JavaScript file is independently installable.
+Ship the UI's own modules and assets, not a replacement copy of the framework.
+ComfyUI loads these modules through the extension's existing `WEB_DIRECTORY`.
+Make dependencies and imports resolve at the installed destination; the source
+folder's name is not a protocol. For a standalone ComfyUI package outside this
+layout, implement and verify its entrypoint and imports before documenting it
+as installable directly into `custom_nodes`.
 
 The distribution contains `workflows/reshoot-app-view.json` and the UI code for
 both examples. The MiniMax workflow is in the full development checkout only;
