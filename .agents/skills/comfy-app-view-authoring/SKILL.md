@@ -55,17 +55,20 @@ This version attaches App Views to native subgraph nodes. Inspect or create the
 appropriate subgraph before binding a UI; do not claim direct attachment to an
 arbitrary ordinary node.
 
-Return both the prepared workflow JSON and the matching extension files, with
-their relative directories and any UI assets preserved. A JSON import carries
-the graph, values and renderer ID; it does not carry or install JavaScript.
-For this repository's delivery layout, put custom UI modules under
-`custom_nodes/ComfyUI-AppView/web/renderers` and include them with the extension.
-Give the user concrete copy, restart and JSON-import instructions. If the exact
-UI is already installed and only workflow values changed, the JSON alone is
-sufficient. A skill is needed for authoring, not for using a finished UI.
+Return the prepared workflow JSON and the UI's own `.js` files and assets,
+preserving their paths relative to `ComfyUI-AppView/web/renderers`. Use imports
+relative to that destination, such as `../app-view-core.js`, and include local
+dependencies. The recipient installs ComfyUI-AppView once, then copies these
+UI files into its `web/renderers` folder and restarts ComfyUI. There is no need
+to resend the framework or require a wrapper folder named `custom_nodes`.
+A JSON import carries graph values and renderer ID, not JavaScript. If the UI
+is already installed, the JSON alone is sufficient. A skill is for authoring,
+not for using a finished UI.
 
 Keep author-facing APIs and code examples in the skill references. Keep the
-root README focused on installation, using, saving and sharing the result.
+root README brief: where the extension goes, where additional UI files go,
+and what accompanies the JSON. Avoid GitHub download tutorials, stock ComfyUI
+instructions and repeated explanations of the same installation steps.
 Identify example-only node dependencies explicitly. Model download metadata
 belongs in the workflow JSON; do not generate a second model-link document.
 
