@@ -133,6 +133,21 @@ function measuredHeight(element, fallback) {
 }
 
 export function createAppViewExtension({ app, api }) {
+  function refreshViewVisibility(host) {
+    const state = host.__comfyAppView;
+    if (!state) return;
+    const active = host.properties.app_view_mode === "app" &&
+      host.graph === app.canvas?.graph;
+    if (state.viewActive === active) return;
+    state.viewActive = active;
+    if (active) state.view.onShow?.();
+    else state.view.onHide?.();
+  }
+
+  function refreshVisibility() {
+    walkGraph(app.graph, refreshViewVisibility);
+  }
+
   function resizeForMode(host, { preserveSize = false } = {}) {
     const state = host.__comfyAppView;
     if (!state) return;
@@ -206,11 +221,10 @@ export function createAppViewExtension({ app, api }) {
     state.view.root.style.display = appMode ? "" : "none";
     state.view.root.classList.toggle("comfy-app-view-active", appMode);
 
-    if (!appMode) state.view.onHide?.();
+    refreshViewVisibility(host);
     resizeForMode(host);
     if (previous !== normalized) host.graph?.incrementVersion?.();
     if (appMode) {
-      state.view.onShow?.();
       requestAnimationFrame(() => measureAndResize(host));
     }
   }
@@ -282,6 +296,7 @@ export function createAppViewExtension({ app, api }) {
       renderer,
       panelWidget,
       view,
+      viewActive: false,
       nodeWidgets,
       nodeSize: [...host.size],
       appSize:
@@ -303,6 +318,8 @@ export function createAppViewExtension({ app, api }) {
     const previousRemoved = host.onRemoved;
     host.onRemoved = function () {
       observer.disconnect();
+      if (state.viewActive) view.onHide?.();
+      state.viewActive = false;
       view.dispose?.();
       return previousRemoved?.apply(this, arguments);
     };
@@ -327,6 +344,7 @@ export function createAppViewExtension({ app, api }) {
     attachAll,
     applyMode,
     isAppViewHost,
+    refreshVisibility,
     toggleMode,
   };
 }

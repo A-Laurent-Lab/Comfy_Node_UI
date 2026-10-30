@@ -95,7 +95,13 @@ app.registerExtension({
       extension.attach(event.detail?.subgraphNode);
     });
     app.canvas.canvas.addEventListener("litegraph:set-graph", () => {
-      requestAnimationFrame(() => extension.attachAll());
+      // Return borrowed native widgets before the next graph's UI mounts.
+      // Presentation mode is saved on the host and is not visibility.
+      extension.refreshVisibility();
+      requestAnimationFrame(() => {
+        extension.attachAll();
+        extension.refreshVisibility();
+      });
     });
   },
 });
