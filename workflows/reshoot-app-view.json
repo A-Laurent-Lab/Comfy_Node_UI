@@ -469,6 +469,7 @@
       "properties": {
         "previewExposures": [],
         "app_view_renderer": "reshoot@1",
+        "app_view_package": { "folder": "comfynodeui-reshoot", "name": "Re-shoot" },
         "app_view_mode": "node"
       },
       "widgets_values_named": {
