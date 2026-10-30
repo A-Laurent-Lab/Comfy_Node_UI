@@ -1,9 +1,8 @@
-# Comfy_Node_UI extension files
+# ComfyUI-AppView
 
-Copy this `ComfyUI-AppView` folder into ComfyUI's `custom_nodes` and restart.
+This is the generic App View extension. It contains no workflow-specific UI.
 
-Each additional UI comes as a named folder. Copy that whole folder into
-`web/renderers`. Right-click a UI subgraph → **UI files…** to see which folders
-its workflow needs. Importing JSON does not install them.
+Copy the `ComfyUI-AppView` folder into ComfyUI's `custom_nodes` folder and
+restart ComfyUI. Separately supplied UI folders go in `web/renderers`.
 
 See the [project README](https://github.com/A-Laurent-Lab/Comfy_Node_UI#readme).

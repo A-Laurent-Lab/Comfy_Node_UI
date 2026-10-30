@@ -1,6 +1,7 @@
 import { app } from "../../../../scripts/app.js";
 import { api } from "../../../../scripts/api.js";
 import { registerAppViewRenderer } from "../../app-view-core.js";
+import "./crossview-widget-compat.js";
 import { repairLegacyReshootWorkflow } from "./workflow.js";
 
 const RENDERER = "reshoot@1";

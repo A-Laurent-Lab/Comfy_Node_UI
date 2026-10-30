@@ -1,4 +1,4 @@
-import { app } from "../../scripts/app.js";
+import { app } from "../../../../scripts/app.js";
 
 const RETRIES = 120;
 const ORBIT_MIN = 304;
