@@ -43,9 +43,14 @@ Do not use screen position or translated title text as identity.
 
 ## Renderer contract
 
-A renderer module registers itself and returns a small lifecycle object:
+Create a module under `custom_nodes/ComfyUI-AppView/web/renderers`. ComfyUI loads
+the `.js` files in the package's `WEB_DIRECTORY`; each UI module self-registers
+with the shared registry. Do not add per-App imports to the generic entrypoint.
+For the layout in this repository, registration looks like this:
 
 ```js
+import { registerAppViewRenderer } from "../app-view-core.js";
+
 registerAppViewRenderer({
   id: "example@1",
   width: 520,
@@ -55,6 +60,7 @@ registerAppViewRenderer({
     return {
       root,
       onShow() {},
+      onHide() {},
       dispose() {},
     };
   },
@@ -68,6 +74,14 @@ inside this module.
 The generic host owns the `Node ↔ App` command, renderer lookup, DOM widget,
 natural-height measurement, and disposal. Do not fork those mechanisms inside a
 renderer.
+
+The skeleton above only mounts a panel. Implement controls, canonical-value
+bindings and workflow-to-UI updates in the renderer. The host calls `onShow`,
+`onHide` and `dispose`; it does not call a `sync` function on every graph edit.
+Use the existing renderer patterns for update subscriptions or polling, and
+dispose them when the host is removed. The optional dimensions guide sizing;
+keep user resizing intact. Renderer IDs and binding selectors must match the
+JSON being delivered, not just a workflow open in the author's browser.
 
 ## Canonical values
 
@@ -117,12 +131,28 @@ Distribution is:
 
 ```text
 workflow JSON
-+ frontend extension package (WEB_DIRECTORY)
++ custom_nodes/ComfyUI-AppView (extension + matching UI modules/assets)
 + normal custom-node/model dependencies of the workflow
 ```
 
-The workflow does not embed JavaScript. If the extension is missing, it still
-opens as a native subgraph.
+The workflow does not embed JavaScript. Users copy the extension folder into
+their active ComfyUI installation's `custom_nodes`, restart, and then drag the
+JSON into ComfyUI. Reusing an already-installed exact UI needs only the JSON.
+If the extension or renderer is missing, the workflow still opens as a native
+subgraph; this fallback does not supply missing computational nodes or models.
+
+Shipping a complete updated `ComfyUI-AppView` folder is the existing delivery
+route. Include new renderer modules, imports and static assets; instruct users
+to merge the files while keeping any additional local UIs. For a separate UI
+package, first implement and verify its extension imports and installation
+steps instead of assuming a bare JavaScript file is independently installable.
+
+The distribution contains `workflows/reshoot-app-view.json` and the UI code for
+both examples. The MiniMax workflow is in the full development checkout only;
+do not describe it as a bundled runnable workflow. CrossView and the model
+weights are dependencies of the Re-shoot example, not of the generic extension.
+Keep download URLs in workflow model metadata rather than duplicating a list
+in a separate Markdown file.
 
 For external agents, use clear slot labels and a normal `MarkdownNote` in the
 workflow. Official local Comfy MCP can read workflow slots and notes, inspect

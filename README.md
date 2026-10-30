@@ -1,96 +1,100 @@
 # Comfy_Node_UI
 
-`Comfy_Node_UI` is a frontend extension and authoring toolkit for adding a
-custom UI to native ComfyUI nodes and subgraphs. The workflow remains an
-ordinary ComfyUI workflow with its normal nodes, connections, inputs, outputs,
-execution, and saved JSON.
+Give a ComfyUI subgraph its own interface, with a `Node ↔ App` switch above
+the selected node. Use the normal node controls, or switch to a custom panel
+for the same workflow. Run it with ComfyUI's usual Run button.
 
 ```text
-Node  — standard ComfyUI node or subgraph presentation
-App   — custom renderer bound to the same workflow values
+Node  — normal subgraph controls and connections
+App   — custom interface for the workflow inside that subgraph
 ```
 
-The selected node gets one `Node ↔ App` command in ComfyUI's Selection
-Toolbox. ComfyUI's own Run control remains the execution path. Changes made in
-the custom UI update the workflow, and workflow or agent edits can be reflected
-back into the custom UI.
+The current version attaches interfaces to native **subgraph nodes**. A single
+ordinary node can be placed inside a subgraph when preparing its custom UI.
+Installing this extension alone does not create an interface for every workflow.
 
-## What the toolkit provides
+## Install the extension once
 
-- a renderer registry keyed by `node.properties.app_view_renderer`;
-- a persistent Node/App presentation switch outside the node body;
-- access to the host node, `host.subgraph`, the Comfy app, and API;
-- mounting, resizing, synchronization, visibility, and disposal hooks;
-- compatibility handling for Node 2.0 and the legacy canvas renderer;
-- a repo-local authoring skill for coding agents.
+1. Download this repository with **Code → Download ZIP** and extract it, or
+   use an existing local copy.
+2. Copy the **`ComfyUI-AppView` folder inside `custom_nodes`** into the
+   `custom_nodes` directory of your active ComfyUI installation. The result
+   should be `ComfyUI/custom_nodes/ComfyUI-AppView/__init__.py`.
+3. Restart ComfyUI.
 
-The framework defines no execution nodes and does not replace ComfyUI state.
-Each renderer chooses which workflow values to show and may use the full nested
-workflow without promoting every field to an external subgraph input.
+This is a UI extension installed through ComfyUI's extension package loader.
+It does not add an execution node to the node menu. For an update, merge the
+package files into the existing `ComfyUI-AppView` folder, keeping any additional
+custom interfaces you have added.
 
-## Create a renderer
+## Open a workflow with a custom UI
 
-Add a module under `custom_nodes/ComfyUI-AppView/web/renderers` and register it:
+**Dragging a JSON file into ComfyUI imports the workflow, not its UI code.**
 
-```js
-import { registerAppViewRenderer } from "../app-view-core.js";
+If the interface is already installed, drag the workflow JSON into ComfyUI,
+select its subgraph node, and click **Node ↔ App** in the toolbar above it.
+For the included Re-shoot example, the interface is already part of
+`ComfyUI-AppView`; use the example steps below.
 
-registerAppViewRenderer({
-  id: "my-ui@1",
-  width: 480,
-  height: 600,
-  build({ host, app, api }) {
-    const root = document.createElement("div");
+If someone gives you a new custom interface, you also need its UI files. They
+should supply a `custom_nodes` folder alongside the JSON. Merge its contents
+into your ComfyUI installation's `custom_nodes` folder, keeping the supplied
+subfolders, then restart ComfyUI and open the JSON. A JSON import does not
+install or download these UI files.
 
-    // Bind controls to host widgets or nodes inside host.subgraph.
+The workflow's computational nodes and models still need to be installed as
+usual. If the custom UI is unavailable, the graph remains editable as a normal
+subgraph; running it still requires those computational dependencies.
 
-    return {
-      root,
-      sync() {},
-      dispose() {},
-    };
-  },
-});
-```
+## What is saved and shared?
 
-Set the host node property `app_view_renderer` to the same renderer ID. Keep
-meaningful values in widgets or graph nodes; use renderer-local state only for
-temporary UI details such as hover, open panels, and drag state.
+| Item | In the workflow JSON? | How to share it |
+| --- | --- | --- |
+| Nodes, connections, subgraphs and parameter values | Yes | Save and send the workflow JSON as usual. |
+| Which custom UI to use and the selected Node/App view | Yes | Included when you save the prepared workflow. |
+| Custom UI code and its bundled assets | No | Include the extension files under `custom_nodes`, with their directory structure. |
+| Input videos/images and model weights | No | Supply input media separately; install the workflow's models as usual. |
 
-The full format and lifecycle are documented in
-`.agents/skills/comfy-app-view-authoring/references/app-view-format.md`.
+Edits in App view change the real workflow parameters. You can enter the
+subgraph, edit its nodes, and work with the same workflow through an agent.
+The custom panel's controls are chosen when that interface is created; adding
+another node to the graph does not automatically add controls to the panel.
 
-## Install in ComfyUI Desktop
+When sharing a UI you have created or modified, send **both the saved JSON and
+the matching `custom_nodes/ComfyUI-AppView` folder**, including your UI files
+and assets. If the recipient already has that exact UI installed, sending only
+the updated JSON is enough. The authoring skill is not needed to use the UI.
 
-1. Copy `custom_nodes/ComfyUI-AppView` into the active ComfyUI installation's
-   `custom_nodes` directory.
-2. Restart ComfyUI Desktop.
-3. Import a workflow that names a registered renderer, or add your own renderer
-   and binding.
-4. Select its host node and use `Node ↔ App` in the Selection Toolbox.
+## Create or change your own UI
 
-## Included examples
+Open this repository in a coding agent with access to your workflow JSON.
+Ask it to use the included
+[comfy-app-view-authoring skill](.agents/skills/comfy-app-view-authoring/SKILL.md).
+For example:
 
-The repository includes two renderer examples:
+> Use comfy-app-view-authoring to create a custom UI for this workflow. Include
+> a prompt field, a seed control and an image preview. Return the updated
+> workflow JSON and the extension folder I need to copy into ComfyUI.
 
-- `minimax-h3-i2v@1` demonstrates a compact UI over a standard image-to-video
-  subgraph;
-- `reshoot@1` demonstrates reuse of an existing interactive camera widget.
+The agent writes or edits the interface files and connects them to the workflow.
+There is no visual UI designer built into the extension. The skill contains the
+technical instructions for authors; it does not run inside ComfyUI.
 
-`workflows/reshoot-app-view.json`, `custom_nodes/ComfyUI-CrossViewWarp`, and
-`MODEL_DOWNLOADS.md` belong to the Re-shoot example. They demonstrate the
-toolkit and are not requirements for creating other node UIs.
+## Optional example: Re-shoot
 
-## Agent authoring
+This example demonstrates an interactive camera interface. Its UI is bundled
+with the main extension; its video-processing nodes are a separate dependency.
 
-Coding agents can discover the authoring skill under `.agents/skills`. The
-official Comfy MCP can continue to inspect, edit, validate, and execute the same
-workflow because the custom UI is only another presentation of it.
+1. Install `ComfyUI-AppView` as described above. Also copy
+   `custom_nodes/ComfyUI-CrossViewWarp` into ComfyUI's `custom_nodes` directory
+   if you do not already have the version used by this example. Restart ComfyUI.
+2. Drag [workflows/reshoot-app-view.json](workflows/reshoot-app-view.json)
+   into ComfyUI.
+3. Use the workflow's missing-model download buttons. The model URLs are already
+   in the JSON. Choose your source video in the workflow.
+4. Select the Re-shoot subgraph, switch to **App**, adjust the camera, and use
+   ComfyUI's **Run** button.
 
-## Validation
-
-Run:
-
-```powershell
-node tools/validate-package.mjs
-```
+CrossView and these models are only needed for this example. A second UI code
+example, `minimax-h3-i2v.js`, is included for authors; its matching workflow is
+not included in this download.
