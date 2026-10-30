@@ -1,0 +1,3443 @@
+{
+  "id": "30afc592-0b70-4ee6-b87b-df07e435ec14",
+  "revision": 0,
+  "last_node_id": 44,
+  "last_link_id": 45,
+  "nodes": [
+    {
+      "id": 38,
+      "type": "SaveVideo",
+      "pos": [
+        3694.9462890625005,
+        390
+      ],
+      "size": [
+        328.007421875,
+        130
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "видео",
+          "name": "video",
+          "type": "VIDEO",
+          "link": 43
+        },
+        {
+          "localized_name": "префикс_имени_файла",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "формат",
+          "name": "format",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "кодек",
+          "name": "format.codec",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "format.codec"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "encoding",
+          "name": "format.codec.encoding",
+          "shape": 7,
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "format.codec.encoding"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "кодек",
+          "name": "codec",
+          "shape": 7,
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "codec"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "видео",
+          "name": "video",
+          "type": "VIDEO",
+          "links": null
+        }
+      ],
+      "title": "[Reshoot/generated-save] Generated result",
+      "properties": {
+        "reshoot_role": "generated-save",
+        "reshoot_app_member": false
+      },
+      "widgets_values": [
+        "crossview/result",
+        "mp4",
+        "h264",
+        "auto",
+        "auto"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "crossview/result",
+        "format": "mp4",
+        "format.codec": "h264",
+        "format.codec.encoding": "auto",
+        "codec": "auto"
+      }
+    },
+    {
+      "id": 41,
+      "type": "SaveVideo",
+      "pos": [
+        2255.1042968750003,
+        130
+      ],
+      "size": [
+        280.91796875,
+        130
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "видео",
+          "name": "video",
+          "type": "VIDEO",
+          "link": 44
+        },
+        {
+          "localized_name": "префикс_имени_файла",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "формат",
+          "name": "format",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "кодек",
+          "name": "format.codec",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "format.codec"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "encoding",
+          "name": "format.codec.encoding",
+          "shape": 7,
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "format.codec.encoding"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "кодек",
+          "name": "codec",
+          "shape": 7,
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "codec"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "видео",
+          "name": "video",
+          "type": "VIDEO",
+          "links": null
+        }
+      ],
+      "title": "[Reshoot/warp-save] Warp guide",
+      "properties": {
+        "reshoot_role": "warp-save",
+        "reshoot_app_member": false
+      },
+      "widgets_values": [
+        "crossview/warp",
+        "mp4",
+        "h264",
+        "auto",
+        "auto"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "crossview/warp",
+        "format": "mp4",
+        "format.codec": "h264",
+        "format.codec.encoding": "auto",
+        "codec": "auto"
+      }
+    },
+    {
+      "id": 43,
+      "type": "SaveVideo",
+      "pos": [
+        3694.9462890625005,
+        130
+      ],
+      "size": [
+        407.331640625,
+        130
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "видео",
+          "name": "video",
+          "type": "VIDEO",
+          "link": 45
+        },
+        {
+          "localized_name": "префикс_имени_файла",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "формат",
+          "name": "format",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "кодек",
+          "name": "format.codec",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "format.codec"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "encoding",
+          "name": "format.codec.encoding",
+          "shape": 7,
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "format.codec.encoding"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "кодек",
+          "name": "codec",
+          "shape": 7,
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "codec"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "видео",
+          "name": "video",
+          "type": "VIDEO",
+          "links": null
+        }
+      ],
+      "title": "[Reshoot/original-audio-save] Result with original audio",
+      "properties": {
+        "reshoot_role": "original-audio-save",
+        "reshoot_app_member": false
+      },
+      "widgets_values": [
+        "crossview/original-audio",
+        "mp4",
+        "h264",
+        "auto",
+        "auto"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "crossview/original-audio",
+        "format": "mp4",
+        "format.codec": "h264",
+        "format.codec.encoding": "auto",
+        "codec": "auto"
+      }
+    },
+    {
+      "id": 44,
+      "type": "be0351c1-5fb5-420e-8ac9-73c12f8f3ff8",
+      "pos": [
+        1777.4731445312502,
+        844
+      ],
+      "size": [
+        420,
+        560
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "Source video",
+          "name": "file",
+          "type": "COMBO",
+          "widget": {
+            "name": "file"
+          },
+          "link": null
+        },
+        {
+          "label": "Duration",
+          "name": "duration",
+          "type": "FLOAT",
+          "widget": {
+            "name": "duration"
+          },
+          "link": null
+        },
+        {
+          "label": "Aspect ratio",
+          "name": "aspect_ratio",
+          "type": "COMBO",
+          "widget": {
+            "name": "aspect_ratio"
+          },
+          "link": null
+        },
+        {
+          "label": "Resolution",
+          "name": "megapixels",
+          "type": "FLOAT",
+          "widget": {
+            "name": "megapixels"
+          },
+          "link": null
+        },
+        {
+          "label": "Rotation",
+          "name": "azimuth",
+          "type": "FLOAT",
+          "widget": {
+            "name": "azimuth"
+          },
+          "link": null
+        },
+        {
+          "label": "Tilt",
+          "name": "elevation",
+          "type": "FLOAT",
+          "widget": {
+            "name": "elevation"
+          },
+          "link": null
+        },
+        {
+          "label": "Distance",
+          "name": "distance",
+          "type": "FLOAT",
+          "widget": {
+            "name": "distance"
+          },
+          "link": null
+        },
+        {
+          "label": "Lens",
+          "name": "hfov",
+          "type": "FLOAT",
+          "widget": {
+            "name": "hfov"
+          },
+          "link": null
+        },
+        {
+          "label": "Height",
+          "name": "vertical_shift",
+          "type": "FLOAT",
+          "widget": {
+            "name": "vertical_shift"
+          },
+          "link": null
+        },
+        {
+          "label": "Keep source aim",
+          "name": "keep_source_aim",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "keep_source_aim"
+          },
+          "link": null
+        },
+        {
+          "label": "Camera move",
+          "name": "use_keyframes",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_keyframes"
+          },
+          "link": null
+        },
+        {
+          "label": "Motion",
+          "name": "interp_motion",
+          "type": "COMBO",
+          "widget": {
+            "name": "interp_motion"
+          },
+          "link": null
+        },
+        {
+          "label": "Prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": null
+        },
+        {
+          "label": "Seed",
+          "name": "noise_seed",
+          "type": "INT",
+          "widget": {
+            "name": "noise_seed"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "Generated",
+          "localized_name": "ВИДЕО",
+          "name": "Generated",
+          "type": "VIDEO",
+          "links": [
+            43
+          ]
+        },
+        {
+          "label": "Warp guide",
+          "localized_name": "ВИДЕО_1",
+          "name": "Warp guide",
+          "type": "VIDEO",
+          "links": [
+            44
+          ]
+        },
+        {
+          "label": "Original audio",
+          "localized_name": "ВИДЕО_2",
+          "name": "Original audio",
+          "type": "VIDEO",
+          "links": [
+            45
+          ]
+        }
+      ],
+      "properties": {
+        "previewExposures": [],
+        "app_view_renderer": "reshoot@1",
+        "app_view_mode": "node"
+      },
+      "widgets_values_named": {
+        "file": "input.mp4",
+        "duration": 5,
+        "aspect_ratio": "source",
+        "megapixels": 0.5,
+        "azimuth": -30,
+        "elevation": 20,
+        "distance": 1,
+        "hfov": 50,
+        "vertical_shift": 0,
+        "keep_source_aim": true,
+        "use_keyframes": false,
+        "interp_motion": "linear",
+        "prompt": "crossview.",
+        "noise_seed": 42
+      },
+      "widgets_values": [
+        "input.mp4",
+        5,
+        "source",
+        0.5,
+        -30,
+        20,
+        1,
+        50,
+        0,
+        true,
+        false,
+        "linear",
+        "crossview.",
+        42
+      ]
+    }
+  ],
+  "links": [
+    [
+      43,
+      44,
+      0,
+      38,
+      0,
+      "VIDEO"
+    ],
+    [
+      44,
+      44,
+      1,
+      41,
+      0,
+      "VIDEO"
+    ],
+    [
+      45,
+      44,
+      2,
+      43,
+      0,
+      "VIDEO"
+    ]
+  ],
+  "groups": [],
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "be0351c1-5fb5-420e-8ac9-73c12f8f3ff8",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 44,
+          "lastLinkId": 56,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Re-shoot",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -120,
+            120,
+            160,
+            328
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            3654.9462890625005,
+            808,
+            128,
+            108
+          ]
+        },
+        "inputs": [
+          {
+            "id": "a9206df7-7b65-59ed-8c1f-e8b432697afd",
+            "name": "file",
+            "type": "COMBO",
+            "linkIds": [
+              43
+            ],
+            "label": "Source video",
+            "pos": [
+              -96,
+              144
+            ]
+          },
+          {
+            "id": "6823c151-ad57-5876-be1b-475918c0291c",
+            "name": "duration",
+            "type": "FLOAT",
+            "linkIds": [
+              44
+            ],
+            "label": "Duration",
+            "pos": [
+              -96,
+              164
+            ]
+          },
+          {
+            "id": "cb0b5040-5661-5805-85cc-116e51be0580",
+            "name": "aspect_ratio",
+            "type": "COMBO",
+            "linkIds": [
+              45
+            ],
+            "label": "Aspect ratio",
+            "pos": [
+              -96,
+              184
+            ]
+          },
+          {
+            "id": "fdf2c701-a309-51b2-ba3a-23b7986b0a90",
+            "name": "megapixels",
+            "type": "FLOAT",
+            "linkIds": [
+              46
+            ],
+            "label": "Resolution",
+            "pos": [
+              -96,
+              204
+            ]
+          },
+          {
+            "id": "c9ccb9b6-6cc7-5c80-919f-29a80bf5ea56",
+            "name": "azimuth",
+            "type": "FLOAT",
+            "linkIds": [
+              47
+            ],
+            "label": "Rotation",
+            "pos": [
+              -96,
+              224
+            ]
+          },
+          {
+            "id": "0984e29c-55a0-5499-a6fc-2c60b933cea0",
+            "name": "elevation",
+            "type": "FLOAT",
+            "linkIds": [
+              48
+            ],
+            "label": "Tilt",
+            "pos": [
+              -96,
+              244
+            ]
+          },
+          {
+            "id": "d80e51b2-7b92-5aa3-ac04-b742de30accc",
+            "name": "distance",
+            "type": "FLOAT",
+            "linkIds": [
+              49
+            ],
+            "label": "Distance",
+            "pos": [
+              -96,
+              264
+            ]
+          },
+          {
+            "id": "211c7b6b-b0d8-5f73-a092-27dbbb274537",
+            "name": "hfov",
+            "type": "FLOAT",
+            "linkIds": [
+              50
+            ],
+            "label": "Lens",
+            "pos": [
+              -96,
+              284
+            ]
+          },
+          {
+            "id": "8f67266d-d862-5592-9b91-3fdfc63a6efa",
+            "name": "vertical_shift",
+            "type": "FLOAT",
+            "linkIds": [
+              51
+            ],
+            "label": "Height",
+            "pos": [
+              -96,
+              304
+            ]
+          },
+          {
+            "id": "04108521-696d-5aec-a807-e37e935567b4",
+            "name": "keep_source_aim",
+            "type": "BOOLEAN",
+            "linkIds": [
+              52
+            ],
+            "label": "Keep source aim",
+            "pos": [
+              -96,
+              324
+            ]
+          },
+          {
+            "id": "e540beda-faee-55c2-bf68-92802a771d0c",
+            "name": "use_keyframes",
+            "type": "BOOLEAN",
+            "linkIds": [
+              53
+            ],
+            "label": "Camera move",
+            "pos": [
+              -96,
+              344
+            ]
+          },
+          {
+            "id": "b5c3c680-beb9-5979-b274-cbe4a3dec765",
+            "name": "interp_motion",
+            "type": "COMBO",
+            "linkIds": [
+              54
+            ],
+            "label": "Motion",
+            "pos": [
+              -96,
+              364
+            ]
+          },
+          {
+            "id": "414a04ab-e034-5385-be1d-1b61401e4fb2",
+            "name": "prompt",
+            "type": "STRING",
+            "linkIds": [
+              55
+            ],
+            "label": "Prompt",
+            "pos": [
+              -96,
+              384
+            ]
+          },
+          {
+            "id": "e547753b-6997-5ced-b1aa-131ab592836d",
+            "name": "noise_seed",
+            "type": "INT",
+            "linkIds": [
+              56
+            ],
+            "label": "Seed",
+            "pos": [
+              -96,
+              404
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "a8973701-8ae2-4236-9740-fedaf6bcabd6",
+            "name": "Generated",
+            "type": "VIDEO",
+            "linkIds": [
+              35
+            ],
+            "localized_name": "ВИДЕО",
+            "label": "Generated",
+            "pos": [
+              3678.9462890625005,
+              832
+            ]
+          },
+          {
+            "id": "b6b3dcf0-b084-4ffd-974a-66559792c5dc",
+            "name": "Warp guide",
+            "type": "VIDEO",
+            "linkIds": [
+              37
+            ],
+            "localized_name": "ВИДЕО_1",
+            "label": "Warp guide",
+            "pos": [
+              3678.9462890625005,
+              852
+            ]
+          },
+          {
+            "id": "31dc1eaa-c2f8-47eb-b32c-9065b4a99368",
+            "name": "Original audio",
+            "type": "VIDEO",
+            "linkIds": [
+              40
+            ],
+            "localized_name": "ВИДЕО_2",
+            "label": "Original audio",
+            "pos": [
+              3678.9462890625005,
+              872
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "LoadVideo",
+            "pos": [
+              100,
+              130
+            ],
+            "size": [
+              309.06640625,
+              82
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "файл",
+                "name": "file",
+                "type": "COMBO",
+                "widget": {
+                  "name": "file"
+                },
+                "link": 43
+              },
+              {
+                "localized_name": "выберите файл для загрузки",
+                "name": "upload",
+                "type": "IMAGEUPLOAD",
+                "widget": {
+                  "name": "upload"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "ВИДЕО",
+                "name": "VIDEO",
+                "type": "VIDEO",
+                "links": [
+                  1
+                ]
+              }
+            ],
+            "title": "[Reshoot/source-video] Source video",
+            "properties": {
+              "Node name for S&R": "LoadVideo",
+              "reshoot_role": "source-video",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "input.mp4",
+              "image"
+            ],
+            "widgets_values_named": {
+              "file": "input.mp4",
+              "upload": "image"
+            }
+          },
+          {
+            "id": 2,
+            "type": "CrossViewPrepareClip",
+            "pos": [
+              509.06640625,
+              130
+            ],
+            "size": [
+              270,
+              210
+            ],
+            "flags": {},
+            "order": 8,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "video",
+                "name": "video",
+                "type": "VIDEO",
+                "link": 1
+              },
+              {
+                "localized_name": "duration",
+                "name": "duration",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "duration"
+                },
+                "link": 44
+              },
+              {
+                "localized_name": "aspect_ratio",
+                "name": "aspect_ratio",
+                "type": "COMBO",
+                "widget": {
+                  "name": "aspect_ratio"
+                },
+                "link": 45
+              },
+              {
+                "localized_name": "megapixels",
+                "name": "megapixels",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "megapixels"
+                },
+                "link": 46
+              },
+              {
+                "localized_name": "multiple",
+                "name": "multiple",
+                "type": "INT",
+                "widget": {
+                  "name": "multiple"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "frames",
+                "name": "frames",
+                "type": "IMAGE",
+                "links": [
+                  3,
+                  4,
+                  13,
+                  41
+                ]
+              },
+              {
+                "localized_name": "width",
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  14
+                ]
+              },
+              {
+                "localized_name": "height",
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  15
+                ]
+              },
+              {
+                "localized_name": "length",
+                "name": "length",
+                "type": "INT",
+                "links": [
+                  16
+                ]
+              },
+              {
+                "localized_name": "audio",
+                "name": "audio",
+                "type": "AUDIO",
+                "links": [
+                  39
+                ]
+              }
+            ],
+            "title": "[Reshoot/prepare] Prepare clip",
+            "properties": {
+              "Node name for S&R": "CrossViewPrepareClip",
+              "cnr_id": "recast-studio",
+              "ver": "0.1.0",
+              "reshoot_role": "prepare",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              5,
+              "source",
+              0.5,
+              32
+            ],
+            "widgets_values_named": {
+              "duration": 5,
+              "aspect_ratio": "source",
+              "megapixels": 0.5,
+              "multiple": 32
+            }
+          },
+          {
+            "id": 3,
+            "type": "LoadMoGeModel",
+            "pos": [
+              100,
+              342
+            ],
+            "size": [
+              270,
+              58
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "model_name",
+                "name": "model_name",
+                "type": "COMBO",
+                "widget": {
+                  "name": "model_name"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "MOGE_МОДЕЛЬ",
+                "name": "MOGE_MODEL",
+                "type": "MOGE_MODEL",
+                "links": [
+                  2
+                ]
+              }
+            ],
+            "title": "MoGe model",
+            "properties": {
+              "Node name for S&R": "LoadMoGeModel",
+              "models": [
+                {
+                  "name": "moge_2_vitl_normal_fp16.safetensors",
+                  "url": "https://huggingface.co/Comfy-Org/MoGe/resolve/main/geometry_estimation/moge_2_vitl_normal_fp16.safetensors",
+                  "directory": "geometry_estimation"
+                }
+              ],
+              "cnr_id": "comfy-core",
+              "ver": "0.43.2",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "moge_2_vitl_normal_fp16.safetensors"
+            ],
+            "widgets_values_named": {
+              "model_name": "moge_2_vitl_normal_fp16.safetensors"
+            }
+          },
+          {
+            "id": 4,
+            "type": "MoGeInference",
+            "pos": [
+              908.2818359375,
+              130
+            ],
+            "size": [
+              270,
+              198
+            ],
+            "flags": {},
+            "order": 10,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "moge_model",
+                "name": "moge_model",
+                "type": "MOGE_MODEL",
+                "link": 2
+              },
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 3
+              },
+              {
+                "localized_name": "resolution_level",
+                "name": "resolution_level",
+                "type": "INT",
+                "widget": {
+                  "name": "resolution_level"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "fov_x_degrees",
+                "name": "fov_x_degrees",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "fov_x_degrees"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "batch_size",
+                "name": "batch_size",
+                "type": "INT",
+                "widget": {
+                  "name": "batch_size"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "force_projection",
+                "name": "force_projection",
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "force_projection"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "apply_mask",
+                "name": "apply_mask",
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "apply_mask"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "refine_steps",
+                "name": "refine_steps",
+                "type": "INT",
+                "widget": {
+                  "name": "refine_steps"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "moge_geometry",
+                "name": "moge_geometry",
+                "type": "MOGE_GEOMETRY",
+                "links": [
+                  5,
+                  42
+                ]
+              }
+            ],
+            "title": "[Reshoot/depth] Depth estimation",
+            "properties": {
+              "Node name for S&R": "MoGeInference",
+              "reshoot_role": "depth",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              2,
+              0,
+              4,
+              true,
+              true,
+              3
+            ],
+            "widgets_values_named": {
+              "resolution_level": 2,
+              "fov_x_degrees": 0,
+              "batch_size": 4,
+              "force_projection": true,
+              "apply_mask": true,
+              "refine_steps": 3
+            }
+          },
+          {
+            "id": 5,
+            "type": "CrossViewWarp",
+            "pos": [
+              1408.2818359375,
+              130
+            ],
+            "size": [
+              336.319921875,
+              642
+            ],
+            "flags": {},
+            "order": 13,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "frames",
+                "name": "frames",
+                "type": "IMAGE",
+                "link": 4
+              },
+              {
+                "localized_name": "depth",
+                "name": "depth",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": null
+              },
+              {
+                "localized_name": "moge_geometry",
+                "name": "moge_geometry",
+                "shape": 7,
+                "type": "MOGE_GEOMETRY",
+                "link": 5
+              },
+              {
+                "localized_name": "camera_info",
+                "name": "camera_info",
+                "shape": 7,
+                "type": "LOAD3D_CAMERA",
+                "link": null
+              },
+              {
+                "localized_name": "azimuth",
+                "name": "azimuth",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "azimuth"
+                },
+                "link": 47
+              },
+              {
+                "localized_name": "elevation",
+                "name": "elevation",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "elevation"
+                },
+                "link": 48
+              },
+              {
+                "localized_name": "distance",
+                "name": "distance",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "distance"
+                },
+                "link": 49
+              },
+              {
+                "localized_name": "hfov",
+                "name": "hfov",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "hfov"
+                },
+                "link": 50
+              },
+              {
+                "localized_name": "vertical_shift",
+                "name": "vertical_shift",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "vertical_shift"
+                },
+                "link": 51
+              },
+              {
+                "localized_name": "depth_ratio",
+                "name": "depth_ratio",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "depth_ratio"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "smooth_depth",
+                "name": "smooth_depth",
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "smooth_depth"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "invert_depth",
+                "name": "invert_depth",
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "invert_depth"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "roll_lock",
+                "name": "roll_lock",
+                "shape": 7,
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "roll_lock"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "pivot_override",
+                "name": "pivot_override",
+                "shape": 7,
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "pivot_override"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "pivot_x",
+                "name": "pivot_x",
+                "shape": 7,
+                "type": "FLOAT",
+                "widget": {
+                  "name": "pivot_x"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "pivot_y",
+                "name": "pivot_y",
+                "shape": 7,
+                "type": "FLOAT",
+                "widget": {
+                  "name": "pivot_y"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "pivot_z",
+                "name": "pivot_z",
+                "shape": 7,
+                "type": "FLOAT",
+                "widget": {
+                  "name": "pivot_z"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "use_keyframes",
+                "name": "use_keyframes",
+                "shape": 7,
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "use_keyframes"
+                },
+                "link": 53
+              },
+              {
+                "localized_name": "frame_count",
+                "name": "frame_count",
+                "shape": 7,
+                "type": "INT",
+                "widget": {
+                  "name": "frame_count"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "keyframes",
+                "name": "keyframes",
+                "shape": 7,
+                "type": "STRING",
+                "widget": {
+                  "name": "keyframes"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "interp_motion",
+                "name": "interp_motion",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "interp_motion"
+                },
+                "link": 54
+              },
+              {
+                "localized_name": "interpolation",
+                "name": "interpolation",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "interpolation"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "keep_source_aim",
+                "name": "keep_source_aim",
+                "shape": 7,
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "keep_source_aim"
+                },
+                "link": 52
+              },
+              {
+                "localized_name": "preview_size",
+                "name": "preview_size",
+                "shape": 7,
+                "type": "INT",
+                "widget": {
+                  "name": "preview_size"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "frame_index",
+                "name": "frame_index",
+                "shape": 7,
+                "type": "INT",
+                "widget": {
+                  "name": "frame_index"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "warp",
+                "name": "warp",
+                "type": "IMAGE",
+                "links": [
+                  20,
+                  36
+                ]
+              },
+              {
+                "localized_name": "orbit_view",
+                "name": "orbit_view",
+                "type": "IMAGE",
+                "links": null
+              }
+            ],
+            "title": "[Reshoot/camera] Camera and warp preview",
+            "properties": {
+              "Node name for S&R": "CrossViewWarp",
+              "cnr_id": "recast-studio",
+              "ver": "0.1.0",
+              "reshoot_role": "camera",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              -30,
+              20,
+              1,
+              50,
+              0,
+              6,
+              false,
+              false,
+              false,
+              false,
+              0,
+              0,
+              1.05,
+              false,
+              0,
+              "",
+              "linear",
+              "linear",
+              true,
+              384,
+              1
+            ],
+            "widgets_values_named": {
+              "azimuth": -30,
+              "elevation": 20,
+              "distance": 1,
+              "hfov": 50,
+              "vertical_shift": 0,
+              "depth_ratio": 6,
+              "smooth_depth": false,
+              "invert_depth": false,
+              "roll_lock": false,
+              "pivot_override": false,
+              "pivot_x": 0,
+              "pivot_y": 0,
+              "pivot_z": 1.05,
+              "use_keyframes": false,
+              "frame_count": 0,
+              "keyframes": "",
+              "interp_motion": "linear",
+              "interpolation": "linear",
+              "keep_source_aim": true,
+              "preview_size": 384,
+              "frame_index": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "UNETLoader",
+            "pos": [
+              100,
+              530
+            ],
+            "size": [
+              270,
+              82
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "название_unet",
+                "name": "unet_name",
+                "type": "COMBO",
+                "widget": {
+                  "name": "unet_name"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "тип_данных_веса",
+                "name": "weight_dtype",
+                "type": "COMBO",
+                "widget": {
+                  "name": "weight_dtype"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "МОДЕЛЬ",
+                "name": "MODEL",
+                "type": "MODEL",
+                "links": [
+                  6
+                ]
+              }
+            ],
+            "title": "H3 ref2va",
+            "properties": {
+              "Node name for S&R": "UNETLoader",
+              "models": [
+                {
+                  "name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+                  "directory": "diffusion_models"
+                }
+              ],
+              "cnr_id": "comfy-core",
+              "ver": "0.43.2",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+              "default"
+            ],
+            "widgets_values_named": {
+              "unet_name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+              "weight_dtype": "default"
+            }
+          },
+          {
+            "id": 11,
+            "type": "LoraLoaderModelOnly",
+            "pos": [
+              509.06640625,
+              470
+            ],
+            "size": [
+              299.2154296875,
+              82
+            ],
+            "flags": {},
+            "order": 9,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "модель",
+                "name": "model",
+                "type": "MODEL",
+                "link": 6
+              },
+              {
+                "localized_name": "название_lora",
+                "name": "lora_name",
+                "type": "COMBO",
+                "widget": {
+                  "name": "lora_name"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "сила_модели",
+                "name": "strength_model",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "strength_model"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "МОДЕЛЬ",
+                "name": "MODEL",
+                "type": "MODEL",
+                "links": [
+                  7
+                ]
+              }
+            ],
+            "title": "Turbo LoRA (8 step)",
+            "properties": {
+              "Node name for S&R": "LoraLoaderModelOnly",
+              "models": [
+                {
+                  "name": "minimax_h3_ref2v_turbo_8step_v1.0_768p_comfyui_bf16.safetensors",
+                  "url": "https://huggingface.co/lightx2v/Minimax-h3-Turbo/resolve/main/minimax_h3_ref2v_turbo_8step_v1.0_768p_comfyui_bf16.safetensors",
+                  "directory": "loras"
+                }
+              ],
+              "cnr_id": "comfy-core",
+              "ver": "0.43.2",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "minimax_h3_ref2v_turbo_8step_v1.0_768p_comfyui_bf16.safetensors",
+              1
+            ],
+            "widgets_values_named": {
+              "lora_name": "minimax_h3_ref2v_turbo_8step_v1.0_768p_comfyui_bf16.safetensors",
+              "strength_model": 1
+            }
+          },
+          {
+            "id": 12,
+            "type": "MiniMaxH3SigmaShift",
+            "pos": [
+              908.2818359375,
+              912
+            ],
+            "size": [
+              270,
+              82
+            ],
+            "flags": {},
+            "order": 12,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "model",
+                "name": "model",
+                "type": "MODEL",
+                "link": 7
+              },
+              {
+                "localized_name": "shift_video",
+                "name": "shift_video",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "shift_video"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "shift_audio",
+                "name": "shift_audio",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "shift_audio"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "МОДЕЛЬ",
+                "name": "MODEL",
+                "type": "MODEL",
+                "links": [
+                  8
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "MiniMaxH3SigmaShift",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              12,
+              3
+            ],
+            "widgets_values_named": {
+              "shift_video": 12,
+              "shift_audio": 3
+            }
+          },
+          {
+            "id": 13,
+            "type": "ModelAttentionBackend",
+            "pos": [
+              1408.2818359375,
+              1302
+            ],
+            "size": [
+              270,
+              58
+            ],
+            "flags": {},
+            "order": 15,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "model",
+                "name": "model",
+                "type": "MODEL",
+                "link": 8
+              },
+              {
+                "localized_name": "attention",
+                "name": "attention",
+                "type": "COMBO",
+                "widget": {
+                  "name": "attention"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "model",
+                "name": "model",
+                "type": "MODEL",
+                "links": [
+                  9
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ModelAttentionBackend",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "comfy kitchen attention"
+            ],
+            "widgets_values_named": {
+              "attention": "comfy kitchen attention"
+            }
+          },
+          {
+            "id": 14,
+            "type": "LoraLoaderModelOnly",
+            "pos": [
+              1794.7345703125002,
+              698
+            ],
+            "size": [
+              299.2154296875,
+              82
+            ],
+            "flags": {},
+            "order": 18,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "модель",
+                "name": "model",
+                "type": "MODEL",
+                "link": 9
+              },
+              {
+                "localized_name": "название_lora",
+                "name": "lora_name",
+                "type": "COMBO",
+                "widget": {
+                  "name": "lora_name"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "сила_модели",
+                "name": "strength_model",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "strength_model"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "МОДЕЛЬ",
+                "name": "MODEL",
+                "type": "MODEL",
+                "links": [
+                  21,
+                  22
+                ]
+              }
+            ],
+            "title": "CrossView-Warp LoRA",
+            "properties": {
+              "Node name for S&R": "LoraLoaderModelOnly",
+              "models": [
+                {
+                  "name": "MiniMax-H3_Ref2VA-LoRA-CrossView-Warp_v1_3500.safetensors",
+                  "url": "https://huggingface.co/Cseti/MiniMax-H3_Ref2VA-LoRA-CrossView-Warp_v1/resolve/main/MiniMax-H3_Ref2VA-LoRA-CrossView-Warp_v1_3500.safetensors",
+                  "directory": "loras"
+                }
+              ],
+              "cnr_id": "comfy-core",
+              "ver": "0.43.2",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "MiniMax-H3_Ref2VA-LoRA-CrossView-Warp_v1_3500.safetensors",
+              0.8
+            ],
+            "widgets_values_named": {
+              "lora_name": "MiniMax-H3_Ref2VA-LoRA-CrossView-Warp_v1_3500.safetensors",
+              "strength_model": 0.8
+            }
+          },
+          {
+            "id": 15,
+            "type": "CLIPLoader",
+            "pos": [
+              100,
+              742
+            ],
+            "size": [
+              270,
+              106
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "название_clip",
+                "name": "clip_name",
+                "type": "COMBO",
+                "widget": {
+                  "name": "clip_name"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "тип",
+                "name": "type",
+                "type": "COMBO",
+                "widget": {
+                  "name": "type"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "устройство",
+                "name": "device",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "device"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "CLIP",
+                "name": "CLIP",
+                "type": "CLIP",
+                "links": [
+                  10
+                ]
+              }
+            ],
+            "title": "Qwen3-VL text encoder",
+            "properties": {
+              "Node name for S&R": "CLIPLoader",
+              "models": [
+                {
+                  "name": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+                  "directory": "text_encoders"
+                }
+              ],
+              "cnr_id": "comfy-core",
+              "ver": "0.43.2",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+              "minimax",
+              "default"
+            ],
+            "widgets_values_named": {
+              "clip_name": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+              "type": "minimax",
+              "device": "default"
+            }
+          },
+          {
+            "id": 16,
+            "type": "VAELoader",
+            "pos": [
+              100,
+              978
+            ],
+            "size": [
+              270,
+              58
+            ],
+            "flags": {},
+            "order": 4,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "название_vae",
+                "name": "vae_name",
+                "type": "COMBO",
+                "widget": {
+                  "name": "vae_name"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "VAE",
+                "name": "VAE",
+                "type": "VAE",
+                "links": [
+                  11,
+                  19,
+                  30
+                ]
+              }
+            ],
+            "title": "Video VAE",
+            "properties": {
+              "Node name for S&R": "VAELoader",
+              "models": [
+                {
+                  "name": "minimax_h3_video_vae_int8_convrot.safetensors",
+                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_int8_convrot.safetensors",
+                  "directory": "vae"
+                }
+              ],
+              "cnr_id": "comfy-core",
+              "ver": "0.43.2",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "minimax_h3_video_vae_int8_convrot.safetensors"
+            ],
+            "widgets_values_named": {
+              "vae_name": "minimax_h3_video_vae_int8_convrot.safetensors"
+            }
+          },
+          {
+            "id": 17,
+            "type": "VAELoader",
+            "pos": [
+              100,
+              1166
+            ],
+            "size": [
+              270,
+              58
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "название_vae",
+                "name": "vae_name",
+                "type": "COMBO",
+                "widget": {
+                  "name": "vae_name"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "VAE",
+                "name": "VAE",
+                "type": "VAE",
+                "links": [
+                  12,
+                  32
+                ]
+              }
+            ],
+            "title": "Audio VAE",
+            "properties": {
+              "Node name for S&R": "VAELoader",
+              "models": [
+                {
+                  "name": "minimax_h3_audio_vae_fp32.safetensors",
+                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors",
+                  "directory": "vae"
+                }
+              ],
+              "cnr_id": "comfy-core",
+              "ver": "0.43.2",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "minimax_h3_audio_vae_fp32.safetensors"
+            ],
+            "widgets_values_named": {
+              "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+            }
+          },
+          {
+            "id": 20,
+            "type": "MiniMaxH3ReferenceToVideo",
+            "pos": [
+              908.2818359375,
+              458
+            ],
+            "size": [
+              400,
+              344
+            ],
+            "flags": {},
+            "order": 11,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "clip",
+                "name": "clip",
+                "type": "CLIP",
+                "link": 10
+              },
+              {
+                "localized_name": "vae",
+                "name": "vae",
+                "shape": 7,
+                "type": "VAE",
+                "link": 11
+              },
+              {
+                "localized_name": "audio_vae",
+                "name": "audio_vae",
+                "shape": 7,
+                "type": "VAE",
+                "link": 12
+              },
+              {
+                "localized_name": "ref_image_0",
+                "name": "ref_images.ref_image_0",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": null
+              },
+              {
+                "localized_name": "ref_video_0",
+                "name": "ref_videos.ref_video_0",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": 13
+              },
+              {
+                "localized_name": "ref_video_1",
+                "name": "ref_videos.ref_video_1",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": null
+              },
+              {
+                "localized_name": "ref_video_audio_0",
+                "name": "ref_video_audios.ref_video_audio_0",
+                "shape": 7,
+                "type": "AUDIO",
+                "link": null
+              },
+              {
+                "localized_name": "ref_audio_0",
+                "name": "ref_audios.ref_audio_0",
+                "shape": 7,
+                "type": "AUDIO",
+                "link": null
+              },
+              {
+                "localized_name": "prompt",
+                "name": "prompt",
+                "type": "STRING",
+                "widget": {
+                  "name": "prompt"
+                },
+                "link": 55
+              },
+              {
+                "localized_name": "ширина",
+                "name": "width",
+                "type": "INT",
+                "widget": {
+                  "name": "width"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "высота",
+                "name": "height",
+                "type": "INT",
+                "widget": {
+                  "name": "height"
+                },
+                "link": 14
+              },
+              {
+                "localized_name": "длина",
+                "name": "length",
+                "type": "INT",
+                "widget": {
+                  "name": "length"
+                },
+                "link": 15
+              },
+              {
+                "localized_name": "размер_реф_изображения",
+                "name": "ref_image_size",
+                "type": "COMBO",
+                "widget": {
+                  "name": "ref_image_size"
+                },
+                "link": 16
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "позитивный",
+                "name": "positive",
+                "type": "CONDITIONING",
+                "links": [
+                  17
+                ]
+              },
+              {
+                "localized_name": "ЛАТЕНТНЫЙ",
+                "name": "LATENT",
+                "type": "LATENT",
+                "links": [
+                  18,
+                  28
+                ]
+              }
+            ],
+            "title": "[Reshoot/prompt] Prompt",
+            "properties": {
+              "Node name for S&R": "MiniMaxH3ReferenceToVideo",
+              "reshoot_role": "prompt",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "crossview.",
+              1344,
+              768,
+              124,
+              "match"
+            ],
+            "widgets_values_named": {
+              "prompt": "crossview.",
+              "width": 1344,
+              "height": 768,
+              "length": 124,
+              "ref_image_size": "match"
+            }
+          },
+          {
+            "id": 21,
+            "type": "MiniMaxH3AddGuide",
+            "pos": [
+              1794.7345703125002,
+              130
+            ],
+            "size": [
+              360.3697265625,
+              158
+            ],
+            "flags": {},
+            "order": 16,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "позитивный",
+                "name": "positive",
+                "type": "CONDITIONING",
+                "link": 17
+              },
+              {
+                "localized_name": "латентный",
+                "name": "latent",
+                "type": "LATENT",
+                "link": 18
+              },
+              {
+                "localized_name": "vae",
+                "name": "vae",
+                "shape": 7,
+                "type": "VAE",
+                "link": 19
+              },
+              {
+                "localized_name": "audio_vae",
+                "name": "audio_vae",
+                "shape": 7,
+                "type": "VAE",
+                "link": null
+              },
+              {
+                "localized_name": "image",
+                "name": "image",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": 20
+              },
+              {
+                "localized_name": "audio",
+                "name": "audio",
+                "shape": 7,
+                "type": "AUDIO",
+                "link": null
+              },
+              {
+                "localized_name": "frame_idx",
+                "name": "frame_idx",
+                "type": "INT",
+                "widget": {
+                  "name": "frame_idx"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "positive",
+                "name": "positive",
+                "type": "CONDITIONING",
+                "links": [
+                  23
+                ]
+              }
+            ],
+            "title": "Warp as aligned guide at frame 0",
+            "properties": {
+              "Node name for S&R": "MiniMaxH3AddGuide",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              0
+            ],
+            "widgets_values_named": {
+              "frame_idx": 0
+            }
+          },
+          {
+            "id": 30,
+            "type": "RandomNoise",
+            "pos": [
+              100,
+              1354
+            ],
+            "size": [
+              270,
+              82
+            ],
+            "flags": {},
+            "order": 6,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "сид_шума",
+                "name": "noise_seed",
+                "type": "INT",
+                "widget": {
+                  "name": "noise_seed"
+                },
+                "link": 56
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "ШУМ",
+                "name": "NOISE",
+                "type": "NOISE",
+                "links": [
+                  24
+                ]
+              }
+            ],
+            "title": "Seed",
+            "properties": {
+              "Node name for S&R": "RandomNoise",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              42,
+              "randomize"
+            ],
+            "widgets_values_named": {
+              "noise_seed": 42,
+              "control_after_generate": "randomize"
+            }
+          },
+          {
+            "id": 31,
+            "type": "KSamplerSelect",
+            "pos": [
+              100,
+              1566
+            ],
+            "size": [
+              270,
+              58
+            ],
+            "flags": {},
+            "order": 7,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "название_сэмплера",
+                "name": "sampler_name",
+                "type": "COMBO",
+                "widget": {
+                  "name": "sampler_name"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "СЭМПЛЕР",
+                "name": "SAMPLER",
+                "type": "SAMPLER",
+                "links": [
+                  26
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "KSamplerSelect",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "res_multistep"
+            ],
+            "widgets_values_named": {
+              "sampler_name": "res_multistep"
+            }
+          },
+          {
+            "id": 32,
+            "type": "BasicScheduler",
+            "pos": [
+              2255.1042968750003,
+              390
+            ],
+            "size": [
+              270,
+              106
+            ],
+            "flags": {},
+            "order": 19,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "модель",
+                "name": "model",
+                "type": "MODEL",
+                "link": 21
+              },
+              {
+                "localized_name": "scheduler",
+                "name": "scheduler",
+                "type": "COMBO",
+                "widget": {
+                  "name": "scheduler"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "шаги",
+                "name": "steps",
+                "type": "INT",
+                "widget": {
+                  "name": "steps"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "шумоподавление",
+                "name": "denoise",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "denoise"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "СИГМЫ",
+                "name": "SIGMAS",
+                "type": "SIGMAS",
+                "links": [
+                  27
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "BasicScheduler",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              "simple",
+              8,
+              1
+            ],
+            "widgets_values_named": {
+              "scheduler": "simple",
+              "steps": 8,
+              "denoise": 1
+            }
+          },
+          {
+            "id": 33,
+            "type": "BasicGuider",
+            "pos": [
+              2255.1042968750003,
+              626
+            ],
+            "size": [
+              171.650390625,
+              46
+            ],
+            "flags": {},
+            "order": 20,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "модель",
+                "name": "model",
+                "type": "MODEL",
+                "link": 22
+              },
+              {
+                "localized_name": "кондиционирование",
+                "name": "conditioning",
+                "type": "CONDITIONING",
+                "link": 23
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "ГИД",
+                "name": "GUIDER",
+                "type": "GUIDER",
+                "links": [
+                  25
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "BasicGuider",
+              "reshoot_app_member": true
+            }
+          },
+          {
+            "id": 34,
+            "type": "SamplerCustomAdvanced",
+            "pos": [
+              2636.0222656250003,
+              130
+            ],
+            "size": [
+              299.11875,
+              106
+            ],
+            "flags": {},
+            "order": 21,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "шум",
+                "name": "noise",
+                "type": "NOISE",
+                "link": 24
+              },
+              {
+                "localized_name": "гид",
+                "name": "guider",
+                "type": "GUIDER",
+                "link": 25
+              },
+              {
+                "localized_name": "сэмплер",
+                "name": "sampler",
+                "type": "SAMPLER",
+                "link": 26
+              },
+              {
+                "localized_name": "сигмы",
+                "name": "sigmas",
+                "type": "SIGMAS",
+                "link": 27
+              },
+              {
+                "localized_name": "латентное_изображение",
+                "name": "latent_image",
+                "type": "LATENT",
+                "link": 28
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "выход",
+                "name": "output",
+                "type": "LATENT",
+                "links": [
+                  29,
+                  31
+                ]
+              },
+              {
+                "localized_name": "выход без шума",
+                "name": "denoised_output",
+                "type": "LATENT",
+                "links": null
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "SamplerCustomAdvanced",
+              "reshoot_app_member": true
+            }
+          },
+          {
+            "id": 35,
+            "type": "VAEDecode",
+            "pos": [
+              3035.1410156250004,
+              130
+            ],
+            "size": [
+              174.439453125,
+              46
+            ],
+            "flags": {},
+            "order": 22,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "образцы",
+                "name": "samples",
+                "type": "LATENT",
+                "link": 29
+              },
+              {
+                "localized_name": "vae",
+                "name": "vae",
+                "type": "VAE",
+                "link": 30
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "ИЗОБРАЖЕНИЕ",
+                "name": "IMAGE",
+                "type": "IMAGE",
+                "links": [
+                  33,
+                  38
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VAEDecode",
+              "reshoot_app_member": true
+            }
+          },
+          {
+            "id": 36,
+            "type": "VAEDecodeAudio",
+            "pos": [
+              3035.1410156250004,
+              306
+            ],
+            "size": [
+              189.8052734375,
+              46
+            ],
+            "flags": {},
+            "order": 23,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "образцы",
+                "name": "samples",
+                "type": "LATENT",
+                "link": 31
+              },
+              {
+                "localized_name": "vae",
+                "name": "vae",
+                "type": "VAE",
+                "link": 32
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "АУДИО",
+                "name": "AUDIO",
+                "type": "AUDIO",
+                "links": [
+                  34
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VAEDecodeAudio",
+              "reshoot_app_member": true
+            }
+          },
+          {
+            "id": 37,
+            "type": "CreateVideo",
+            "pos": [
+              3324.9462890625005,
+              410
+            ],
+            "size": [
+              339.191015625,
+              150
+            ],
+            "flags": {},
+            "order": 25,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "изображения",
+                "name": "images",
+                "type": "IMAGE",
+                "link": 33
+              },
+              {
+                "localized_name": "аудио",
+                "name": "audio",
+                "shape": 7,
+                "type": "AUDIO",
+                "link": 34
+              },
+              {
+                "localized_name": "кадров в секунду",
+                "name": "fps",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "fps"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "bit_depth",
+                "name": "bit_depth",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "bit_depth"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "color_space",
+                "name": "color_space",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "color_space"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "codec",
+                "name": "codec",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "codec"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "ВИДЕО",
+                "name": "VIDEO",
+                "type": "VIDEO",
+                "links": [
+                  35
+                ]
+              }
+            ],
+            "title": "[Reshoot/generated-video] Generated VIDEO",
+            "properties": {
+              "Node name for S&R": "CreateVideo",
+              "reshoot_role": "generated-video",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              24,
+              "auto",
+              "sRGB",
+              "none"
+            ],
+            "widgets_values_named": {
+              "fps": 24,
+              "bit_depth": "auto",
+              "color_space": "sRGB",
+              "codec": "none"
+            }
+          },
+          {
+            "id": 40,
+            "type": "CreateVideo",
+            "pos": [
+              1794.7345703125002,
+              418
+            ],
+            "size": [
+              311.6626953125,
+              150
+            ],
+            "flags": {},
+            "order": 17,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "изображения",
+                "name": "images",
+                "type": "IMAGE",
+                "link": 36
+              },
+              {
+                "localized_name": "аудио",
+                "name": "audio",
+                "shape": 7,
+                "type": "AUDIO",
+                "link": null
+              },
+              {
+                "localized_name": "кадров в секунду",
+                "name": "fps",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "fps"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "bit_depth",
+                "name": "bit_depth",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "bit_depth"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "color_space",
+                "name": "color_space",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "color_space"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "codec",
+                "name": "codec",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "codec"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "ВИДЕО",
+                "name": "VIDEO",
+                "type": "VIDEO",
+                "links": [
+                  37
+                ]
+              }
+            ],
+            "title": "[Reshoot/warp-video] Warp guide VIDEO",
+            "properties": {
+              "Node name for S&R": "CreateVideo",
+              "reshoot_role": "warp-video",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              24,
+              "auto",
+              "sRGB",
+              "none"
+            ],
+            "widgets_values_named": {
+              "fps": 24,
+              "bit_depth": "auto",
+              "color_space": "sRGB",
+              "codec": "none"
+            }
+          },
+          {
+            "id": 42,
+            "type": "CreateVideo",
+            "pos": [
+              3324.9462890625005,
+              130
+            ],
+            "size": [
+              459.4966796875,
+              150
+            ],
+            "flags": {},
+            "order": 24,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "изображения",
+                "name": "images",
+                "type": "IMAGE",
+                "link": 38
+              },
+              {
+                "localized_name": "аудио",
+                "name": "audio",
+                "shape": 7,
+                "type": "AUDIO",
+                "link": 39
+              },
+              {
+                "localized_name": "кадров в секунду",
+                "name": "fps",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "fps"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "bit_depth",
+                "name": "bit_depth",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "bit_depth"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "color_space",
+                "name": "color_space",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "color_space"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "codec",
+                "name": "codec",
+                "shape": 7,
+                "type": "COMBO",
+                "widget": {
+                  "name": "codec"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "ВИДЕО",
+                "name": "VIDEO",
+                "type": "VIDEO",
+                "links": [
+                  40
+                ]
+              }
+            ],
+            "title": "[Reshoot/original-audio-video] Result with original audio VIDEO",
+            "properties": {
+              "Node name for S&R": "CreateVideo",
+              "reshoot_role": "original-audio-video",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              24,
+              "auto",
+              "sRGB",
+              "none"
+            ],
+            "widgets_values_named": {
+              "fps": 24,
+              "bit_depth": "auto",
+              "color_space": "sRGB",
+              "codec": "none"
+            }
+          },
+          {
+            "id": "reshoot_analysis_output",
+            "type": "CrossViewGeometryExport",
+            "pos": [
+              1408.2818359375,
+              1046
+            ],
+            "size": [
+              337.7759765625,
+              126
+            ],
+            "flags": {},
+            "order": 14,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "frames",
+                "name": "frames",
+                "type": "IMAGE",
+                "link": 41
+              },
+              {
+                "localized_name": "moge_geometry",
+                "name": "moge_geometry",
+                "type": "MOGE_GEOMETRY",
+                "link": 42
+              },
+              {
+                "localized_name": "preview_size",
+                "name": "preview_size",
+                "type": "INT",
+                "widget": {
+                  "name": "preview_size"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "jpeg_quality",
+                "name": "jpeg_quality",
+                "type": "INT",
+                "widget": {
+                  "name": "jpeg_quality"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "filename_prefix",
+                "name": "filename_prefix",
+                "type": "STRING",
+                "widget": {
+                  "name": "filename_prefix"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [],
+            "title": "[Reshoot/analysis-output] Browser geometry",
+            "properties": {
+              "Node name for S&R": "CrossViewGeometryExport",
+              "cnr_id": "recast-studio",
+              "ver": "0.1.0",
+              "reshoot_role": "analysis-output",
+              "reshoot_app_member": true
+            },
+            "widgets_values": [
+              384,
+              88,
+              "crossview/geometry"
+            ],
+            "widgets_values_named": {
+              "preview_size": 384,
+              "jpeg_quality": 88,
+              "filename_prefix": "crossview/geometry"
+            }
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 1,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": 2,
+            "target_slot": 0,
+            "type": "VIDEO"
+          },
+          {
+            "id": 2,
+            "origin_id": 3,
+            "origin_slot": 0,
+            "target_id": 4,
+            "target_slot": 0,
+            "type": "MOGE_MODEL"
+          },
+          {
+            "id": 3,
+            "origin_id": 2,
+            "origin_slot": 0,
+            "target_id": 4,
+            "target_slot": 1,
+            "type": "IMAGE"
+          },
+          {
+            "id": 4,
+            "origin_id": 2,
+            "origin_slot": 0,
+            "target_id": 5,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 5,
+            "origin_id": 4,
+            "origin_slot": 0,
+            "target_id": 5,
+            "target_slot": 2,
+            "type": "MOGE_GEOMETRY"
+          },
+          {
+            "id": 6,
+            "origin_id": 10,
+            "origin_slot": 0,
+            "target_id": 11,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 7,
+            "origin_id": 11,
+            "origin_slot": 0,
+            "target_id": 12,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 8,
+            "origin_id": 12,
+            "origin_slot": 0,
+            "target_id": 13,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 9,
+            "origin_id": 13,
+            "origin_slot": 0,
+            "target_id": 14,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 17,
+            "origin_id": 20,
+            "origin_slot": 0,
+            "target_id": 21,
+            "target_slot": 0,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 18,
+            "origin_id": 20,
+            "origin_slot": 1,
+            "target_id": 21,
+            "target_slot": 1,
+            "type": "LATENT"
+          },
+          {
+            "id": 19,
+            "origin_id": 16,
+            "origin_slot": 0,
+            "target_id": 21,
+            "target_slot": 2,
+            "type": "VAE"
+          },
+          {
+            "id": 20,
+            "origin_id": 5,
+            "origin_slot": 0,
+            "target_id": 21,
+            "target_slot": 4,
+            "type": "IMAGE"
+          },
+          {
+            "id": 21,
+            "origin_id": 14,
+            "origin_slot": 0,
+            "target_id": 32,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 22,
+            "origin_id": 14,
+            "origin_slot": 0,
+            "target_id": 33,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 23,
+            "origin_id": 21,
+            "origin_slot": 0,
+            "target_id": 33,
+            "target_slot": 1,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 24,
+            "origin_id": 30,
+            "origin_slot": 0,
+            "target_id": 34,
+            "target_slot": 0,
+            "type": "NOISE"
+          },
+          {
+            "id": 25,
+            "origin_id": 33,
+            "origin_slot": 0,
+            "target_id": 34,
+            "target_slot": 1,
+            "type": "GUIDER"
+          },
+          {
+            "id": 26,
+            "origin_id": 31,
+            "origin_slot": 0,
+            "target_id": 34,
+            "target_slot": 2,
+            "type": "SAMPLER"
+          },
+          {
+            "id": 27,
+            "origin_id": 32,
+            "origin_slot": 0,
+            "target_id": 34,
+            "target_slot": 3,
+            "type": "SIGMAS"
+          },
+          {
+            "id": 28,
+            "origin_id": 20,
+            "origin_slot": 1,
+            "target_id": 34,
+            "target_slot": 4,
+            "type": "LATENT"
+          },
+          {
+            "id": 29,
+            "origin_id": 34,
+            "origin_slot": 0,
+            "target_id": 35,
+            "target_slot": 0,
+            "type": "LATENT"
+          },
+          {
+            "id": 30,
+            "origin_id": 16,
+            "origin_slot": 0,
+            "target_id": 35,
+            "target_slot": 1,
+            "type": "VAE"
+          },
+          {
+            "id": 31,
+            "origin_id": 34,
+            "origin_slot": 0,
+            "target_id": 36,
+            "target_slot": 0,
+            "type": "LATENT"
+          },
+          {
+            "id": 32,
+            "origin_id": 17,
+            "origin_slot": 0,
+            "target_id": 36,
+            "target_slot": 1,
+            "type": "VAE"
+          },
+          {
+            "id": 33,
+            "origin_id": 35,
+            "origin_slot": 0,
+            "target_id": 37,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 34,
+            "origin_id": 36,
+            "origin_slot": 0,
+            "target_id": 37,
+            "target_slot": 1,
+            "type": "AUDIO"
+          },
+          {
+            "id": 36,
+            "origin_id": 5,
+            "origin_slot": 0,
+            "target_id": 40,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 38,
+            "origin_id": 35,
+            "origin_slot": 0,
+            "target_id": 42,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 39,
+            "origin_id": 2,
+            "origin_slot": 4,
+            "target_id": 42,
+            "target_slot": 1,
+            "type": "AUDIO"
+          },
+          {
+            "id": 41,
+            "origin_id": 2,
+            "origin_slot": 0,
+            "target_id": "reshoot_analysis_output",
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 42,
+            "origin_id": 4,
+            "origin_slot": 0,
+            "target_id": "reshoot_analysis_output",
+            "target_slot": 1,
+            "type": "MOGE_GEOMETRY"
+          },
+          {
+            "id": 35,
+            "origin_id": 37,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "VIDEO"
+          },
+          {
+            "id": 37,
+            "origin_id": 40,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "VIDEO"
+          },
+          {
+            "id": 40,
+            "origin_id": 42,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 2,
+            "type": "VIDEO"
+          },
+          {
+            "id": 10,
+            "origin_id": 15,
+            "origin_slot": 0,
+            "target_id": 20,
+            "target_slot": 0,
+            "type": "CLIP"
+          },
+          {
+            "id": 11,
+            "origin_id": 16,
+            "origin_slot": 0,
+            "target_id": 20,
+            "target_slot": 1,
+            "type": "VAE"
+          },
+          {
+            "id": 12,
+            "origin_id": 17,
+            "origin_slot": 0,
+            "target_id": 20,
+            "target_slot": 2,
+            "type": "VAE"
+          },
+          {
+            "id": 13,
+            "origin_id": 2,
+            "origin_slot": 0,
+            "target_id": 20,
+            "target_slot": 4,
+            "type": "IMAGE"
+          },
+          {
+            "id": 14,
+            "origin_id": 2,
+            "origin_slot": 1,
+            "target_id": 20,
+            "target_slot": 10,
+            "type": "INT"
+          },
+          {
+            "id": 15,
+            "origin_id": 2,
+            "origin_slot": 2,
+            "target_id": 20,
+            "target_slot": 11,
+            "type": "INT"
+          },
+          {
+            "id": 16,
+            "origin_id": 2,
+            "origin_slot": 3,
+            "target_id": 20,
+            "target_slot": 12,
+            "type": "INT"
+          },
+          {
+            "id": 43,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "COMBO"
+          },
+          {
+            "id": 44,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 2,
+            "target_slot": 1,
+            "type": "FLOAT"
+          },
+          {
+            "id": 45,
+            "origin_id": -10,
+            "origin_slot": 2,
+            "target_id": 2,
+            "target_slot": 2,
+            "type": "COMBO"
+          },
+          {
+            "id": 46,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 2,
+            "target_slot": 3,
+            "type": "FLOAT"
+          },
+          {
+            "id": 47,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 5,
+            "target_slot": 4,
+            "type": "FLOAT"
+          },
+          {
+            "id": 48,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 5,
+            "target_slot": 5,
+            "type": "FLOAT"
+          },
+          {
+            "id": 49,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 5,
+            "target_slot": 6,
+            "type": "FLOAT"
+          },
+          {
+            "id": 50,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 5,
+            "target_slot": 7,
+            "type": "FLOAT"
+          },
+          {
+            "id": 51,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 5,
+            "target_slot": 8,
+            "type": "FLOAT"
+          },
+          {
+            "id": 52,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 5,
+            "target_slot": 22,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 53,
+            "origin_id": -10,
+            "origin_slot": 10,
+            "target_id": 5,
+            "target_slot": 17,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 54,
+            "origin_id": -10,
+            "origin_slot": 11,
+            "target_id": 5,
+            "target_slot": 20,
+            "type": "COMBO"
+          },
+          {
+            "id": 55,
+            "origin_id": -10,
+            "origin_slot": 12,
+            "target_id": 20,
+            "target_slot": 8,
+            "type": "STRING"
+          },
+          {
+            "id": 56,
+            "origin_id": -10,
+            "origin_slot": 13,
+            "target_id": 30,
+            "target_slot": 0,
+            "type": "INT"
+          }
+        ],
+        "extra": {}
+      }
+    ]
+  },
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.5534591194968553,
+      "offset": [
+        -881.1095081676136,
+        -645
+      ]
+    },
+    "recastStudioMetadata": {
+      "schema": 1,
+      "package": "recast-studio"
+    },
+    "appView": {
+      "schema": 1,
+      "renderer": "reshoot@1"
+    }
+  },
+  "version": 0.4
+}
