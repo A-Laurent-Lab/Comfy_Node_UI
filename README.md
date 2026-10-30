@@ -14,41 +14,41 @@ installation's `custom_nodes` folder. Restart ComfyUI.
 Give a coding agent your workflow and the
 [comfy-app-view-authoring skill](.agents/skills/comfy-app-view-authoring/SKILL.md).
 It creates the UI, binds it to the chosen subgraph, and returns the prepared
-JSON plus the exact list of UI files to share.
+JSON and a separate, named folder for each UI.
+
+You can edit or duplicate the workflow and keep using the same installed UI.
+Changing other parts of the workflow does not require a copy of the UI. If you
+change the nodes or settings its controls use, ask the agent to adjust the binding.
 
 ## Share UI
 
-Each subgraph stores its UI's ID in `properties.app_view_renderer`. The
-extension matches that ID to the one registered by a UI's `.js` file.
-The JSON filename does not select the UI. For example:
+Right-click a subgraph with a custom UI and select **UI files…**. The window
+lists the UI folders used by the current workflow, their locations, and which
+subgraphs use them.
 
-```text
-film.json / Camera → studio.camera@1 → studio-camera.js
-film.json / Color  → studio.color@1  → studio-color.js
-clip.json / Camera → studio.camera@1 → studio-camera.js
-```
-
-Send the JSON and **only the files for the UI IDs it uses**, including their
-helper files and assets. The authoring agent provides this file list; the
-`renderers` directory may also contain unrelated UIs. Several subgraphs can
-reuse one installed UI, each with its own workflow values.
+Send the saved **workflow JSON and those whole folders**. You do not need to
+pick individual `.js` files or copy all of `renderers`. A folder used by several
+subgraphs only needs to be sent once. The JSON already records which UI to use.
 
 ## Open UI
 
-1. Copy the received UI files into
+1. Copy the received **UI folders** into
    `ComfyUI/custom_nodes/ComfyUI-AppView/web/renderers/`.
-   In the example above, `studio-camera.js` goes directly into that directory,
-   alongside `studio-color.js`. Keep any accompanying asset folders beside
-   their files, with the supplied relative paths.
-2. Restart ComfyUI. Skip these two steps if those UIs are already installed.
+   For example, the received `comfynodeui-reshoot` folder becomes
+   `ComfyUI/custom_nodes/ComfyUI-AppView/web/renderers/comfynodeui-reshoot/`.
+   Keep each folder intact: files with the same name stay in their own UI folders.
+2. Restart ComfyUI. Skip these two steps if the required UIs are already installed.
 3. Open the received JSON, select a subgraph, and choose **App** in
    **Node ↔ App** above the node.
 
 **Importing JSON does not install UI files.**
+An existing UI folder only needs replacing when you intend to update that UI.
+If a different UI arrives with the same folder name, rename the incoming folder
+before copying it. Keep its contents together; the workflow's UI selection is preserved.
 
 ## Example
 
 [Re-shoot](workflows/reshoot-app-view.json) is an optional example; its UI is
-already included. Its subgraph uses `reshoot@1`, registered by
-`web/renderers/reshoot.js`. It also needs the supplied `ComfyUI-CrossViewWarp`
-folder copied into ComfyUI's `custom_nodes`. Model download links are in the workflow.
+already included in the `comfynodeui-reshoot` folder. It also needs the supplied
+`ComfyUI-CrossViewWarp` folder copied into ComfyUI's `custom_nodes`. Model
+download links are in the workflow.
