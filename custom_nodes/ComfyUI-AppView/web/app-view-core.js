@@ -8,12 +8,55 @@ export function registerAppViewRenderer(renderer) {
   if (!renderer?.id || typeof renderer.build !== "function") {
     throw new TypeError("App View renderer requires an id and build function");
   }
+  const existing = rendererRegistry.get(renderer.id);
+  if (existing === renderer) return;
+  if (existing) {
+    throw new Error(
+      `Cannot load UI "${renderer.name ?? renderer.id}" from ${renderer.source ?? "an unknown file"}: ` +
+      `its registration conflicts with ${existing.source ?? existing.id}. ` +
+      "The installed UI was kept. Ask the UI author to give the new UI a distinct registration.",
+    );
+  }
   rendererRegistry.set(renderer.id, renderer);
   document.dispatchEvent(
     new CustomEvent("comfy-app-view:renderer-registered", {
       detail: { id: renderer.id },
     }),
   );
+}
+
+function rendererPackage(renderer) {
+  if (!renderer?.source) return null;
+  const root = new URL("./renderers/", import.meta.url).href;
+  const source = new URL(renderer.source).href;
+  if (!source.startsWith(root)) return null;
+  const parts = source.slice(root.length).split("/");
+  if (parts.length < 2) return null; // Legacy flat modules have no shareable folder.
+  return { folder: decodeURIComponent(parts[0]), name: renderer.name ?? parts[0] };
+}
+
+export function listAppViewPackages(graph) {
+  const packages = new Map();
+  walkGraph(graph, (node) => {
+    const id = node.properties?.app_view_renderer;
+    if (!node.subgraph || !id) return;
+    const renderer = rendererRegistry.get(id);
+    // Saved metadata explains what to install even when this UI is absent.
+    const info = rendererPackage(renderer) ?? node.properties.app_view_package;
+    const key = info?.folder ?? id;
+    if (!packages.has(key)) {
+      packages.set(key, {
+        name: info?.name ?? node.title ?? "Custom UI",
+        folder: info?.folder ?? null,
+        installed: Boolean(renderer),
+        subgraphs: [],
+      });
+    }
+    const entry = packages.get(key);
+    entry.installed &&= Boolean(renderer);
+    entry.subgraphs.push(node.title ?? "Subgraph");
+  });
+  return [...packages.values()];
 }
 
 function addStyles() {
@@ -190,6 +233,8 @@ export function createAppViewExtension({ app, api }) {
       console.warn(`[Comfy App View] renderer is unavailable: ${rendererId}`);
       return false;
     }
+    const packageInfo = rendererPackage(renderer);
+    if (packageInfo) host.properties.app_view_package = packageInfo;
     addStyles();
 
     // Keep the normal promoted subgraph surface intact. App mode suppresses
