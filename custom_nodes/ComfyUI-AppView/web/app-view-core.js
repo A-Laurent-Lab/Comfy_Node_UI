@@ -1,3 +1,5 @@
+import { createAppViewShell } from './app-view-shell.js';
+
 const NODE_WIDTH = 300;
 const PANEL_MARGIN = 4;
 const rendererRegistry =
@@ -77,6 +79,30 @@ function addStyles() {
       font: 11px/1 system-ui, sans-serif;
       white-space: nowrap;
     }
+    .comfy-app-view-layout-command { display:block; width:20px; height:16px;
+      border:1.5px solid currentColor; border-radius:2px; position:relative; }
+    .comfy-app-view-layout-command[data-expanded="true"]::after {
+      content:""; position:absolute; left:36%; top:0; bottom:0; border-left:1.5px solid currentColor;
+    }
+    .comfy-app-shell { width:100%; height:auto !important; flex:0 0 auto !important;
+      box-sizing:border-box; display:grid; grid-template-columns:minmax(0,1fr);
+      align-items:start; align-content:start; gap:12px; color:var(--fg-color,#ddd); }
+    .comfy-app-shell *, .comfy-app-shell *::before, .comfy-app-shell *::after { box-sizing:border-box; }
+    .comfy-app-shell[data-layout="expanded"] { grid-template-columns:var(--app-primary-width,420px) minmax(360px,1fr); }
+    .comfy-app-shell [hidden] { display:none !important; }
+    .comfy-app-shell__primary, .comfy-app-shell__detail { min-width:0; align-self:start; }
+    .comfy-app-shell__nav { display:flex; gap:4px; border-bottom:1px solid #424248; margin-bottom:12px; }
+    .comfy-app-shell__nav button { font:13px system-ui; color:inherit; background:transparent;
+      padding:10px 16px; border:0; border-bottom:2px solid transparent; cursor:pointer; }
+    .comfy-app-shell__nav button[aria-current="page"] { border-bottom-color:#d9ef65; color:#f0f0f2; }
+    .comfy-app-shell button:focus-visible, .comfy-app-shell input:focus-visible,
+    .comfy-app-shell select:focus-visible { outline:2px solid #d9ef65; outline-offset:2px; }
+    .lg-node:has(.comfy-app-view-active) .lg-node-widgets {
+      display:flex !important; flex-direction:column; flex:0 0 auto !important;
+      gap:0; align-content:start; justify-content:flex-start;
+    }
+    .lg-node:has(.comfy-app-view-active) .lg-node-widgets > div:not(:has([data-widget-name="app_view_panel"])) { display:none !important; }
+    .lg-node:has(.comfy-app-view-active) [data-widget-name="app_view_panel"] { align-self:stretch; align-items:start; }
     .lg-node:has(.comfy-app-view-active)
       .lg-node-widgets
       [data-widget-name]:not([data-widget-name="app_view_panel"]) {
@@ -127,8 +153,8 @@ function setWidgetHidden(widget, hidden) {
 }
 
 function measuredHeight(element, fallback) {
-  const bounds = element.getBoundingClientRect();
-  const measured = Math.ceil(Math.max(element.scrollHeight, bounds.height));
+  // Layout units, not screen pixels: getBoundingClientRect includes canvas zoom.
+  const measured = Math.ceil(Math.max(element.scrollHeight, element.offsetHeight));
   return measured > 0 ? measured : fallback;
 }
 
@@ -140,6 +166,7 @@ export function createAppViewExtension({ app, api }) {
       host.graph === app.canvas?.graph;
     if (state.viewActive === active) return;
     state.viewActive = active;
+    state.shell.setActive(active);
     if (active) state.view.onShow?.();
     else state.view.onHide?.();
   }
@@ -157,14 +184,15 @@ export function createAppViewExtension({ app, api }) {
     let width;
     let height;
     if (mode === "app") {
-      const minimumWidth = state.renderer.minWidth ?? NODE_WIDTH;
-      const preferredWidth = state.renderer.width ?? 520;
+      const expanded = host.properties.app_view_layout === 'expanded' && state.shell.hasPanels;
+      const minimumWidth = expanded ? (state.renderer.primaryWidth ?? 420) + 400 : state.renderer.minWidth ?? NODE_WIDTH;
+      const preferredWidth = expanded ? state.renderer.expandedWidth ?? 1080 : state.renderer.width ?? 520;
       const preferredHeight = state.renderer.height ?? 640;
       width = Math.max(
         minimumWidth,
         preserveSize
           ? host.size[0]
-          : (state.appSize?.[0] ?? preferredWidth),
+          : (state.layoutWidths[expanded ? 'expanded' : 'compact'] ?? preferredWidth),
       );
       height = Math.max(
         minimum[1],
@@ -187,13 +215,18 @@ export function createAppViewExtension({ app, api }) {
   function measureAndResize(host) {
     const state = host.__comfyAppView;
     if (!state || host.properties.app_view_mode !== "app") return;
+    if (!state.shell.root.isConnected || !state.viewActive) return;
     const nextHeight = measuredHeight(
-      state.view.root,
+      state.shell.root,
       state.renderer.height ?? 640,
     );
     if (Math.abs(nextHeight - state.panelHeight) < 2) return;
     state.panelHeight = nextHeight;
-    resizeForMode(host, { preserveSize: true });
+    // Fit the content's absolute minimum. Borrowed widgets can mount in several
+    // frames; adding each height delta to a saved node accumulates empty space.
+    const min = host.computeSize();
+    host.setSize([host.size[0], Math.max(min[1], nextHeight)]);
+    host.graph?.setDirtyCanvas?.(true, true);
   }
 
   function applyMode(host, mode) {
@@ -210,6 +243,7 @@ export function createAppViewExtension({ app, api }) {
       state.nodeSize = [...host.size];
     } else if (previous === "app" && normalized === "node") {
       state.appSize = [...host.size];
+      state.layoutWidths[host.properties.app_view_layout === 'expanded' ? 'expanded' : 'compact'] = host.size[0];
     }
 
     host.properties.app_view_mode = normalized;
@@ -218,8 +252,9 @@ export function createAppViewExtension({ app, api }) {
       setWidgetHidden(entry.widget, appMode ? true : entry.hidden);
     }
     setWidgetHidden(state.panelWidget, !appMode);
-    state.view.root.style.display = appMode ? "" : "none";
-    state.view.root.classList.toggle("comfy-app-view-active", appMode);
+    state.shell.root.style.display = appMode ? "" : "none";
+    state.shell.root.classList.toggle("comfy-app-view-active", appMode);
+    state.shell.update();
 
     refreshViewVisibility(host);
     resizeForMode(host);
@@ -235,6 +270,33 @@ export function createAppViewExtension({ app, api }) {
       host,
       host.properties.app_view_mode === "app" ? "node" : "app",
     );
+    return true;
+  }
+
+  function toggleLayout(host) {
+    if (!isAppViewHost(host)) return false;
+    const state = host.__comfyAppView;
+    const wasExpanded = host.properties.app_view_layout === 'expanded';
+    if (state && host.properties.app_view_mode === 'app') {
+      state.layoutWidths[wasExpanded ? 'expanded' : 'compact'] = host.size[0];
+    }
+    host.properties.app_view_layout = wasExpanded ? 'compact' : 'expanded';
+    state?.shell.update();
+    if (state && host.properties.app_view_mode === 'app') {
+      resizeForMode(host);
+      requestAnimationFrame(() => measureAndResize(host));
+    }
+    host.graph?.incrementVersion?.();
+    return true;
+  }
+
+  function openPanel(host, id) {
+    const state = host.__comfyAppView;
+    if (!state?.view.panels?.some(panel => panel.id === id)) return false;
+    host.properties.app_view_section = id;
+    if (host.properties.app_view_layout !== 'expanded') toggleLayout(host);
+    else { state.shell.update(); requestAnimationFrame(() => measureAndResize(host)); }
+    host.graph?.incrementVersion?.();
     return true;
   }
 
@@ -263,21 +325,26 @@ export function createAppViewExtension({ app, api }) {
     try {
       // The renderer receives the complete host, nested workflow and root graph.
       // It is not restricted to the public subgraph slots.
-      view = renderer.build({ host, app, api });
+      view = renderer.build({ host, app, api, openPanel: id => openPanel(host, id) });
     } catch (error) {
       console.error(`[Comfy App View] ${rendererId} failed`, error);
       view = buildError(error);
     }
 
+    const shell = createAppViewShell({host, view, onChange: () => requestAnimationFrame(() => measureAndResize(host))});
+    shell.root.style.setProperty('--app-primary-width', `${renderer.primaryWidth ?? 420}px`);
     let panelHeight = renderer.height ?? 640;
     const panelWidget = host.addDOMWidget(
       "app_view_panel",
       "appViewPanel",
-      view.root,
+      shell.root,
       {
         serialize: false,
         hideOnZoom: false,
         margin: PANEL_MARGIN,
+        getMinHeight: () => panelHeight,
+        getMaxHeight: () => panelHeight,
+        getHeight: () => panelHeight,
       },
     );
     panelWidget.serialize = false;
@@ -286,7 +353,8 @@ export function createAppViewExtension({ app, api }) {
     // it the DOM widget is treated as growable and receives only the leftover
     // node space, which creates the inner scrollbar seen in the old renderer.
     panelWidget.computeSize = () => [
-      renderer.minWidth ?? NODE_WIDTH,
+      host.properties.app_view_mode === 'app' && host.properties.app_view_layout === 'expanded' && shell.hasPanels
+        ? (renderer.primaryWidth ?? 420) + 400 : renderer.minWidth ?? NODE_WIDTH,
       host.properties.app_view_mode === "app"
         ? panelHeight + PANEL_MARGIN
         : -4,
@@ -294,11 +362,15 @@ export function createAppViewExtension({ app, api }) {
 
     const state = {
       renderer,
+      shell,
       panelWidget,
       view,
       viewActive: false,
       nodeWidgets,
       nodeSize: [...host.size],
+      layoutWidths: host.properties.app_view_mode === 'app'
+        ? { [host.properties.app_view_layout === 'expanded' ? 'expanded' : 'compact']: host.size[0] }
+        : {},
       appSize:
         host.properties.app_view_mode === "app"
           ? [...host.size]
@@ -313,7 +385,7 @@ export function createAppViewExtension({ app, api }) {
     host.__comfyAppView = state;
 
     const observer = new ResizeObserver(() => measureAndResize(host));
-    observer.observe(view.root);
+    observer.observe(shell.root);
 
     const previousRemoved = host.onRemoved;
     host.onRemoved = function () {
@@ -346,5 +418,7 @@ export function createAppViewExtension({ app, api }) {
     isAppViewHost,
     refreshVisibility,
     toggleMode,
+    toggleLayout,
+    openPanel,
   };
 }

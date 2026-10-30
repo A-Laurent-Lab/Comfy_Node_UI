@@ -4,6 +4,19 @@ import { createAppViewExtension, listAppViewPackages } from "./app-view-core.js"
 
 const extension = createAppViewExtension({ app, api });
 const MODE_COMMAND = "Comfy.AppView.ToggleMode";
+const LAYOUT_COMMAND = "Comfy.AppView.TogglePanels";
+
+function updateLayoutIcon() {
+  const host = selectedAppViewHost();
+  for (const icon of document.querySelectorAll('.comfy-app-view-layout-command')) {
+    const expanded = host?.properties?.app_view_layout === 'expanded';
+    icon.dataset.expanded = String(expanded);
+    const button = icon.closest('button');
+    button?.setAttribute('aria-pressed', String(expanded));
+    button?.setAttribute('aria-label', expanded ? 'App: two panels (collapse)' : 'App: one panel (expand)');
+    if (button) button.title = expanded ? 'App: two panels (collapse)' : 'App: one panel (expand)';
+  }
+}
 
 function selectedItems() {
   const items = app.canvas?.selectedItems;
@@ -55,6 +68,17 @@ app.registerExtension({
 
   commands: [
     {
+      id: LAYOUT_COMMAND,
+      label: 'Toggle one / two App panels',
+      icon: 'comfy-app-view-layout-command',
+      mutatesGraph: true,
+      function: () => {
+        const host = selectedAppViewHost();
+        if (host) extension.toggleLayout(host);
+        updateLayoutIcon();
+      },
+    },
+    {
       id: MODE_COMMAND,
       label: "Toggle Node / App view",
       icon: "comfy-app-view-mode-command",
@@ -69,7 +93,7 @@ app.registerExtension({
   getSelectionToolboxCommands(selectedItem) {
     return selectedItems().length === 1 &&
       extension.isAppViewHost(selectedItem)
-      ? [MODE_COMMAND]
+      ? [MODE_COMMAND, LAYOUT_COMMAND]
       : [];
   },
 
@@ -87,6 +111,9 @@ app.registerExtension({
   },
 
   async setup() {
+    // Selection Toolbox reuses its DOM when selection changes.
+    const toolbarObserver = new MutationObserver(updateLayoutIcon);
+    toolbarObserver.observe(document.body, {childList:true, subtree:true});
     document.addEventListener("comfy-app-view:renderer-registered", () => {
       requestAnimationFrame(() => extension.attachAll());
     });

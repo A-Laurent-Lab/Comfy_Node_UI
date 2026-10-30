@@ -3,6 +3,8 @@
 `ComfyUI-AppView` is a generic extension for custom interfaces on native
 ComfyUI subgraphs. Select a subgraph and use **Node ↔ App** to switch between
 its normal node controls and an installed custom UI. Both edit the same workflow.
+The adjacent panel icon expands the App's right-hand workspace. Essential
+controls stay on the left; section buttons select previews, editing or results.
 
 Workflow-specific UIs are separate folders. They are not part of the extension.
 

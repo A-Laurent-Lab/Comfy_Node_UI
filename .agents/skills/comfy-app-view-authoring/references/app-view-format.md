@@ -66,11 +66,16 @@ registerAppViewRenderer({
   name: "Example UI",
   source: import.meta.url,
   width: 520,
+  primaryWidth: 420,
+  expandedWidth: 1100,
   height: 640,
-  build({ host, app, api }) {
+  build({ host, app, api, openPanel }) {
     const root = document.createElement("div");
+    const preview = document.createElement("section");
     return {
       root,
+      panels: [{ id: "preview", label: "Preview", element: preview }],
+      onPanelChange(id) {}, // null when collapsed, hidden, or inside the subgraph
       onShow() {},
       onHide() {},
       dispose() {},
@@ -85,9 +90,16 @@ inside this UI's folder. Use module-relative imports and asset URLs; renaming
 the folder must preserve the binding. `source` allows the generic framework to derive the
 folder shown to the user; it must be the real module URL, not a guessed path.
 
-The generic host owns the `Node ↔ App` command, renderer lookup, DOM widget,
-natural-height measurement, and disposal. Do not fork those mechanisms inside a
-renderer.
+The host owns `Node ↔ App`, the adjacent one/two-panel icon, section navigation,
+DOM mounting and sizing. Put essential controls in `root`; put focused tasks in
+`panels` with stable IDs and short labels. `openPanel(id)` reveals a section.
+`app_view_layout` (compact/expanded) and `app_view_section` persist per subgraph.
+Pause playback/requests when `onPanelChange(null)` is called. Older renderers
+returning only `root` remain usable as a single panel.
+
+Measure natural size in unscaled layout units. Do not set 100% height or use
+canvas-zoomed bounds for node sizing. Verify section expansion, manual resizing
+and repeated save/reload in both native renderers without cumulative growth.
 
 The skeleton above only mounts a panel. Implement controls, canonical-value
 bindings and workflow-to-UI updates in the renderer. The host calls `onShow`,
@@ -139,6 +151,8 @@ Subgraph inputs and outputs are an author choice:
 - allow multiple outputs when the workflow naturally has them.
 
 Re-shoot currently exposes 13 ordinary settings and three `VIDEO` results.
+Its auxiliary saves are internal; the final generated SaveVideo stays outside
+and the App's Output section reads that same output.
 Its video selector stays on the internal LoadVideo node, unconnected, so both
 native renderers retain selection/upload and preview. App edits that same widget.
 The App renderer still uses other inner preview behavior without publishing it

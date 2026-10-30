@@ -9,6 +9,7 @@ const required = [
   "custom_nodes/ComfyUI-AppView/__init__.py",
   "custom_nodes/ComfyUI-AppView/web/app-view-core.js",
   "custom_nodes/ComfyUI-AppView/web/app-view.js",
+  "custom_nodes/ComfyUI-AppView/web/app-view-shell.js",
   "custom_nodes/ComfyUI-AppView/web/renderers/README.md",
   ".agents/skills/comfy-app-view-authoring/SKILL.md",
   "examples/minimax-h3-i2v/minimax-h3-i2v-app-view.json",
@@ -16,6 +17,9 @@ const required = [
   "examples/reshoot/reshoot-app-view.json",
   "examples/reshoot/ui/comfynodeui-reshoot/index.js",
   "examples/reshoot/ui/comfynodeui-reshoot/workflow.js",
+  "examples/reshoot/ui/comfynodeui-reshoot/preview.js",
+  "examples/reshoot/ui/comfynodeui-reshoot/timeline.js",
+  "examples/reshoot/ui/comfynodeui-reshoot/results.js",
   "examples/reshoot/ui/comfynodeui-reshoot/crossview-widget-compat.js",
   "examples/reshoot/nodes/ComfyUI-CrossViewWarp/__init__.py",
   "examples/reshoot/nodes/ComfyUI-CrossViewWarp/crossview_warp_node.py",
@@ -93,8 +97,13 @@ assert.equal(host.inputs.length, 13);
 assert.equal(host.outputs.length, 3);
 const subgraph = workflow.definitions.subgraphs.find((item) => item.id === host.type);
 assert.ok(subgraph);
-assert.equal(subgraph.nodes.length, 26);
-assert.equal(subgraph.links.length, 55);
+assert.equal(subgraph.nodes.length, 28);
+assert.equal(subgraph.links.length, 57);
+assert.equal(workflow.nodes.length, 2);
+assert.equal(workflow.nodes.find(n => n.type === 'SaveVideo')?.properties.reshoot_role, 'generated-save');
+for (const role of ['warp-save','original-audio-save']) {
+  assert.equal(subgraph.nodes.find(n => n.properties?.reshoot_role === role)?.type, 'SaveVideo');
+}
 for (const link of subgraph.links) {
   const from = link.origin_id === -10 ? subgraph.inputs[link.origin_slot]
     : subgraph.nodes.find((node) => node.id === link.origin_id)?.outputs?.[link.origin_slot];
@@ -144,8 +153,8 @@ console.log(JSON.stringify({
   reshootExample: {
     inputs: 13,
     outputs: 3,
-    innerNodes: 26,
-    innerLinks: 55,
+    innerNodes: 28,
+    innerLinks: 57,
     modelDownloads: 7,
   },
 }, null, 2));

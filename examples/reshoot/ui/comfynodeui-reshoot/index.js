@@ -3,6 +3,8 @@ import { api } from "../../../../scripts/api.js";
 import { registerAppViewRenderer } from "../../app-view-core.js";
 import "./crossview-widget-compat.js";
 import { repairLegacyReshootWorkflow } from "./workflow.js";
+import { createPreviewPanel } from './preview.js';
+import { createResultsPanel } from './results.js';
 
 const RENDERER = "reshoot@1";
 const APP_HEIGHT = 790;
@@ -20,8 +22,8 @@ function addStyles() {
       padding: 12px;
       border: 1px solid #34363c;
       border-radius: 10px;
-      background: #211927;
-      color: #f4f1f5;
+      background: #202225;
+      color: #eeeeef;
       box-sizing: border-box;
       font: 13px system-ui, sans-serif;
       scrollbar-width: thin;
@@ -34,16 +36,16 @@ function addStyles() {
       gap: 10px;
       margin-bottom: 14px;
       padding: 9px;
-      border: 1px solid #403547;
+      border: 1px solid #3f4248;
       border-radius: 10px;
-      background: #2a2130;
+      background: #292c30;
     }
     .reshoot-app__thumb {
       width: 56px;
       height: 38px;
       border-radius: 6px;
       object-fit: cover;
-      background: #121014;
+      background: #141516;
     }
     .reshoot-app__source select {
       min-width: 0;
@@ -58,9 +60,9 @@ function addStyles() {
     .reshoot-app textarea,
     .reshoot-app input { font: inherit; }
     .reshoot-app button {
-      border: 1px solid #514757;
+      border: 1px solid #50545b;
       border-radius: 8px;
-      background: #312738;
+      background: #30343a;
       color: #fff;
       cursor: pointer;
     }
@@ -68,7 +70,7 @@ function addStyles() {
     .reshoot-app__change { padding: 7px 10px; }
     .reshoot-app__hint {
       margin: 3px 0 10px;
-      color: #aaa2ad;
+      color: #a3a7ae;
       text-align: center;
       font-size: 11px;
     }
@@ -76,7 +78,7 @@ function addStyles() {
       min-height: 250px;
       margin-bottom: 10px;
       border-radius: 10px;
-      background: #17131a;
+      background: #191b1e;
       overflow: hidden;
     }
     .reshoot-app__camera > div { width: 100%; }
@@ -93,13 +95,13 @@ function addStyles() {
       min-height: 38px;
       margin: 3px 0;
       padding: 0 10px;
-      border: 1px solid #3e3444;
+      border: 1px solid #3c4046;
       border-radius: 8px;
-      background: #29212f;
+      background: #292c30;
     }
-    .reshoot-field__name { color: #aaa2ad; }
+    .reshoot-field__name { color: #a3a7ae; }
     .reshoot-field__value {
-      color: #c7beca;
+      color: #c4c7cc;
       text-align: right;
       font: 11px ui-monospace, monospace;
     }
@@ -109,23 +111,23 @@ function addStyles() {
     .reshoot-field input[type="number"] {
       width: 100%;
       padding: 4px 6px;
-      border: 1px solid #514757;
+      border: 1px solid #50545b;
       border-radius: 5px;
-      background: #17131a;
+      background: #191b1e;
       color: #fff;
     }
     .reshoot-field--check { grid-template-columns: 1fr auto; }
     .reshoot-field--check .reshoot-field__value { display: none; }
     .reshoot-app details {
       margin: 8px 0;
-      border: 1px solid #3e3444;
+      border: 1px solid #3c4046;
       border-radius: 9px;
-      background: #251d2a;
+      background: #25282c;
     }
     .reshoot-app summary {
       padding: 10px 12px;
       cursor: pointer;
-      color: #d2cbd4;
+      color: #d1d4d9;
       font-weight: 650;
     }
     .reshoot-app details > div { padding: 0 8px 8px; }
@@ -134,12 +136,37 @@ function addStyles() {
       min-height: 64px;
       margin: 8px 0;
       padding: 9px;
-      border: 1px solid #514757;
+      border: 1px solid #50545b;
       border-radius: 8px;
       resize: vertical;
-      background: #17131a;
+      background: #191b1e;
       color: #fff;
     }
+    .reshoot-app h3, .reshoot-workspace h3 { margin:0 0 12px; font:600 13px system-ui; color:#dadde2; }
+    .reshoot-workspace { min-width:0; padding:12px; border:1px solid #3f4248;
+      border-radius:8px; background:#202225; color:#eeeeef; font:13px system-ui; }
+    .reshoot-workspace button, .reshoot-workspace select, .reshoot-download {
+      padding:7px 11px; border:1px solid #50545b; border-radius:6px; background:#292c30;
+      color:inherit; font:inherit; cursor:pointer; }
+    .reshoot-workspace button:disabled { opacity:.4; cursor:default; }
+    .reshoot-workspace button[aria-pressed="true"] { border-color:#dfed59; color:#effe80; }
+    .reshoot-preview-modes, .reshoot-output-options { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+    .reshoot-preview-stage { position:relative; display:grid; place-items:center; width:100%;
+      height:380px; background:#151719; border:1px solid #3c4046; border-radius:7px;
+      touch-action:none; overflow:hidden; cursor:grab; }
+    .reshoot-preview-stage img, .reshoot-preview-stage video { width:100%; height:100%; object-fit:contain; min-height:0; }
+    .reshoot-preview-status { position:absolute; max-width:80%; text-align:center; color:#b1b5bc; }
+    .reshoot-timeline { margin-top:18px; border-top:1px solid #3f4248; padding-top:16px; }
+    .reshoot-timeline__transport { display:grid; grid-template-columns:auto minmax(60px,1fr) auto auto; gap:9px; align-items:center; }
+    .reshoot-timeline input { min-width:0; width:100%; accent-color:#e9fb45; }
+    .reshoot-timeline output { white-space:nowrap; font:11px ui-monospace,monospace; color:#b9bec6; }
+    .reshoot-timeline__markers { position:relative; grid-column:2; grid-row:2; height:24px; border-bottom:1px solid #3f4248; touch-action:none; }
+    .reshoot-timeline__markers button { position:absolute; top:2px; transform:translateX(-50%); padding:2px 4px;
+      background:transparent; border:0; color:#b8bc68; }
+    .reshoot-timeline__tools { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:12px; }
+    .reshoot-message { font:12px/1.5 system-ui; color:#b9bec6; margin:12px 0 0; }
+    .reshoot-workspace > video { display:block; width:100%; max-height:520px; background:#121416; margin-bottom:12px; }
+    .reshoot-download { display:inline-block; text-decoration:none; }
   `;
   document.head.appendChild(style);
 }
@@ -329,15 +356,18 @@ function patchCrossViewPreviewId(camera) {
   editor.__reshootExecutionIdPatched = true;
 }
 
-function createCameraWidgetBorrower(host, cameraMount) {
+function createCameraWidgetBorrower(host, cameraMount, openPanel) {
   const camera = findRole(host, "camera");
   const borrowed = new Map();
+  let previousView;
+  let originalSetView, redirectView;
 
   return {
     borrow() {
       if (!camera) return;
+      if (previousView === undefined) previousView = camera._crossviewView ?? 'orbit';
       patchCrossViewPreviewId(camera);
-      for (const name of ["orbit", "preview"]) {
+      for (const name of ["orbit"]) {
         const item = camera.widgets?.find((candidate) => candidate.name === name);
         const element = item?.element ?? item?.inputEl;
         if (!element || element.parentElement === cameraMount) continue;
@@ -347,7 +377,12 @@ function createCameraWidgetBorrower(host, cameraMount) {
         });
         cameraMount.appendChild(element);
       }
-      camera._crossviewApplyView?.();
+      if (camera._crossviewView !== 'orbit') camera._crossviewSetView?.('orbit');
+      if (!redirectView && camera._crossviewSetView) {
+        originalSetView = camera._crossviewSetView;
+        redirectView = value => value === 'warp' ? openPanel('camera') : originalSetView(value);
+        camera._crossviewSetView = redirectView;
+      }
       // CrossView starts its animation loop while the inner subgraph is not
       // mounted, so the loop can stop before this canvas enters the App View.
       // A forced render makes the borrowed surface live immediately; the App
@@ -366,6 +401,10 @@ function createCameraWidgetBorrower(host, cameraMount) {
         }
       }
       borrowed.clear();
+      if (redirectView && camera?._crossviewSetView === redirectView) camera._crossviewSetView = originalSetView;
+      redirectView = undefined;
+      if (previousView !== undefined) camera?._crossviewSetView?.(previousView);
+      previousView = undefined;
       camera?._crossviewApplyView?.();
     },
     get count() {
@@ -398,6 +437,7 @@ function createRange({ node, name, label, suffix = "" }) {
   const readout = document.createElement("span");
   readout.className = "reshoot-field__value";
   input.addEventListener("input", () => {
+    node._crossviewPreview?.beginAudition();
     setWidget(node, name, Number(input.value));
     readout.textContent = `${input.value}${suffix}`;
   });
@@ -495,7 +535,7 @@ function appendControl(parent, controls, control) {
   controls.push(control);
 }
 
-function buildApp({ host }) {
+function buildApp({ host, openPanel }) {
   addStyles();
   const source = findRole(host, "source-video");
   const prepare = findRole(host, "prepare");
@@ -527,6 +567,12 @@ function buildApp({ host }) {
   const root = document.createElement("div");
   root.className = "reshoot-app";
   root.dataset.reshootApp = "1";
+  const heading = document.createElement('h3');
+  heading.textContent = 'Source & camera';
+  root.append(heading);
+  const preview = createPreviewPanel({host,camera,source,prepare,api,widget,setWidget,executionId,
+    sourceUrl:() => inputMediaUrl(widget(source,'file')?.value)});
+  const results = createResultsPanel({host,app,api,executionId});
 
   const sourceRow = document.createElement("div");
   sourceRow.className = "reshoot-app__source";
@@ -535,6 +581,7 @@ function buildApp({ host }) {
   sourcePreview.muted = true;
   sourcePreview.playsInline = true;
   const sourceSelect = document.createElement("select");
+  sourceSelect.setAttribute('aria-label','Source video');
   const changeButton = document.createElement("button");
   changeButton.className = "reshoot-app__change";
   changeButton.type = "button";
@@ -550,7 +597,7 @@ function buildApp({ host }) {
   const cameraMount = document.createElement("div");
   cameraMount.className = "reshoot-app__camera";
   root.appendChild(cameraMount);
-  const cameraWidgets = createCameraWidgetBorrower(host, cameraMount);
+  const cameraWidgets = createCameraWidgetBorrower(host, cameraMount, openPanel);
 
   const controls = [];
   appendControl(root, controls, createRange({ node: camera, name: "azimuth", label: "Rotation", suffix: "°" }));
@@ -566,7 +613,6 @@ function buildApp({ host }) {
   const cameraMoveBody = document.createElement("div");
   cameraMove.append(cameraSummary, cameraMoveBody);
   appendControl(cameraMoveBody, controls, createCheckbox({ node: camera, name: "use_keyframes", label: "Use keyframed camera move" }));
-  appendControl(cameraMoveBody, controls, createSelect({ node: camera, name: "interp_motion", label: "Motion" }));
   root.appendChild(cameraMove);
 
   const advanced = document.createElement("details");
@@ -592,6 +638,7 @@ function buildApp({ host }) {
   const prompt = document.createElement("textarea");
   prompt.className = "reshoot-app__prompt";
   prompt.placeholder = "Describe what the new view should reveal (optional)";
+  prompt.setAttribute('aria-label','Prompt');
   prompt.addEventListener("input", () => setWidget(promptNode, "prompt", prompt.value));
   root.appendChild(prompt);
 
@@ -632,6 +679,8 @@ function buildApp({ host }) {
       sourcePreview.load();
     }
     for (const control of controls) control.sync();
+    preview.sync();
+    results.sync();
     const promptWidget = widget(promptNode, "prompt");
     if (document.activeElement !== prompt) prompt.value = String(promptWidget?.value ?? "");
     borrowCameraWidgets(
@@ -656,6 +705,14 @@ function buildApp({ host }) {
   sync();
   return {
     root,
+    panels: [
+      {id:'camera',label:'Preview & keyframes',element:preview.root},
+      {id:'results',label:'Output',element:results.root},
+    ],
+    onPanelChange(id) {
+      preview.setActive(id === 'camera');
+      results.setActive(id === 'results');
+    },
     cameraMount,
     sync,
     onShow() {
@@ -669,12 +726,16 @@ function buildApp({ host }) {
     onHide() {
       active = false;
       cameraWidgets.restore();
+      preview.setActive(false);
+      results.setActive(false);
     },
     dispose() {
       active = false;
       window.clearInterval(timer);
       cameraWidgets.restore();
       promotedBridge.dispose();
+      preview.dispose();
+      results.dispose();
     },
   };
 }
@@ -685,6 +746,8 @@ export const reshootRenderer = {
   name: "Re-shoot",
   source: import.meta.url,
   width: APP_WIDTH,
+  primaryWidth: 420,
+  expandedWidth: 1100,
   minWidth: 420,
   height: APP_HEIGHT,
   build: buildApp,
