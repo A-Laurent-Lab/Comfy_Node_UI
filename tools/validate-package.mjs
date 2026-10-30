@@ -68,12 +68,33 @@ const host = workflow.nodes.find(
   (node) => node.properties?.app_view_renderer === "reshoot@1",
 );
 assert.ok(host, "Re-shoot App View host is missing");
-assert.equal(host.inputs.length, 14);
+assert.equal(host.inputs.length, 13);
 assert.equal(host.outputs.length, 3);
 const subgraph = workflow.definitions.subgraphs.find((item) => item.id === host.type);
 assert.ok(subgraph);
 assert.equal(subgraph.nodes.length, 26);
-assert.equal(subgraph.links.length, 56);
+assert.equal(subgraph.links.length, 55);
+for (const link of subgraph.links) {
+  const from = link.origin_id === -10 ? subgraph.inputs[link.origin_slot]
+    : subgraph.nodes.find((node) => node.id === link.origin_id)?.outputs?.[link.origin_slot];
+  const to = link.target_id === -20 ? subgraph.outputs[link.target_slot]
+    : subgraph.nodes.find((node) => node.id === link.target_id)?.inputs?.[link.target_slot];
+  assert.ok(from && to, `Dangling link ${link.id}`);
+  assert.ok(from.type === to.type || from.type === "*" || to.type === "*",
+    `Link ${link.id}: ${from.name} (${from.type}) -> ${to.name} (${to.type})`);
+}
+const prepare = subgraph.nodes.find((node) => node.properties?.reshoot_role === "prepare");
+const prompt = subgraph.nodes.find((node) => node.properties?.reshoot_role === "prompt");
+const source = subgraph.nodes.find((node) => node.properties?.reshoot_role === "source-video");
+assert.equal(source.inputs.find((input) => input.name === "file").link, null);
+for (const name of ["width", "height", "length"]) {
+  const input = prompt.inputs.find((slot) => slot.name === name);
+  const link = subgraph.links.find((candidate) => candidate.id === input.link);
+  assert.equal(link.origin_id, prepare.id);
+  assert.equal(prepare.outputs[link.origin_slot].name, name);
+  assert.equal(prompt.inputs[link.target_slot].name, name);
+}
+assert.equal(prompt.inputs.find((input) => input.name === "ref_image_size").link, null);
 const modelEntries = subgraph.nodes.flatMap((node) => node.properties?.models ?? []);
 assert.equal(modelEntries.length, 7);
 assert.ok(modelEntries.every((model) => model.name && model.directory && model.url));
@@ -84,10 +105,10 @@ console.log(JSON.stringify({
   manifestFiles: manifestLines.length,
   exampleRenderers: ["minimax-h3-i2v@1", "reshoot@1"],
   reshootExample: {
-    inputs: 14,
+    inputs: 13,
     outputs: 3,
     innerNodes: 26,
-    innerLinks: 56,
+    innerLinks: 55,
     modelDownloads: 7,
   },
 }, null, 2));

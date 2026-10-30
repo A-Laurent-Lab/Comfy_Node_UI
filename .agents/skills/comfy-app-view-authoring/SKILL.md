@@ -111,6 +111,15 @@ custom node definitions before loading the workflow; placeholder `UNKNOWN`
 widgets prove only that the frontend was loaded too early. If a renderer borrows
 a native DOM/canvas widget, mount it only while App is visible, force its first
 render when necessary, and restore it to the original parent on hide/dispose.
+Use the host's visibility lifecycle, not just saved `app_view_mode` or
+`element.isConnected`: entering a subgraph can leave an inactive App in the DOM.
+Test App -> inner graph -> App repeatedly and also enter from Node mode.
+Promoting a media selector to a connected input hides the original selector and
+input preview in Node 2.0 by design. Keep a locally editable loader's selector
+unconnected; App can bind directly to it without promoting it.
 Exercise its real pointer gestures. Node 2.0 WidgetDOM stops pointermove before
 document-level listeners, so bridge movement at the canvas only when the reused
 widget depends on a document listener and prevent duplicate legacy handling.
+For nodes with autogrow inputs, check the exported execution prompt's input
+names and values/connections. A valid node count or a visible cable does not
+prove that width, height or frame count reaches the intended input.

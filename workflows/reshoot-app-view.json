@@ -311,15 +311,6 @@
       "mode": 0,
       "inputs": [
         {
-          "label": "Source video",
-          "name": "file",
-          "type": "COMBO",
-          "widget": {
-            "name": "file"
-          },
-          "link": null
-        },
-        {
           "label": "Duration",
           "name": "duration",
           "type": "FLOAT",
@@ -469,11 +460,13 @@
       "properties": {
         "previewExposures": [],
         "app_view_renderer": "reshoot@1",
-        "app_view_package": { "folder": "comfynodeui-reshoot", "name": "Re-shoot" },
+        "app_view_package": {
+          "folder": "comfynodeui-reshoot",
+          "name": "Re-shoot"
+        },
         "app_view_mode": "node"
       },
       "widgets_values_named": {
-        "file": "input.mp4",
         "duration": 5,
         "aspect_ratio": "source",
         "megapixels": 0.5,
@@ -489,7 +482,6 @@
         "noise_seed": 42
       },
       "widgets_values": [
-        "input.mp4",
         5,
         "source",
         0.5,
@@ -541,7 +533,7 @@
         "state": {
           "lastGroupId": 0,
           "lastNodeId": 44,
-          "lastLinkId": 56,
+          "lastLinkId": 55,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -553,7 +545,7 @@
             -120,
             120,
             160,
-            328
+            308
           ]
         },
         "outputNode": {
@@ -567,29 +559,16 @@
         },
         "inputs": [
           {
-            "id": "a9206df7-7b65-59ed-8c1f-e8b432697afd",
-            "name": "file",
-            "type": "COMBO",
-            "linkIds": [
-              43
-            ],
-            "label": "Source video",
-            "pos": [
-              -96,
-              144
-            ]
-          },
-          {
             "id": "6823c151-ad57-5876-be1b-475918c0291c",
             "name": "duration",
             "type": "FLOAT",
             "linkIds": [
-              44
+              43
             ],
             "label": "Duration",
             "pos": [
               -96,
-              164
+              144
             ]
           },
           {
@@ -597,12 +576,12 @@
             "name": "aspect_ratio",
             "type": "COMBO",
             "linkIds": [
-              45
+              44
             ],
             "label": "Aspect ratio",
             "pos": [
               -96,
-              184
+              164
             ]
           },
           {
@@ -610,12 +589,12 @@
             "name": "megapixels",
             "type": "FLOAT",
             "linkIds": [
-              46
+              45
             ],
             "label": "Resolution",
             "pos": [
               -96,
-              204
+              184
             ]
           },
           {
@@ -623,12 +602,12 @@
             "name": "azimuth",
             "type": "FLOAT",
             "linkIds": [
-              47
+              46
             ],
             "label": "Rotation",
             "pos": [
               -96,
-              224
+              204
             ]
           },
           {
@@ -636,12 +615,12 @@
             "name": "elevation",
             "type": "FLOAT",
             "linkIds": [
-              48
+              47
             ],
             "label": "Tilt",
             "pos": [
               -96,
-              244
+              224
             ]
           },
           {
@@ -649,12 +628,12 @@
             "name": "distance",
             "type": "FLOAT",
             "linkIds": [
-              49
+              48
             ],
             "label": "Distance",
             "pos": [
               -96,
-              264
+              244
             ]
           },
           {
@@ -662,12 +641,12 @@
             "name": "hfov",
             "type": "FLOAT",
             "linkIds": [
-              50
+              49
             ],
             "label": "Lens",
             "pos": [
               -96,
-              284
+              264
             ]
           },
           {
@@ -675,12 +654,12 @@
             "name": "vertical_shift",
             "type": "FLOAT",
             "linkIds": [
-              51
+              50
             ],
             "label": "Height",
             "pos": [
               -96,
-              304
+              284
             ]
           },
           {
@@ -688,12 +667,12 @@
             "name": "keep_source_aim",
             "type": "BOOLEAN",
             "linkIds": [
-              52
+              51
             ],
             "label": "Keep source aim",
             "pos": [
               -96,
-              324
+              304
             ]
           },
           {
@@ -701,12 +680,12 @@
             "name": "use_keyframes",
             "type": "BOOLEAN",
             "linkIds": [
-              53
+              52
             ],
             "label": "Camera move",
             "pos": [
               -96,
-              344
+              324
             ]
           },
           {
@@ -714,12 +693,12 @@
             "name": "interp_motion",
             "type": "COMBO",
             "linkIds": [
-              54
+              53
             ],
             "label": "Motion",
             "pos": [
               -96,
-              364
+              344
             ]
           },
           {
@@ -727,12 +706,12 @@
             "name": "prompt",
             "type": "STRING",
             "linkIds": [
-              55
+              54
             ],
             "label": "Prompt",
             "pos": [
               -96,
-              384
+              364
             ]
           },
           {
@@ -740,12 +719,12 @@
             "name": "noise_seed",
             "type": "INT",
             "linkIds": [
-              56
+              55
             ],
             "label": "Seed",
             "pos": [
               -96,
-              404
+              384
             ]
           }
         ],
@@ -804,7 +783,7 @@
             ],
             "size": [
               309.06640625,
-              82
+              520
             ],
             "flags": {},
             "order": 0,
@@ -817,7 +796,7 @@
                 "widget": {
                   "name": "file"
                 },
-                "link": 43
+                "link": null
               },
               {
                 "localized_name": "выберите файл для загрузки",
@@ -882,7 +861,7 @@
                 "widget": {
                   "name": "duration"
                 },
-                "link": 44
+                "link": 43
               },
               {
                 "localized_name": "aspect_ratio",
@@ -891,7 +870,7 @@
                 "widget": {
                   "name": "aspect_ratio"
                 },
-                "link": 45
+                "link": 44
               },
               {
                 "localized_name": "megapixels",
@@ -900,7 +879,7 @@
                 "widget": {
                   "name": "megapixels"
                 },
-                "link": 46
+                "link": 45
               },
               {
                 "localized_name": "multiple",
@@ -983,7 +962,7 @@
             "type": "LoadMoGeModel",
             "pos": [
               100,
-              342
+              690
             ],
             "size": [
               270,
@@ -1199,7 +1178,7 @@
                 "widget": {
                   "name": "azimuth"
                 },
-                "link": 47
+                "link": 46
               },
               {
                 "localized_name": "elevation",
@@ -1208,7 +1187,7 @@
                 "widget": {
                   "name": "elevation"
                 },
-                "link": 48
+                "link": 47
               },
               {
                 "localized_name": "distance",
@@ -1217,7 +1196,7 @@
                 "widget": {
                   "name": "distance"
                 },
-                "link": 49
+                "link": 48
               },
               {
                 "localized_name": "hfov",
@@ -1226,7 +1205,7 @@
                 "widget": {
                   "name": "hfov"
                 },
-                "link": 50
+                "link": 49
               },
               {
                 "localized_name": "vertical_shift",
@@ -1235,7 +1214,7 @@
                 "widget": {
                   "name": "vertical_shift"
                 },
-                "link": 51
+                "link": 50
               },
               {
                 "localized_name": "depth_ratio",
@@ -1322,7 +1301,7 @@
                 "widget": {
                   "name": "use_keyframes"
                 },
-                "link": 53
+                "link": 52
               },
               {
                 "localized_name": "frame_count",
@@ -1352,7 +1331,7 @@
                 "widget": {
                   "name": "interp_motion"
                 },
-                "link": 54
+                "link": 53
               },
               {
                 "localized_name": "interpolation",
@@ -1372,7 +1351,7 @@
                 "widget": {
                   "name": "keep_source_aim"
                 },
-                "link": 52
+                "link": 51
               },
               {
                 "localized_name": "preview_size",
@@ -1472,7 +1451,7 @@
             "type": "UNETLoader",
             "pos": [
               100,
-              530
+              878
             ],
             "size": [
               270,
@@ -1801,7 +1780,7 @@
             "type": "CLIPLoader",
             "pos": [
               100,
-              742
+              1090
             ],
             "size": [
               270,
@@ -1880,7 +1859,7 @@
             "type": "VAELoader",
             "pos": [
               100,
-              978
+              1326
             ],
             "size": [
               270,
@@ -1938,7 +1917,7 @@
             "type": "VAELoader",
             "pos": [
               100,
-              1166
+              1514
             ],
             "size": [
               270,
@@ -2067,7 +2046,7 @@
                 "widget": {
                   "name": "prompt"
                 },
-                "link": 55
+                "link": 54
               },
               {
                 "localized_name": "ширина",
@@ -2076,7 +2055,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": null
+                "link": 14
               },
               {
                 "localized_name": "высота",
@@ -2085,7 +2064,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 14
+                "link": 15
               },
               {
                 "localized_name": "длина",
@@ -2094,7 +2073,7 @@
                 "widget": {
                   "name": "length"
                 },
-                "link": 15
+                "link": 16
               },
               {
                 "localized_name": "размер_реф_изображения",
@@ -2103,7 +2082,7 @@
                 "widget": {
                   "name": "ref_image_size"
                 },
-                "link": 16
+                "link": null
               }
             ],
             "outputs": [
@@ -2238,7 +2217,7 @@
             "type": "RandomNoise",
             "pos": [
               100,
-              1354
+              1702
             ],
             "size": [
               270,
@@ -2255,7 +2234,7 @@
                 "widget": {
                   "name": "noise_seed"
                 },
-                "link": 56
+                "link": 55
               }
             ],
             "outputs": [
@@ -2287,7 +2266,7 @@
             "type": "KSamplerSelect",
             "pos": [
               100,
-              1566
+              1914
             ],
             "size": [
               270,
@@ -3286,7 +3265,7 @@
             "origin_id": 2,
             "origin_slot": 1,
             "target_id": 20,
-            "target_slot": 10,
+            "target_slot": 9,
             "type": "INT"
           },
           {
@@ -3294,7 +3273,7 @@
             "origin_id": 2,
             "origin_slot": 2,
             "target_id": 20,
-            "target_slot": 11,
+            "target_slot": 10,
             "type": "INT"
           },
           {
@@ -3302,39 +3281,39 @@
             "origin_id": 2,
             "origin_slot": 3,
             "target_id": 20,
-            "target_slot": 12,
+            "target_slot": 11,
             "type": "INT"
           },
           {
             "id": 43,
             "origin_id": -10,
             "origin_slot": 0,
-            "target_id": 1,
-            "target_slot": 0,
-            "type": "COMBO"
+            "target_id": 2,
+            "target_slot": 1,
+            "type": "FLOAT"
           },
           {
             "id": 44,
             "origin_id": -10,
             "origin_slot": 1,
             "target_id": 2,
-            "target_slot": 1,
-            "type": "FLOAT"
+            "target_slot": 2,
+            "type": "COMBO"
           },
           {
             "id": 45,
             "origin_id": -10,
             "origin_slot": 2,
             "target_id": 2,
-            "target_slot": 2,
-            "type": "COMBO"
+            "target_slot": 3,
+            "type": "FLOAT"
           },
           {
             "id": 46,
             "origin_id": -10,
             "origin_slot": 3,
-            "target_id": 2,
-            "target_slot": 3,
+            "target_id": 5,
+            "target_slot": 4,
             "type": "FLOAT"
           },
           {
@@ -3342,7 +3321,7 @@
             "origin_id": -10,
             "origin_slot": 4,
             "target_id": 5,
-            "target_slot": 4,
+            "target_slot": 5,
             "type": "FLOAT"
           },
           {
@@ -3350,7 +3329,7 @@
             "origin_id": -10,
             "origin_slot": 5,
             "target_id": 5,
-            "target_slot": 5,
+            "target_slot": 6,
             "type": "FLOAT"
           },
           {
@@ -3358,7 +3337,7 @@
             "origin_id": -10,
             "origin_slot": 6,
             "target_id": 5,
-            "target_slot": 6,
+            "target_slot": 7,
             "type": "FLOAT"
           },
           {
@@ -3366,7 +3345,7 @@
             "origin_id": -10,
             "origin_slot": 7,
             "target_id": 5,
-            "target_slot": 7,
+            "target_slot": 8,
             "type": "FLOAT"
           },
           {
@@ -3374,15 +3353,15 @@
             "origin_id": -10,
             "origin_slot": 8,
             "target_id": 5,
-            "target_slot": 8,
-            "type": "FLOAT"
+            "target_slot": 22,
+            "type": "BOOLEAN"
           },
           {
             "id": 52,
             "origin_id": -10,
             "origin_slot": 9,
             "target_id": 5,
-            "target_slot": 22,
+            "target_slot": 17,
             "type": "BOOLEAN"
           },
           {
@@ -3390,29 +3369,21 @@
             "origin_id": -10,
             "origin_slot": 10,
             "target_id": 5,
-            "target_slot": 17,
-            "type": "BOOLEAN"
+            "target_slot": 20,
+            "type": "COMBO"
           },
           {
             "id": 54,
             "origin_id": -10,
             "origin_slot": 11,
-            "target_id": 5,
-            "target_slot": 20,
-            "type": "COMBO"
-          },
-          {
-            "id": 55,
-            "origin_id": -10,
-            "origin_slot": 12,
             "target_id": 20,
             "target_slot": 8,
             "type": "STRING"
           },
           {
-            "id": 56,
+            "id": 55,
             "origin_id": -10,
-            "origin_slot": 13,
+            "origin_slot": 12,
             "target_id": 30,
             "target_slot": 0,
             "type": "INT"

@@ -98,6 +98,9 @@ renderer.
 The skeleton above only mounts a panel. Implement controls, canonical-value
 bindings and workflow-to-UI updates in the renderer. The host calls `onShow`,
 `onHide` and `dispose`; it does not call a `sync` function on every graph edit.
+`onShow`/`onHide` follow both presentation and the active canvas graph. An App
+stored in `app` mode is inactive while the user is inside its subgraph. Keep
+borrowed DOM widgets with their native nodes during that time.
 Use the existing renderer patterns for update subscriptions or polling, and
 dispose them when the host is removed. The optional dimensions guide sizing;
 keep user resizing intact. Renderer IDs and binding selectors must match the
@@ -141,7 +144,9 @@ Subgraph inputs and outputs are an author choice:
 - keep App-only presentation details private;
 - allow multiple outputs when the workflow naturally has them.
 
-Re-shoot currently exposes 14 ordinary settings and three `VIDEO` results.
+Re-shoot currently exposes 13 ordinary settings and three `VIDEO` results.
+Its video selector stays on the internal LoadVideo node, unconnected, so both
+native renderers retain selection/upload and preview. App edits that same widget.
 The App renderer still uses other inner preview behavior without publishing it
 as a slot.
 
