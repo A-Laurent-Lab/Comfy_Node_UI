@@ -23,9 +23,9 @@ extension matches that ID to the one registered by a UI's `.js` file.
 The JSON filename does not select the UI. For example:
 
 ```text
-film.json → Camera subgraph → studio.camera@1 → studio-camera.js
-film.json → Color subgraph  → studio.color@1  → studio-color.js
-clip.json → Camera subgraph → studio.camera@1 → studio-camera.js (reused)
+film.json / Camera → studio.camera@1 → studio-camera.js
+film.json / Color  → studio.color@1  → studio-color.js
+clip.json / Camera → studio.camera@1 → studio-camera.js
 ```
 
 Send the JSON and **only the files for the UI IDs it uses**, including their
