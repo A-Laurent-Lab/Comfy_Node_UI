@@ -32,6 +32,14 @@ The host remains an ordinary native `SubgraphNode`. Bind a renderer with:
 Use a versioned renderer ID. Keep `node` as the portable default. Renderer
 absence must leave the normal subgraph usable.
 
+The lookup is `host.properties.app_view_renderer -> rendererRegistry.get(id)`.
+There is no lookup by workflow filename or renderer filename. Each host can
+select a different ID; several hosts can also reuse the same registered renderer.
+`build` receives the selected host, so bindings must resolve within that host's
+workflow rather than retain another instance's nodes in module-global state.
+The registry is shared by loaded workflows; a different UI must not register
+the same ID (registration currently replaces an existing entry with that ID).
+
 Stable inner roles belong in the relevant node's ordinary properties when node
 IDs are likely to change:
 
@@ -148,6 +156,17 @@ Make dependencies and imports resolve at the installed destination; the source
 folder's name is not a protocol. For a standalone ComfyUI package outside this
 layout, implement and verify its entrypoint and imports before documenting it
 as installable directly into `custom_nodes`.
+
+Before delivery, walk the workflow's native subgraph instances (including nested
+definitions) and collect their `app_view_renderer` IDs. Match each ID to the
+actual module registration; do not guess a filename from the ID. Collect that
+module's local imports and resource files, deduplicate shared dependencies, and
+report the exact files and their destinations relative to `web/renderers`.
+Exclude unrelated installed UIs and the already-installed generic core. Keep
+assets at the relative locations expected by the UI. Report missing renderer
+IDs or unresolved file dependencies instead of claiming a complete transfer.
+The file list can be included in the delivery response; no new runtime manifest
+or naming convention is needed.
 
 The distribution contains `workflows/reshoot-app-view.json` and the UI code for
 both examples. The MiniMax workflow is in the full development checkout only;
