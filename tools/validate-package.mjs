@@ -10,8 +10,8 @@ const required = [
   "custom_nodes/ComfyUI-AppView/web/app-view-core.js",
   "custom_nodes/ComfyUI-AppView/web/app-view.js",
   "custom_nodes/ComfyUI-AppView/web/crossview-widget-compat.js",
-  "custom_nodes/ComfyUI-AppView/web/renderers/minimax-h3-i2v.js",
-  "custom_nodes/ComfyUI-AppView/web/renderers/reshoot.js",
+  "custom_nodes/ComfyUI-AppView/web/renderers/comfynodeui-minimax-h3-i2v/index.js",
+  "custom_nodes/ComfyUI-AppView/web/renderers/comfynodeui-reshoot/index.js",
   "custom_nodes/ComfyUI-CrossViewWarp/__init__.py",
   "custom_nodes/ComfyUI-CrossViewWarp/crossview_warp_node.py",
   ".agents/skills/comfy-app-view-authoring/SKILL.md",
@@ -39,11 +39,11 @@ assert.match(frameworkSource, /export function registerAppViewRenderer\(/);
 
 const rendererSources = await Promise.all([
   readFile(
-    path.join(root, "custom_nodes/ComfyUI-AppView/web/renderers/minimax-h3-i2v.js"),
+    path.join(root, "custom_nodes/ComfyUI-AppView/web/renderers/comfynodeui-minimax-h3-i2v/index.js"),
     "utf8",
   ),
   readFile(
-    path.join(root, "custom_nodes/ComfyUI-AppView/web/renderers/reshoot.js"),
+    path.join(root, "custom_nodes/ComfyUI-AppView/web/renderers/comfynodeui-reshoot/index.js"),
     "utf8",
   ),
 ]);
