@@ -12,12 +12,12 @@ Workflow-specific UIs are separate folders. They are not part of the extension.
 <table>
   <tr>
     <td align="center" width="66%">
-      <a href="assets/Show_example_1.png"><img src="assets/Show_example_1.png" alt="Сабграф с кастомным UI" width="620"></a><br>
-      <strong>Сабграф с кастомным UI</strong>
+      <a href="assets/Show_example_1.png"><img src="assets/Show_example_1.png" alt="Subgraph with custom UI" width="620"></a><br>
+      <strong>Subgraph with custom UI</strong>
     </td>
     <td align="center" width="34%">
-      <a href="assets/Show_example_2.png"><img src="assets/Show_example_2.png" alt="Элементы управления" width="330"></a><br>
-      <strong>Элементы управления</strong>
+      <a href="assets/Show_example_2.png"><img src="assets/Show_example_2.png" alt="Controls" width="330"></a><br>
+      <strong>Controls</strong>
     </td>
   </tr>
 </table>
