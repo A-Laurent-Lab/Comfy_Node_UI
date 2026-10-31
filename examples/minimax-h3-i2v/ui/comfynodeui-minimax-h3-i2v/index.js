@@ -50,7 +50,7 @@ function addStyles() {
       resize: vertical;
       background: #101217;
       color: #fff;
-      font: inherit;
+      font: 13px system-ui, sans-serif;
     }
     .h3-i2v-app__grid {
       display: grid;
@@ -171,10 +171,14 @@ function build({ host, api }) {
   largeImage.style.cssText = 'display:block;width:100%;max-height:600px;object-fit:contain';
   detail.append(detailHeading, largeImage);
 
+  const promptField = document.createElement("label");
+  const promptTitle = document.createElement("span");
+  promptTitle.textContent = "Prompt";
   const prompt = document.createElement("textarea");
   prompt.placeholder = "Describe the video";
   prompt.addEventListener("input", () => setWidget(host, "prompt", prompt.value));
-  root.appendChild(prompt);
+  promptField.append(promptTitle, prompt);
+  root.appendChild(promptField);
 
   const grid = document.createElement("div");
   grid.className = "h3-i2v-app__grid";
