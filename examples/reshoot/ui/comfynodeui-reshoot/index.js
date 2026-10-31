@@ -237,7 +237,7 @@ function bridgePromotedWidgets(host, specifications) {
     };
     const wrappedCallback = function (value) {
       wrappedCallback[PROMOTED_CALLBACK_PREVIOUS]?.apply(this, arguments);
-      writeOuter(value ?? inner.value);
+      writeOuter(inner.value);
     };
     wrappedCallback[PROMOTED_CALLBACK_PREVIOUS] = previousCallback;
     inner.callback = wrappedCallback;
@@ -492,7 +492,11 @@ function createSelect({ node, name, label, options }) {
     option.textContent = String(value.label ?? value);
     select.appendChild(option);
   }
-  select.addEventListener("change", () => setWidget(node, name, select.value));
+  select.addEventListener("change", () => setWidget(
+    node,
+    name,
+    typeof target.value === "number" ? Number(select.value) : select.value,
+  ));
   row.append(title, select);
   return {
     element: row,

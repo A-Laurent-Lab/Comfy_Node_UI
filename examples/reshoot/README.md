@@ -8,6 +8,9 @@ want to open `reshoot-app-view.json` with its custom interface.
 2. Copy `nodes/ComfyUI-CrossViewWarp` into ComfyUI's `custom_nodes` folder.
 3. Restart ComfyUI and open `reshoot-app-view.json`.
 
+After replacing this UI folder with an update, reopen the workflow or reload
+ComfyUI so its existing App instance is rebuilt from the new files.
+
 Model download links are stored in the workflow JSON.
 
 In App, expand the right panel for **Preview & keyframes** or **Output**.

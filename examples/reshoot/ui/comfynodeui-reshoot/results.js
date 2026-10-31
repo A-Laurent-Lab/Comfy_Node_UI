@@ -41,8 +41,8 @@ export function createResultsPanel({host, app, api, executionId}) {
       if (binding.error) errors.push(binding.error);
       const node = binding.node;
       if (node) {
-        const id = node.graph === app.graph ? String(node.id) : `${node.graph?.id}:${node.id}`;
-        record(role,app.nodeOutputs?.[id]);
+        const id = executionId(node);
+        if (id != null) record(role,app.nodeOutputs?.[id]);
       }
       buttons.get(role).disabled = Boolean(binding.error) || !saved[role];
       buttons.get(role).title = binding.error;
