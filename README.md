@@ -5,7 +5,7 @@ ComfyUI subgraphs. Select a subgraph and use **Node ↔ App** to switch between
 its normal node controls and an installed custom UI. Both edit the same workflow.
 The adjacent panel icon expands the App's right-hand workspace. Essential
 controls stay on the left; section buttons select previews, editing or results.
-Narrowing the node automatically returns it to one panel.
+Resizing keeps the selected layout and stops before its panels no longer fit.
 
 Workflow-specific UIs are separate folders. They are not part of the extension.
 

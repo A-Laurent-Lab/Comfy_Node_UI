@@ -94,8 +94,8 @@ The host owns `Node ↔ App`, the adjacent one/two-panel icon, section navigatio
 DOM mounting and sizing. Put essential controls in `root`; put focused tasks in
 `panels` with stable IDs and short labels. `openPanel(id)` reveals a section.
 `app_view_layout` (compact/expanded) and `app_view_section` persist per subgraph.
-Narrowing the host collapses the right panel automatically; its toolbar button
-reopens it at a suitable width. Keep this behavior in the shared host.
+Resizing preserves the selected layout and enforces its minimum width in both
+native renderers. Only the toolbar button collapses the right panel.
 Pause playback/requests when `onPanelChange(null)` is called. Older renderers
 returning only `root` remain usable as a single panel.
 
