@@ -114,6 +114,7 @@ app.registerExtension({
     // Selection Toolbox reuses its DOM when selection changes.
     const toolbarObserver = new MutationObserver(updateLayoutIcon);
     toolbarObserver.observe(document.body, {childList:true, subtree:true});
+    document.addEventListener('comfy-app-view:layout-changed', updateLayoutIcon);
     document.addEventListener("comfy-app-view:renderer-registered", () => {
       requestAnimationFrame(() => extension.attachAll());
     });
