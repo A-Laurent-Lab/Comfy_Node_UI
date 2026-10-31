@@ -6,8 +6,6 @@
   Selection Toolbox command, mounting, view switching, and sizing.
 - `examples/reshoot/ui/comfynodeui-reshoot/` — optional renderer that addresses
   inner workflow nodes by stable roles and reuses a custom DOM widget.
-- `examples/minimax-h3-i2v/ui/comfynodeui-minimax-h3-i2v/` — optional renderer
-  that works mostly through promoted host widgets.
 - Each example's JSON beside its `ui` folder — accepted workflow binding.
 
 ## Workflow binding
@@ -50,6 +48,31 @@ IDs are likely to change:
 ```
 
 Do not use screen position or translated title text as identity.
+
+Node lookup is renderer behavior, separate from ComfyUI's data flow. The host
+does not need a cable to a node merely so JavaScript can read or edit it. Declare
+the selector and scope for every controlled node:
+
+| Binding | Survives | Requires an update when |
+| --- | --- | --- |
+| Promoted host widget | inner node rearrangement | the promoted name or canonical value changes |
+| Stable role in `host.subgraph` | title changes and unrelated rewiring | the node moves outside that subgraph |
+| Stable role in the containing/root or recursively walked workflow | title changes, rewiring and movement within the searched scope | the role becomes missing or ambiguous |
+| Connection from a named host input/output | title and numeric ID changes | that connection path is rewired |
+| Numeric node ID | no structural copy or rebuild | the workflow is copied, regenerated or renumbered |
+
+Do not bind by visual title, position or list order. Type alone is insufficient
+when several nodes have the same type. A role lookup must return exactly one node
+in its declared scope. If it returns none or several, show the binding as
+unavailable and identify the missing or duplicated role. When external nodes can
+serve several App hosts, use a persisted host-specific namespace or explicit
+binding map so one host cannot control another host's node.
+
+Renaming a display title does not affect a role or connection binding. Changing
+wires affects only bindings that follow those wires. Moving a node across a
+subgraph boundary preserves its role property but changes which graph contains
+it; update an inside/outside binding, or use a unique recursive lookup when that
+mobility is part of the UI's supported contract.
 
 ## Renderer contract
 
@@ -153,8 +176,9 @@ Subgraph inputs and outputs are an author choice:
 - allow multiple outputs when the workflow naturally has them.
 
 Re-shoot currently exposes 13 ordinary settings and three `VIDEO` results.
-Its auxiliary saves are internal; the final generated SaveVideo stays outside
-and the App's Output section reads that same output.
+Its generated and warp saves are internal; the original-audio SaveVideo stays
+outside. The Output section finds internal saves by role and the external save
+through its direct connection to the corresponding host output.
 Its video selector stays on the internal LoadVideo node, unconnected, so both
 native renderers retain selection/upload and preview. App edits that same widget.
 The App renderer still uses other inner preview behavior without publishing it
@@ -233,7 +257,13 @@ Also inspect the resulting screenshots in `.tmp`. Confirm:
 - manually narrowing or widening the host preserves that size and reflows the UI;
 - borrowed native DOM widgets return to their original node in Node mode;
 - real pointer drag works in Node 2.0 and its value survives the state bridge;
-- missing renderer degrades to the native subgraph.
+- missing renderer degrades to the native subgraph;
+- renamed node titles do not break stable bindings;
+- missing or duplicate roles fail visibly instead of selecting an arbitrary node;
+- unrelated rewiring does not retarget role bindings;
+- two hosts using the same renderer do not share controlled nodes or values;
+- supported inside/outside moves keep their binding, while unsupported moves
+  report the exact scope limit.
 
 For the pinned frontend 1.57.4, verify Node 2.0 and legacy after custom node
 definitions are registered. Loading earlier creates placeholder `UNKNOWN`
