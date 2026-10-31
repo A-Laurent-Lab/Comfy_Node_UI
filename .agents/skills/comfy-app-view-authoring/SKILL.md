@@ -1,9 +1,9 @@
 ---
 name: comfy-app-view-authoring
-description: Create or revise reusable custom App Views for native ComfyUI workflows and subgraphs while preserving their normal graph, slots, outputs, execution, and agent access. Use for renderer authoring, workflow-to-UI bindings, Node/App presentation switching, or App View portability; do not use for ordinary workflow-only edits.
+description: Create or revise reusable custom UIs for ComfyUI-App-View on native ComfyUI workflows and subgraphs while preserving their normal graph, slots, outputs, execution, and agent access. Use for renderer authoring, workflow-to-UI bindings, Node/App presentation switching, or App View portability; do not use for ordinary workflow-only edits.
 ---
 
-# Comfy App View Authoring
+# ComfyUI-App-View Authoring
 
 Build the custom UI as another representation of a real ComfyUI workflow. Keep
 the workflow executable and editable without the renderer.
@@ -70,8 +70,8 @@ delivery using subgraph names, folder names and exact destination paths, not
 renderer IDs or a file-by-file scavenger hunt. Never tell the user to copy all
 of `renderers` or overwrite an unrelated same-named folder.
 
-The recipient installs ComfyUI-AppView once, copies each supplied UI folder
-whole into `ComfyUI/custom_nodes/ComfyUI-AppView/web/renderers`, and restarts.
+The recipient installs ComfyUI-App-View once, copies each supplied UI folder
+whole into `ComfyUI/custom_nodes/ComfyUI-App-View/web/renderers`, and restarts.
 There is no need to resend the framework or a wrapper named `custom_nodes`.
 A JSON import carries graph values and renderer ID, not JavaScript. If the UI
 is already installed, the JSON alone is sufficient. A skill is for authoring,

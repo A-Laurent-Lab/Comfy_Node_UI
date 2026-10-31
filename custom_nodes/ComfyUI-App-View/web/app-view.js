@@ -48,7 +48,7 @@ function showUIFiles() {
     hosts.textContent = `Used by: ${entry.subgraphs.join(", ")}`;
     const location = document.createElement("code");
     location.textContent = entry.folder
-      ? `ComfyUI/custom_nodes/ComfyUI-AppView/web/renderers/${entry.folder}/`
+      ? `ComfyUI/custom_nodes/ComfyUI-App-View/web/renderers/${entry.folder}/`
       : "Folder not recorded. Ask the workflow author for its UI folder.";
     section.append(name, hosts, location);
     root.append(section);

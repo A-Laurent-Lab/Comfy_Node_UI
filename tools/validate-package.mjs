@@ -6,11 +6,11 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const required = [
-  "custom_nodes/ComfyUI-AppView/__init__.py",
-  "custom_nodes/ComfyUI-AppView/web/app-view-core.js",
-  "custom_nodes/ComfyUI-AppView/web/app-view.js",
-  "custom_nodes/ComfyUI-AppView/web/app-view-shell.js",
-  "custom_nodes/ComfyUI-AppView/web/renderers/README.md",
+  "custom_nodes/ComfyUI-App-View/__init__.py",
+  "custom_nodes/ComfyUI-App-View/web/app-view-core.js",
+  "custom_nodes/ComfyUI-App-View/web/app-view.js",
+  "custom_nodes/ComfyUI-App-View/web/app-view-shell.js",
+  "custom_nodes/ComfyUI-App-View/web/renderers/README.md",
   ".agents/skills/comfy-app-view-authoring/SKILL.md",
   "examples/minimax-h3-i2v/minimax-h3-i2v-app-view.json",
   "examples/minimax-h3-i2v/ui/comfynodeui-minimax-h3-i2v/index.js",
@@ -42,17 +42,17 @@ async function inspect(directory, prefix = "") {
 await inspect(root);
 
 const frameworkSource = await readFile(
-  path.join(root, "custom_nodes/ComfyUI-AppView/web/app-view-core.js"),
+  path.join(root, "custom_nodes/ComfyUI-App-View/web/app-view-core.js"),
   "utf8",
 );
 assert.match(frameworkSource, /export function registerAppViewRenderer\(/);
 const entrySource = await readFile(
-  path.join(root, "custom_nodes/ComfyUI-AppView/web/app-view.js"),
+  path.join(root, "custom_nodes/ComfyUI-App-View/web/app-view.js"),
   "utf8",
 );
 assert.doesNotMatch(entrySource, /CrossView|reshoot|minimax/i);
 assert.deepEqual(
-  (await readdir(path.join(root, "custom_nodes/ComfyUI-AppView/web/renderers"))).sort(),
+  (await readdir(path.join(root, "custom_nodes/ComfyUI-App-View/web/renderers"))).sort(),
   ["README.md"],
   "The generic extension must not install workflow-specific renderers",
 );
@@ -146,7 +146,7 @@ assert.equal(
 
 console.log(JSON.stringify({
   portable: true,
-  framework: "Comfy_Node_UI",
+  framework: "ComfyUI-App-View",
   coreRenderers: 0,
   manifestFiles: manifestLines.length,
   optionalExamples: ["minimax-h3-i2v", "reshoot"],
