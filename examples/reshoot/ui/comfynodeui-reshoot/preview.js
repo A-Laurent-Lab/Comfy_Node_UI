@@ -100,9 +100,14 @@ export function createPreviewPanel({host, camera, source, prepare, api, widget, 
   for (const button of root.querySelectorAll('[data-view]')) button.addEventListener('click', () => {
     stop(); view = button.dataset.view;
     for (const b of root.querySelectorAll('[data-view]')) b.setAttribute('aria-pressed',String(b===button));
-    img.hidden = view !== 'warp'; video.hidden = view !== 'source'; status.hidden = view === 'source'; shown = ''; sync();
+    img.hidden = view !== 'warp'; video.hidden = view !== 'source'; shown = '';
+    if (view === 'source' && video.error) video.load();
+    sync();
   });
-  video.addEventListener('loadedmetadata', () => { updateMetadata(); timeline.sync(); });
+  video.addEventListener('loadedmetadata', () => {
+    updateMetadata(); timeline.sync();
+    if (view === 'source') { video.hidden = false; status.hidden = true; }
+  });
   video.addEventListener('error', () => {
     if (view === 'source') { status.hidden = false; status.textContent = 'Choose an available source video.'; }
   });
@@ -115,16 +120,27 @@ export function createPreviewPanel({host, camera, source, prepare, api, widget, 
   api.addEventListener('executed',onExecuted);
   function sync() {
     const url = sourceUrl();
-    if (video.dataset.source !== url) { video.dataset.source = url; video.src = url; metadataCount = 1; stop(); }
+    if (video.dataset.source !== url) {
+      video.dataset.source = url;
+      if (url) video.src = url; else video.removeAttribute('src');
+      metadataCount = 1; stop(); video.load();
+    }
     updateMetadata(); timeline.sync();
-    if (!active) return;
     if (view === 'source') {
+      video.hidden = false;
+      status.hidden = video.readyState >= 1 && !video.error;
+      status.textContent = video.error || !url
+        ? 'Choose an available source video.' : 'Loading source video…';
+      if (!active) return;
       const t = (frame()-1)/24;
       if (Number.isFinite(video.duration) && Math.abs(video.currentTime-t) > .025) video.currentTime = t;
       if (playing && !timer) timer = setTimeout(() => {
         timer = null; setWidget(camera,'frame_index',frame() >= count() ? 1 : frame()+1); sync();
       }, 1000/24);
-    } else request();
+    } else {
+      if (!active) return;
+      request();
+    }
   }
   return {root, sync, setActive(value) {active = value; if (!active) {stop(); aborter?.abort();} else sync();},
     dispose() {disposed = true; stop(); aborter?.abort(); api.removeEventListener('executed',onExecuted); if(objectUrl) URL.revokeObjectURL(objectUrl); video.removeAttribute('src'); video.load();}};

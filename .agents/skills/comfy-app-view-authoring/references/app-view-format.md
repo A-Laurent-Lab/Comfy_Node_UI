@@ -259,6 +259,9 @@ Also inspect the resulting screenshots in `.tmp`. Confirm:
 - no renderer-owned Run or sign-in control;
 - App edits survive serialize/reload;
 - ordinary Node or agent edits appear in App;
+- an unavailable source can be replaced without reopening, and loaded metadata
+  updates preview duration, timeline and keyframe controls;
+- nested output readback uses the host instance execution path and survives reload;
 - expanding renderer content grows the node without an inner scrollbar;
 - manually narrowing or widening the host preserves that size and reflows the UI;
 - borrowed native DOM widgets return to their original node in Node mode;

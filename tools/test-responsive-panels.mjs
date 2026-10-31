@@ -108,7 +108,9 @@ try {
       assert.ok(!narrow.detailHidden);assert.equal(narrow.section,section);
       assert.ok(narrow.width>600 && narrow.width<wide.width,JSON.stringify(narrow));
       assert.ok(narrow.scrollWidth<=narrow.rootWidth+1,JSON.stringify(narrow));
-      await page.screenshot({path:path.join(output,`${example}-${node2?'node2':'legacy'}.png`)});
+      if (!process.env.APP_VIEW_SKIP_SCREENSHOTS) {
+        await page.screenshot({path:path.join(output,`${example}-${node2?'node2':'legacy'}.png`)});
+      }
       const saved=await page.evaluate(()=>window.testApp.graph.serialize());
       await load(saved);
       assert.equal((await state()).layout,'expanded');assert.equal((await state()).section,section);
@@ -150,7 +152,9 @@ try {
   assert.deepEqual(failures,[]);
   console.log(`Native pointer resize passed. Screenshots: ${output}`);
 } catch(error) {
-  await page.screenshot({path:path.join(output,'failure.png')});
+  if (!process.env.APP_VIEW_SKIP_SCREENSHOTS) {
+    await page.screenshot({path:path.join(output,'failure.png')});
+  }
   console.error('State at failure:',await state().catch(()=>null));
   throw error;
 } finally {

@@ -141,6 +141,10 @@ Test App -> inner graph -> App repeatedly and also enter from Node mode.
 Promoting a media selector to a connected input hides the original selector and
 input preview in Node 2.0 by design. Keep a locally editable loader's selector
 unconnected; App can bind directly to it without promoting it.
+Test an unavailable media value followed by a valid selection without reopening
+the workflow; preview metadata, timeline length and serialize/reload must recover.
+Address nested output readback by the node's instance execution path, not the
+shared subgraph definition ID.
 Exercise its real pointer gestures. Node 2.0 WidgetDOM stops pointermove before
 document-level listeners, so bridge movement at the canvas only when the reused
 widget depends on a document listener and prevent duplicate legacy handling.
