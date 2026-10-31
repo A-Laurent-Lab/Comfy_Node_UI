@@ -39,10 +39,9 @@ the received JSON. Select its subgraph and choose **App** in **Node ↔ App**.
 
 Importing a workflow JSON does not install its UI folder.
 
-## Optional examples
+## Optional example
 
 Installing `ComfyUI-App-View` installs no workflow-specific UI. The examples are
-kept separately and can be installed one at a time:
+kept separately from the extension:
 
-- [MiniMax H3 image-to-video](examples/minimax-h3-i2v/README.md)
 - [Re-shoot](examples/reshoot/README.md)

@@ -12,8 +12,6 @@ const required = [
   "custom_nodes/ComfyUI-App-View/web/app-view-shell.js",
   "custom_nodes/ComfyUI-App-View/web/renderers/README.md",
   ".agents/skills/comfy-app-view-authoring/SKILL.md",
-  "examples/minimax-h3-i2v/minimax-h3-i2v-app-view.json",
-  "examples/minimax-h3-i2v/ui/comfynodeui-minimax-h3-i2v/index.js",
   "examples/reshoot/reshoot-app-view.json",
   "examples/reshoot/ui/comfynodeui-reshoot/index.js",
   "examples/reshoot/ui/comfynodeui-reshoot/workflow.js",
@@ -57,19 +55,12 @@ assert.deepEqual(
   "The generic extension must not install workflow-specific renderers",
 );
 
-const rendererSources = await Promise.all([
-  readFile(
-    path.join(root, "examples/minimax-h3-i2v/ui/comfynodeui-minimax-h3-i2v/index.js"),
-    "utf8",
-  ),
-  readFile(
-    path.join(root, "examples/reshoot/ui/comfynodeui-reshoot/index.js"),
-    "utf8",
-  ),
-]);
-assert.match(rendererSources[0], /id:\s*RENDERER/);
-assert.match(rendererSources[1], /id:\s*RENDERER/);
-assert.match(rendererSources[1], /crossview-widget-compat\.js/);
+const rendererSource = await readFile(
+  path.join(root, "examples/reshoot/ui/comfynodeui-reshoot/index.js"),
+  "utf8",
+);
+assert.match(rendererSource, /id:\s*RENDERER/);
+assert.match(rendererSource, /crossview-widget-compat\.js/);
 
 const manifestLines = (await readFile(path.join(root, "MANIFEST.sha256"), "utf8"))
   .trim()
@@ -143,27 +134,12 @@ const modelEntries = subgraph.nodes.flatMap((node) => node.properties?.models ??
 assert.equal(modelEntries.length, 7);
 assert.ok(modelEntries.every((model) => model.name && model.directory && model.url));
 
-const minimaxWorkflow = JSON.parse(
-  await readFile(
-    path.join(root, "examples/minimax-h3-i2v/minimax-h3-i2v-app-view.json"),
-    "utf8",
-  ),
-);
-const minimaxHost = minimaxWorkflow.nodes.find(
-  (node) => node.properties?.app_view_renderer === "minimax-h3-i2v@1",
-);
-assert.ok(minimaxHost, "MiniMax App View host is missing");
-assert.equal(
-  minimaxHost.properties.app_view_package?.folder,
-  "comfynodeui-minimax-h3-i2v",
-);
-
 console.log(JSON.stringify({
   portable: true,
   framework: "ComfyUI-App-View",
   coreRenderers: 0,
   manifestFiles: manifestLines.length,
-  optionalExamples: ["minimax-h3-i2v", "reshoot"],
+  optionalExamples: ["reshoot"],
   reshootExample: {
     inputs: 13,
     outputs: 3,
