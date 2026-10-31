@@ -100,8 +100,8 @@ assert.ok(subgraph);
 assert.equal(subgraph.nodes.length, 28);
 assert.equal(subgraph.links.length, 57);
 assert.equal(workflow.nodes.length, 2);
-assert.equal(workflow.nodes.find(n => n.type === 'SaveVideo')?.properties.reshoot_role, 'generated-save');
-for (const role of ['warp-save','original-audio-save']) {
+assert.equal(workflow.nodes.find(n => n.type === 'SaveVideo')?.properties.reshoot_role, 'original-audio-save');
+for (const role of ['warp-save','generated-save']) {
   assert.equal(subgraph.nodes.find(n => n.properties?.reshoot_role === role)?.type, 'SaveVideo');
 }
 for (const link of subgraph.links) {
@@ -116,6 +116,20 @@ for (const link of subgraph.links) {
 const prepare = subgraph.nodes.find((node) => node.properties?.reshoot_role === "prepare");
 const prompt = subgraph.nodes.find((node) => node.properties?.reshoot_role === "prompt");
 const source = subgraph.nodes.find((node) => node.properties?.reshoot_role === "source-video");
+const originalSave = workflow.nodes.find(node => node.properties?.reshoot_role === 'original-audio-save');
+const originalVideo = subgraph.nodes.find(node => node.properties?.reshoot_role === 'original-audio-video');
+const originalOutput = workflow.links.find(link => link[0] === originalSave.inputs[0].link);
+assert.equal(originalOutput[1], host.id);
+assert.equal(host.outputs[originalOutput[2]].name, 'Original audio');
+assert.equal(subgraph.links.find(link => link.target_id === -20 && link.target_slot === originalOutput[2]).origin_id, originalVideo.id);
+const originalAudio = subgraph.links.find(link => link.id === originalVideo.inputs.find(input => input.name === 'audio').link);
+assert.equal(originalAudio.origin_id, prepare.id);
+assert.equal(prepare.outputs[originalAudio.origin_slot].name, 'audio');
+const generatedSave = subgraph.nodes.find(node => node.properties?.reshoot_role === 'generated-save');
+const generatedVideo = subgraph.nodes.find(node => node.properties?.reshoot_role === 'generated-video');
+assert.equal(subgraph.links.find(link => link.id === generatedSave.inputs[0].link).origin_id, generatedVideo.id);
+const generatedAudio = subgraph.links.find(link => link.id === generatedVideo.inputs.find(input => input.name === 'audio').link);
+assert.equal(subgraph.nodes.find(node => node.id === generatedAudio.origin_id).type, 'VAEDecodeAudio');
 assert.equal(source.inputs.find((input) => input.name === "file").link, null);
 for (const name of ["width", "height", "length"]) {
   const input = prompt.inputs.find((slot) => slot.name === name);

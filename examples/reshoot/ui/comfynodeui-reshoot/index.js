@@ -89,7 +89,7 @@ function addStyles() {
     }
     .reshoot-field {
       display: grid;
-      grid-template-columns: 92px minmax(0, 1fr) 58px;
+      grid-template-columns: 92px minmax(0, 1fr);
       align-items: center;
       gap: 8px;
       min-height: 38px;
@@ -100,6 +100,7 @@ function addStyles() {
       background: #292c30;
     }
     .reshoot-field__name { color: #a3a7ae; }
+    .reshoot-field--range { grid-template-columns: 92px minmax(0, 1fr) 58px; }
     .reshoot-field__value {
       color: #c4c7cc;
       text-align: right;
@@ -110,6 +111,7 @@ function addStyles() {
     .reshoot-field select,
     .reshoot-field input[type="number"] {
       width: 100%;
+      min-width: 0;
       padding: 4px 6px;
       border: 1px solid #50545b;
       border-radius: 5px;
@@ -117,7 +119,6 @@ function addStyles() {
       color: #fff;
     }
     .reshoot-field--check { grid-template-columns: 1fr auto; }
-    .reshoot-field--check .reshoot-field__value { display: none; }
     .reshoot-app details {
       margin: 8px 0;
       border: 1px solid #3c4046;
@@ -131,10 +132,11 @@ function addStyles() {
       font-weight: 650;
     }
     .reshoot-app details > div { padding: 0 8px 8px; }
+    .reshoot-app__prompt-field { display: grid; gap: 6px; margin-top: 10px; color: #c4c7cc; }
     .reshoot-app__prompt {
       width: 100%;
       min-height: 64px;
-      margin: 8px 0;
+      margin: 0;
       padding: 9px;
       border: 1px solid #50545b;
       border-radius: 8px;
@@ -425,7 +427,7 @@ function createRange({ node, name, label, suffix = "" }) {
   const target = widget(node, name);
   if (!target) return null;
   const row = document.createElement("label");
-  row.className = "reshoot-field";
+  row.className = "reshoot-field reshoot-field--range";
   const title = document.createElement("span");
   title.className = "reshoot-field__name";
   title.textContent = label;
@@ -463,9 +465,7 @@ function createCheckbox({ node, name, label }) {
   const input = document.createElement("input");
   input.type = "checkbox";
   input.addEventListener("change", () => setWidget(node, name, input.checked));
-  const readout = document.createElement("span");
-  readout.className = "reshoot-field__value";
-  row.append(title, input, readout);
+  row.append(title, input);
   return {
     element: row,
     sync() {
@@ -491,14 +491,11 @@ function createSelect({ node, name, label, options }) {
     select.appendChild(option);
   }
   select.addEventListener("change", () => setWidget(node, name, select.value));
-  const readout = document.createElement("span");
-  readout.className = "reshoot-field__value";
-  row.append(title, select, readout);
+  row.append(title, select);
   return {
     element: row,
     sync() {
       select.value = String(target.value ?? "");
-      readout.textContent = select.selectedOptions[0]?.textContent ?? "";
     },
   };
 }
@@ -517,14 +514,11 @@ function createNumber({ node, name, label }) {
   input.max = String(target.options?.max ?? Number.MAX_SAFE_INTEGER);
   input.step = String(target.options?.step ?? 1);
   input.addEventListener("change", () => setWidget(node, name, Number(input.value)));
-  const readout = document.createElement("span");
-  readout.className = "reshoot-field__value";
-  row.append(title, input, readout);
+  row.append(title, input);
   return {
     element: row,
     sync() {
       input.value = String(target.value ?? 0);
-      readout.textContent = String(target.value ?? 0);
     },
   };
 }
@@ -635,12 +629,16 @@ function buildApp({ host, openPanel }) {
   appendControl(advancedBody, controls, createNumber({ node: seedNode, name: "noise_seed", label: "Seed" }));
   root.appendChild(advanced);
 
+  const promptField = document.createElement("label");
+  promptField.className = "reshoot-app__prompt-field";
+  const promptTitle = document.createElement("span");
+  promptTitle.textContent = "Prompt";
   const prompt = document.createElement("textarea");
   prompt.className = "reshoot-app__prompt";
   prompt.placeholder = "Describe what the new view should reveal (optional)";
-  prompt.setAttribute('aria-label','Prompt');
   prompt.addEventListener("input", () => setWidget(promptNode, "prompt", prompt.value));
-  root.appendChild(prompt);
+  promptField.append(promptTitle, prompt);
+  root.appendChild(promptField);
 
   changeButton.addEventListener("click", () => {
     const upload = source.widgets?.find(

@@ -12,4 +12,5 @@ Model download links are stored in the workflow JSON.
 
 In App, expand the right panel for **Preview & keyframes** or **Output**.
 Use ComfyUI's Run button to prepare the warp preview and generate results.
-The final Save Video node remains outside the subgraph.
+Save Video with the original audio remains outside the subgraph; the generated
+audio output stays inside.

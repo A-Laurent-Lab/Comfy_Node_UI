@@ -30,6 +30,10 @@ existing App source being adapted.
 - Let ComfyUI's own Run control execute the graph. Do not add Sign in, Analyze,
   Generate, or `queuePrompt` controls merely because the source standalone App
   had them.
+- Give form fields persistent visible labels associated with their controls;
+  placeholders and `aria-label` alone do not replace them.
+- Within a field, show the value once. Selects and text/number inputs already
+  display it; use a separate readout for controls such as sliders that do not.
 
 ## State and bindings
 
