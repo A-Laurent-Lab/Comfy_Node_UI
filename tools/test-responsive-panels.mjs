@@ -41,21 +41,25 @@ async function command(cls) {
 }
 async function state() {
   return page.evaluate(()=>{
-    const h=window.testHost, root=h.__comfyAppView.shell.root;
-    return {width:h.size[0],height:h.size[1],layout:h.properties.app_view_layout,
+    const h=window.testHost, root=h.__comfyAppView.shell.root, canvas=window.testApp.canvas;
+    const nodeRight=canvas.canvas.getBoundingClientRect().x+canvas.convertOffsetToCanvas([h.pos[0]+h.size[0],h.pos[1]])[0];
+    return {x:h.pos[0],width:h.size[0],height:h.size[1],layout:h.properties.app_view_layout,
       section:h.properties.app_view_section,panel:root.dataset.layout,
       rootWidth:root.clientWidth,scrollWidth:root.scrollWidth,
+      overflow:Math.max(0,root.getBoundingClientRect().right-nodeRight),
       detailHidden:root.querySelector('.comfy-app-shell__detail').hidden,
       icon:document.querySelector('.comfy-app-view-layout-command')?.dataset.expanded};
   });
 }
-async function dragWidth(width,node2) {
+async function dragWidth(width,node2,corner='SE') {
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   const before=await state();
   let start;
   if(node2) {
     const id=await page.evaluate(()=>String(window.testHost.id));
-    const box=await page.locator(`.lg-node[data-node-id="${id}"] [data-corner="SE"]`).boundingBox();
+    const handle=page.locator(`.lg-node[data-node-id="${id}"] [data-corner="${corner}"]`);
+    await handle.hover();
+    const box=await handle.boundingBox();
     assert.ok(box,'Native resize handle must be mounted');
     start={x:box.x+box.width/2,y:box.y+box.height/2};
   } else {
@@ -67,7 +71,10 @@ async function dragWidth(width,node2) {
   }
   const scale=await page.evaluate(()=>window.testApp.canvas.ds.scale);
   await page.mouse.move(start.x,start.y);await page.mouse.down();
-  await page.mouse.move(start.x+(width-before.width)*scale,start.y,{steps:14});
+  await page.mouse.move(start.x+(width-before.width)*scale*(corner.endsWith('W')?-1:1),start.y,{steps:14});
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  const during=await state();
+  assert.ok(during.overflow<=2,`UI must stay inside the node during the drag: ${JSON.stringify(during)}`);
   await page.mouse.up();await page.waitForTimeout(250);
 }
 try {
@@ -97,31 +104,47 @@ try {
       await page.evaluate(()=>{window.testApp.canvas.ds.scale=.65;window.testApp.canvas.centerOnNode(window.testHost);});
       await dragWidth(600,node2);
       const narrow=await state();
-      assert.equal(narrow.layout,'compact',JSON.stringify(narrow));
-      assert.equal(narrow.panel,'compact');assert.equal(narrow.icon,'false');
-      assert.ok(narrow.detailHidden);assert.equal(narrow.section,section);
-      assert.ok(Math.abs(narrow.width-600)<12,JSON.stringify(narrow));
+      assert.equal(narrow.layout,'expanded',JSON.stringify(narrow));
+      assert.equal(narrow.panel,'expanded');assert.equal(narrow.icon,'true');
+      assert.ok(!narrow.detailHidden);assert.equal(narrow.section,section);
+      assert.ok(narrow.width>600 && narrow.width<wide.width,JSON.stringify(narrow));
       assert.ok(narrow.scrollWidth<=narrow.rootWidth+1,JSON.stringify(narrow));
       await page.screenshot({path:path.join(output,`${example}-${node2?'node2':'legacy'}.png`)});
       const saved=await page.evaluate(()=>window.testApp.graph.serialize());
       await load(saved);
-      assert.equal((await state()).layout,'compact');assert.equal((await state()).section,section);
+      assert.equal((await state()).layout,'expanded');assert.equal((await state()).section,section);
       assert.ok(Math.abs((await state()).width-narrow.width)<2);
       await dragWidth(950,node2);
-      assert.equal((await state()).layout,'compact','Widening must not reopen the hidden workspace');
+      assert.equal((await state()).layout,'expanded');
+      assert.ok(Math.abs((await state()).width-950)<12);
+      for(const corner of node2 ? ['SW','NW','NE'] : ['SE']) {
+        const before=await state();
+        await dragWidth(250,node2,corner);
+        const constrained=await state();
+        assert.equal(constrained.layout,'expanded');assert.ok(!constrained.detailHidden);
+        assert.ok(Math.abs(constrained.width-narrow.width)<2);
+        if(corner.endsWith('W')) assert.ok(Math.abs(constrained.x+constrained.width-before.x-before.width)<2,'The opposite edge must stay fixed');
+        else assert.ok(Math.abs(constrained.x-before.x)<2);
+      }
+      // Only the explicit toolbar button changes to a compact layout.
       await command('comfy-app-view-layout-command');
-      const reopened=await state();
-      assert.equal(reopened.layout,'expanded');assert.equal(reopened.section,section);
-      assert.equal(reopened.icon,'true');assert.ok(!reopened.detailHidden);
-      assert.ok(reopened.scrollWidth<=reopened.rootWidth+1,JSON.stringify(reopened));
-      // A deep drag cannot overflow even the compact controls.
       await dragWidth(250,node2);
-      const minimum=await state();assert.equal(minimum.layout,'compact');
-      assert.ok(minimum.scrollWidth<=minimum.rootWidth+1,JSON.stringify(minimum));
+      const compact=await state();assert.equal(compact.layout,'compact');
+      assert.equal(compact.icon,'false');assert.ok(compact.detailHidden);
+      assert.ok(compact.width<narrow.width && compact.scrollWidth<=compact.rootWidth+1);
+      await command('comfy-app-view-layout-command');
+      const reopened=await state();assert.equal(reopened.layout,'expanded');
+      assert.equal(reopened.section,section);assert.equal(reopened.icon,'true');
+      assert.ok(!reopened.detailHidden && reopened.scrollWidth<=reopened.rootWidth+1);
       await command('comfy-app-view-mode-command');
       await command('comfy-app-view-mode-command');
-      assert.equal((await state()).layout,'compact');
-      console.log(JSON.stringify({node2,example,narrow,reopened,minimum,saveReload:true}));
+      assert.equal((await state()).layout,'expanded');
+      const savedHost=saved.nodes.find(n=>n.properties?.app_view_renderer);
+      savedHost.size[0]=250;
+      await load(saved);
+      assert.equal((await state()).layout,'expanded','Loading an old narrow node must preserve its layout');
+      assert.ok((await state()).width>=narrow.width-2);
+      console.log(JSON.stringify({node2,example,narrow,reopened,compact,saveReload:true}));
     }
   }
   const failures=errors.filter(error=>!error.includes('getCanvas: canvas is null') && !error.includes('Failed to fetch dynamically imported'));
