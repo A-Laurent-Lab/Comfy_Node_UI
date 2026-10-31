@@ -9,6 +9,19 @@ Resizing keeps the selected layout and stops before its panels no longer fit.
 
 Workflow-specific UIs are separate folders. They are not part of the extension.
 
+<table>
+  <tr>
+    <td align="center" width="66%">
+      <a href="assets/Show_example_1.png"><img src="assets/Show_example_1.png" alt="Сабграф с кастомным UI" width="620"></a><br>
+      <strong>Сабграф с кастомным UI</strong>
+    </td>
+    <td align="center" width="34%">
+      <a href="assets/Show_example_2.png"><img src="assets/Show_example_2.png" alt="Элементы управления" width="330"></a><br>
+      <strong>Элементы управления</strong>
+    </td>
+  </tr>
+</table>
+
 ## Install
 
 Copy `custom_nodes/ComfyUI-App-View` into your ComfyUI `custom_nodes` folder and
