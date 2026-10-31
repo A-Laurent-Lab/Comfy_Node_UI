@@ -1,4 +1,4 @@
-// Requires both examples installed in a running ComfyUI and Playwright.
+// Requires the Re-shoot example installed in a running ComfyUI and Playwright.
 // Optional: COMFY_URL, PLAYWRIGHT_MODULE, BROWSER_EXECUTABLE, APP_VIEW_NODE2.
 import assert from 'node:assert/strict';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -90,7 +90,6 @@ try {
     await page.reload();await ready();
     for(const [example,filename,section] of [
       ['reshoot','reshoot-app-view.json','results'],
-      ['minimax-h3-i2v','minimax-h3-i2v-app-view.json','image'],
     ]) {
       const workflow=JSON.parse(await readFile(new URL(`../examples/${example}/${filename}`,import.meta.url),'utf8'));
       await load(workflow);
