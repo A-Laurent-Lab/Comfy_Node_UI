@@ -1,5 +1,10 @@
-// Migrate only the two known defects in the released Re-shoot example.
+// Migrate known defects in the released Re-shoot example.
 // Connections are identified by roles and socket names, never by node numbers.
+function uniqueRole(nodes, role) {
+  const matches = (nodes ?? []).filter((node) => node.properties?.reshoot_role === role);
+  return matches.length === 1 ? matches[0] : undefined;
+}
+
 export function reserveReshootVideoSpace(definition, source) {
   if (!Array.isArray(source.pos) || !Array.isArray(source.size)) return;
   source.size[1] = Math.max(source.size[1], 520);
@@ -13,13 +18,20 @@ export function reserveReshootVideoSpace(definition, source) {
 // Used when preparing the example, not as a load hook on arbitrary user graphs.
 // The video with original audio stays outside as the visible output.
 export function containAuxiliaryOutputs(workflow) {
-  const host = workflow.nodes?.find(n => n.properties?.app_view_renderer === 'reshoot@1');
+  const hosts = workflow.nodes?.filter(n => n.properties?.app_view_renderer === 'reshoot@1') ?? [];
+  const host = hosts.length === 1 ? hosts[0] : undefined;
   const definition = workflow.definitions?.subgraphs?.find(g => g.id === host?.type);
   if (!definition) return workflow;
-  const outsidePosition = workflow.nodes.find(n => n.properties?.reshoot_role === 'generated-save')?.pos
+  const seedRoles = definition.nodes.filter(n => n.properties?.reshoot_role === 'seed');
+  const seedCandidates = definition.nodes.filter(n => n.type === 'RandomNoise');
+  if (!seedRoles.length && seedCandidates.length === 1) {
+    seedCandidates[0].properties ??= {};
+    seedCandidates[0].properties.reshoot_role = 'seed';
+  }
+  const outsidePosition = uniqueRole(workflow.nodes, 'generated-save')?.pos
     ?? [host.pos[0] + 1240, host.pos[1]];
   for (const role of ['warp-save', 'generated-save']) {
-    const node = workflow.nodes.find(n => n.properties?.reshoot_role === role);
+    const node = uniqueRole(workflow.nodes, role);
     if (!node || node.type !== 'SaveVideo') continue;
     if (node.inputs.some((input,index) => index > 0 && input.link != null) ||
         node.outputs?.some(output => output.links?.length)) continue;
@@ -39,7 +51,7 @@ export function containAuxiliaryOutputs(workflow) {
     workflow.links = workflow.links.filter(l => l !== link);
     host.outputs[link[2]].links = host.outputs[link[2]].links.filter(n => n !== link[0]);
   }
-  const original = definition.nodes.find(n => n.properties?.reshoot_role === 'original-audio-save');
+  const original = uniqueRole(definition.nodes, 'original-audio-save');
   if (original?.type === 'SaveVideo' &&
       !workflow.nodes.some(n => n.id === original.id) &&
       !original.inputs.some((input,index) => index > 0 && input.link != null) &&
@@ -76,8 +88,16 @@ export function repairLegacyReshootWorkflow(workflow) {
       .filter((node) => node.type === definition.id && node.properties?.app_view_renderer === "reshoot@1")
       .map((node) => ({ graph, node })));
     if (!hosts.length) continue;
-    const role = (name) => definition.nodes?.find((node) => node.properties?.reshoot_role === name);
+    const role = (name) => uniqueRole(definition.nodes, name);
     const prepare = role("prepare"), prompt = role("prompt"), source = role("source-video");
+    if (!role("seed")) {
+      const seeds = definition.nodes?.filter((node) => node.type === "RandomNoise") ?? [];
+      if (seeds.length === 1) {
+        seeds[0].properties ??= {};
+        seeds[0].properties.reshoot_role = "seed";
+        repaired++;
+      }
+    }
     if (!prepare || !prompt || source?.type !== "LoadVideo") continue;
 
     const names = ["width", "height", "length"];

@@ -184,6 +184,12 @@ native renderers retain selection/upload and preview. App edits that same widget
 The App renderer still uses other inner preview behavior without publishing it
 as a slot.
 
+Re-shoot resolves every required inner role exactly once and resolves each save
+either inside or through its named host output. Its borrowed camera widget belongs
+to the subgraph definition, so two App hosts may use separate definitions but
+cannot share one definition; that configuration displays an unavailable-binding
+message instead of sharing values.
+
 ## Packaging and agent guidance
 
 Distribution is:

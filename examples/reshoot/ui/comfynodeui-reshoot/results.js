@@ -1,25 +1,22 @@
+import { resolveReshootSaveBinding } from './bindings.js';
+
 export function createResultsPanel({host, app, api, executionId}) {
   const root = document.createElement('section');
   root.className = 'reshoot-workspace';
   root.innerHTML = `<h3>Output video</h3><div class="reshoot-output-options"></div>
+    <div class="reshoot-binding-errors" role="alert" hidden></div>
     <video controls playsinline hidden aria-label="Output video"></video>
     <p class="reshoot-message" role="status">Run the workflow to generate a result.</p>
     <a class="reshoot-download" hidden>Download video</a>`;
   const options = root.querySelector('.reshoot-output-options'), video = root.querySelector('video');
+  const bindingErrors = root.querySelector('.reshoot-binding-errors');
   const status = root.querySelector('[role="status"]'), download = root.querySelector('a');
   const roles = [
-    ['generated-save','Generated',0], ['warp-save','Warp guide',1], ['original-audio-save','Original audio',2],
+    ['generated-save','Generated','Generated'],
+    ['warp-save','Warp guide','Warp guide'],
+    ['original-audio-save','Original audio','Original audio'],
   ];
   let selected = 'generated-save', currentUrl = '', active = false;
-  function findNode(role, slot) {
-    const inner = host.subgraph?.nodes?.find(n => n.properties?.reshoot_role === role);
-    if (inner) return inner;
-    for (const id of host.outputs?.[slot]?.links ?? []) {
-      const link = host.graph?.getLink?.(id) ?? host.graph?.links?.get?.(id) ?? host.graph?.links?.[id];
-      const node = link && host.graph?.getNodeById?.(link.target_id);
-      if (node?.type === 'SaveVideo') return node;
-    }
-  }
   const saved = host.properties.reshoot_results ?? {};
   const buttons = new Map();
   for (const [role,label] of roles) {
@@ -36,27 +33,37 @@ export function createResultsPanel({host, app, api, executionId}) {
     host.properties.reshoot_results = saved;
   }
   function sync() {
-    for (const [role,,slot] of roles) {
-      const node = findNode(role,slot);
+    const bindings = new Map();
+    const errors = [];
+    for (const [role,,outputName] of roles) {
+      const binding = resolveReshootSaveBinding(host,role,outputName);
+      bindings.set(role,binding);
+      if (binding.error) errors.push(binding.error);
+      const node = binding.node;
       if (node) {
         const id = node.graph === app.graph ? String(node.id) : `${node.graph?.id}:${node.id}`;
         record(role,app.nodeOutputs?.[id]);
       }
-      buttons.get(role).disabled = !saved[role];
+      buttons.get(role).disabled = Boolean(binding.error) || !saved[role];
+      buttons.get(role).title = binding.error;
       buttons.get(role).setAttribute('aria-pressed',String(role===selected));
     }
+    bindingErrors.textContent = errors.join(' ');
+    bindingErrors.hidden = !errors.length;
+    const bindingError = bindings.get(selected)?.error;
     const file = saved[selected];
-    const url = file ? api.apiURL(`/view?${new URLSearchParams(file)}`) : '';
+    const url = !bindingError && file ? api.apiURL(`/view?${new URLSearchParams(file)}`) : '';
     if (url !== currentUrl) {
       currentUrl = url; video.pause();
       if (url) video.src = url; else video.removeAttribute('src');
-      video.hidden = !url; status.hidden = Boolean(url); download.hidden = !url;
       download.href = url; download.download = file?.filename ?? '';
     }
+    video.hidden = !url; status.hidden = Boolean(url); download.hidden = !url;
+    if (!url) status.textContent = bindingError || 'Run the workflow to generate a result.';
   }
   const onExecuted = ({detail}) => {
-    for (const [role,,slot] of roles) {
-      const node = findNode(role,slot);
+    for (const [role,,outputName] of roles) {
+      const node = resolveReshootSaveBinding(host,role,outputName).node;
       if (node && String(detail.display_node ?? detail.node) === executionId(node)) record(role,detail.output);
     }
     sync();
