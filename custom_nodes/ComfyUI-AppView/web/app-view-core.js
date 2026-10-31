@@ -84,7 +84,7 @@ function addStyles() {
     .comfy-app-view-layout-command[data-expanded="true"]::after {
       content:""; position:absolute; left:36%; top:0; bottom:0; border-left:1.5px solid currentColor;
     }
-    .comfy-app-shell { width:100%; height:auto !important; flex:0 0 auto !important;
+    .comfy-app-shell { width:100%; min-width:0; max-width:100%; height:auto !important; flex:0 0 auto !important;
       box-sizing:border-box; display:grid; grid-template-columns:minmax(0,1fr);
       align-items:start; align-content:start; gap:12px; color:var(--fg-color,#ddd); }
     .comfy-app-shell *, .comfy-app-shell *::before, .comfy-app-shell *::after { box-sizing:border-box; }
@@ -159,6 +159,34 @@ function measuredHeight(element, fallback) {
 }
 
 export function createAppViewExtension({ app, api }) {
+  const expandedMinWidth = renderer => (renderer.primaryWidth ?? 420) + 400;
+
+  function notifyLayoutChange(host) {
+    host.graph?.incrementVersion?.();
+    document.dispatchEvent(new CustomEvent('comfy-app-view:layout-changed'));
+  }
+
+  function setHostSize(host, size) {
+    const state = host.__comfyAppView;
+    state.settingSize = true;
+    try { host.setSize(size); }
+    finally { state.settingSize = false; }
+  }
+
+  function collapseIfNarrow(host, width) {
+    const state = host.__comfyAppView;
+    if (host.properties.app_view_mode !== 'app' || !state?.shell.hasPanels ||
+        host.properties.app_view_layout !== 'expanded' ||
+        width >= expandedMinWidth(state.renderer)) return false;
+    // Keep the user's current width and selected section. Only the layout
+    // changes; widening later must not unexpectedly reopen the workspace.
+    host.properties.app_view_layout = 'compact';
+    state.layoutWidths.compact = width;
+    state.shell.update();
+    notifyLayoutChange(host);
+    return true;
+  }
+
   function refreshViewVisibility(host) {
     const state = host.__comfyAppView;
     if (!state) return;
@@ -185,7 +213,7 @@ export function createAppViewExtension({ app, api }) {
     let height;
     if (mode === "app") {
       const expanded = host.properties.app_view_layout === 'expanded' && state.shell.hasPanels;
-      const minimumWidth = expanded ? (state.renderer.primaryWidth ?? 420) + 400 : state.renderer.minWidth ?? NODE_WIDTH;
+      const minimumWidth = expanded ? expandedMinWidth(state.renderer) : state.renderer.minWidth ?? NODE_WIDTH;
       const preferredWidth = expanded ? state.renderer.expandedWidth ?? 1080 : state.renderer.width ?? 520;
       const preferredHeight = state.renderer.height ?? 640;
       width = Math.max(
@@ -208,7 +236,7 @@ export function createAppViewExtension({ app, api }) {
       );
       height = Math.max(minimum[1], state.nodeSize?.[1] ?? 0);
     }
-    host.setSize([width, height]);
+    setHostSize(host, [width, height]);
     host.graph?.setDirtyCanvas?.(true, true);
   }
 
@@ -216,6 +244,7 @@ export function createAppViewExtension({ app, api }) {
     const state = host.__comfyAppView;
     if (!state || host.properties.app_view_mode !== "app") return;
     if (!state.shell.root.isConnected || !state.viewActive) return;
+    collapseIfNarrow(host, host.size[0]);
     const nextHeight = measuredHeight(
       state.shell.root,
       state.renderer.height ?? 640,
@@ -225,7 +254,7 @@ export function createAppViewExtension({ app, api }) {
     // Fit the content's absolute minimum. Borrowed widgets can mount in several
     // frames; adding each height delta to a saved node accumulates empty space.
     const min = host.computeSize();
-    host.setSize([host.size[0], Math.max(min[1], nextHeight)]);
+    setHostSize(host, [host.size[0], Math.max(min[1], nextHeight)]);
     host.graph?.setDirtyCanvas?.(true, true);
   }
 
@@ -286,7 +315,7 @@ export function createAppViewExtension({ app, api }) {
       resizeForMode(host);
       requestAnimationFrame(() => measureAndResize(host));
     }
-    host.graph?.incrementVersion?.();
+    notifyLayoutChange(host);
     return true;
   }
 
@@ -353,8 +382,8 @@ export function createAppViewExtension({ app, api }) {
     // it the DOM widget is treated as growable and receives only the leftover
     // node space, which creates the inner scrollbar seen in the old renderer.
     panelWidget.computeSize = () => [
-      host.properties.app_view_mode === 'app' && host.properties.app_view_layout === 'expanded' && shell.hasPanels
-        ? (renderer.primaryWidth ?? 420) + 400 : renderer.minWidth ?? NODE_WIDTH,
+      // Allow native drag-resizing through the two-column breakpoint.
+      renderer.minWidth ?? NODE_WIDTH,
       host.properties.app_view_mode === "app"
         ? panelHeight + PANEL_MARGIN
         : -4,
@@ -384,18 +413,33 @@ export function createAppViewExtension({ app, api }) {
     };
     host.__comfyAppView = state;
 
+    const previousResize = host.onResize;
+    host.onResize = function (size) {
+      const result = previousResize?.apply(this, arguments);
+      if (state.settingSize || host.properties.app_view_mode !== 'app') return result;
+      collapseIfNarrow(host, size[0]);
+      const minWidth = renderer.minWidth ?? NODE_WIDTH;
+      const width = Math.max(minWidth, size[0]);
+      state.layoutWidths[host.properties.app_view_layout === 'expanded' ? 'expanded' : 'compact'] = width;
+      if (size[0] < minWidth) setHostSize(host, [width, size[1]]);
+      requestAnimationFrame(() => measureAndResize(host));
+      return result;
+    };
+
     const observer = new ResizeObserver(() => measureAndResize(host));
     observer.observe(shell.root);
 
     const previousRemoved = host.onRemoved;
     host.onRemoved = function () {
       observer.disconnect();
+      host.onResize = previousResize;
       if (state.viewActive) view.onHide?.();
       state.viewActive = false;
       view.dispose?.();
       return previousRemoved?.apply(this, arguments);
     };
 
+    collapseIfNarrow(host, host.size[0]);
     applyMode(host, host.properties.app_view_mode);
     console.info(
       `[Comfy App View] attached ${rendererId} to subgraph ${host.id}`,
