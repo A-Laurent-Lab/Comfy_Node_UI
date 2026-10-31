@@ -13,4 +13,9 @@ Model download links are stored in the workflow JSON.
 In App, expand the right panel for **Preview & keyframes** or **Output**.
 Use ComfyUI's Run button to prepare the warp preview and generate results.
 Save Video with the original audio remains outside the subgraph; the generated
-audio output stays inside.
+and warp saves stay inside.
+
+For two Re-shoot Apps in one workflow, duplicate the subgraph definition. Two
+host nodes cannot share one definition because its native camera widget and
+inner nodes are shared; the UI reports that configuration instead of sharing
+controls silently.

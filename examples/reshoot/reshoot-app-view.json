@@ -2036,6 +2036,7 @@
             "title": "Seed",
             "properties": {
               "Node name for S&R": "RandomNoise",
+              "reshoot_role": "seed",
               "reshoot_app_member": true
             },
             "widgets_values": [

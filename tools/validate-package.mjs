@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { lstat, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { testReshootBindings } from "./test-reshoot-bindings.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const required = [
@@ -13,6 +14,7 @@ const required = [
   "custom_nodes/ComfyUI-App-View/web/renderers/README.md",
   ".agents/skills/comfy-app-view-authoring/SKILL.md",
   "examples/reshoot/reshoot-app-view.json",
+  "examples/reshoot/ui/comfynodeui-reshoot/bindings.js",
   "examples/reshoot/ui/comfynodeui-reshoot/index.js",
   "examples/reshoot/ui/comfynodeui-reshoot/workflow.js",
   "examples/reshoot/ui/comfynodeui-reshoot/preview.js",
@@ -21,6 +23,8 @@ const required = [
   "examples/reshoot/ui/comfynodeui-reshoot/crossview-widget-compat.js",
   "examples/reshoot/nodes/ComfyUI-CrossViewWarp/__init__.py",
   "examples/reshoot/nodes/ComfyUI-CrossViewWarp/crossview_warp_node.py",
+  "tools/test-reshoot-bindings.mjs",
+  "tools/test-reshoot-bindings-frontend.mjs",
 ];
 for (const relative of required) assert.ok(await lstat(path.join(root, relative)));
 
@@ -133,6 +137,7 @@ assert.equal(prompt.inputs.find((input) => input.name === "ref_image_size").link
 const modelEntries = subgraph.nodes.flatMap((node) => node.properties?.models ?? []);
 assert.equal(modelEntries.length, 7);
 assert.ok(modelEntries.every((model) => model.name && model.directory && model.url));
+await testReshootBindings(root);
 
 console.log(JSON.stringify({
   portable: true,

@@ -2,6 +2,10 @@ import { app } from "../../../../scripts/app.js";
 import { api } from "../../../../scripts/api.js";
 import { registerAppViewRenderer } from "../../app-view-core.js";
 import "./crossview-widget-compat.js";
+import {
+  resolveRequiredReshootBindings,
+  reshootHostIsolationError,
+} from "./bindings.js";
 import { repairLegacyReshootWorkflow } from "./workflow.js";
 import { createPreviewPanel } from './preview.js';
 import { createResultsPanel } from './results.js';
@@ -9,6 +13,7 @@ import { createResultsPanel } from './results.js';
 const RENDERER = "reshoot@1";
 const APP_HEIGHT = 790;
 const APP_WIDTH = 520;
+const PROMOTED_CALLBACK_PREVIOUS = Symbol("reshoot-promoted-callback-previous");
 
 function addStyles() {
   if (document.getElementById("reshoot-app-view-styles")) return;
@@ -167,23 +172,11 @@ function addStyles() {
       background:transparent; border:0; color:#b8bc68; }
     .reshoot-timeline__tools { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:12px; }
     .reshoot-message { font:12px/1.5 system-ui; color:#b9bec6; margin:12px 0 0; }
+    .reshoot-binding-errors { margin:0 0 10px; color:#ffb4ab; font:12px/1.45 system-ui; }
     .reshoot-workspace > video { display:block; width:100%; max-height:520px; background:#121416; margin-bottom:12px; }
     .reshoot-download { display:inline-block; text-decoration:none; }
   `;
   document.head.appendChild(style);
-}
-
-function walkGraph(graph, callback) {
-  for (const node of graph?.nodes ?? []) {
-    callback(node, graph);
-    if (node.subgraph) walkGraph(node.subgraph, callback);
-  }
-}
-
-function findRole(host, role) {
-  return host.subgraph?.nodes?.find(
-    (node) => node.properties?.reshoot_role === role,
-  );
 }
 
 function widget(node, name, type) {
@@ -202,6 +195,16 @@ function setWidget(node, name, value) {
   node.graph?.incrementVersion?.();
   node.graph?.setDirtyCanvas?.(true, true);
   return true;
+}
+
+function removePromotedCallback(current, target) {
+  if (current === target) return target[PROMOTED_CALLBACK_PREVIOUS];
+  if (typeof current === "function" && PROMOTED_CALLBACK_PREVIOUS in current) {
+    current[PROMOTED_CALLBACK_PREVIOUS] = removePromotedCallback(
+      current[PROMOTED_CALLBACK_PREVIOUS], target,
+    );
+  }
+  return current;
 }
 
 function bridgePromotedWidgets(host, specifications) {
@@ -233,9 +236,10 @@ function bridgePromotedWidgets(host, specifications) {
       lastOuter = outer.value;
     };
     const wrappedCallback = function (value) {
-      previousCallback?.apply(this, arguments);
+      wrappedCallback[PROMOTED_CALLBACK_PREVIOUS]?.apply(this, arguments);
       writeOuter(value ?? inner.value);
     };
+    wrappedCallback[PROMOTED_CALLBACK_PREVIOUS] = previousCallback;
     inner.callback = wrappedCallback;
 
     bindings.push({
@@ -243,7 +247,6 @@ function bridgePromotedWidgets(host, specifications) {
       outer,
       node,
       name,
-      previousCallback,
       wrappedCallback,
       reconcile() {
         if (syncing) return;
@@ -300,9 +303,9 @@ function bridgePromotedWidgets(host, specifications) {
     },
     dispose() {
       for (const binding of bindings) {
-        if (binding.inner.callback === binding.wrappedCallback) {
-          binding.inner.callback = binding.previousCallback;
-        }
+        binding.inner.callback = removePromotedCallback(
+          binding.inner.callback, binding.wrappedCallback,
+        );
       }
     },
   };
@@ -358,8 +361,7 @@ function patchCrossViewPreviewId(camera) {
   editor.__reshootExecutionIdPatched = true;
 }
 
-function createCameraWidgetBorrower(host, cameraMount, openPanel) {
-  const camera = findRole(host, "camera");
+function createCameraWidgetBorrower(camera, cameraMount, openPanel) {
   const borrowed = new Map();
   let previousView;
   let originalSetView, redirectView;
@@ -531,15 +533,8 @@ function appendControl(parent, controls, control) {
 
 function buildApp({ host, openPanel }) {
   addStyles();
-  const source = findRole(host, "source-video");
-  const prepare = findRole(host, "prepare");
-  const camera = findRole(host, "camera");
-  const promptNode = findRole(host, "prompt");
-  const seedNode = host.subgraph?.nodes?.find((node) => node.type === "RandomNoise");
-
-  if (!source || !prepare || !camera || !promptNode) {
-    throw new Error("Re-shoot roles are incomplete inside the subgraph");
-  }
+  const { source, prepare, camera, prompt: promptNode, seed: seedNode } =
+    resolveRequiredReshootBindings(host);
 
   const promotedBridge = bridgePromotedWidgets(host, [
     { node: source, name: "file" },
@@ -591,7 +586,7 @@ function buildApp({ host, openPanel }) {
   const cameraMount = document.createElement("div");
   cameraMount.className = "reshoot-app__camera";
   root.appendChild(cameraMount);
-  const cameraWidgets = createCameraWidgetBorrower(host, cameraMount, openPanel);
+  const cameraWidgets = createCameraWidgetBorrower(camera, cameraMount, openPanel);
 
   const controls = [];
   appendControl(root, controls, createRange({ node: camera, name: "azimuth", label: "Rotation", suffix: "°" }));
@@ -654,7 +649,23 @@ function buildApp({ host, openPanel }) {
   const fileWidget = widget(source, "file");
   let lastSource = null;
   let active = false;
+  let bindingUnavailable = false;
+  const showBindingUnavailable = (message) => {
+    if (!message) return false;
+    if (!bindingUnavailable) {
+      bindingUnavailable = true;
+      active = false;
+      cameraWidgets.restore();
+      promotedBridge.dispose();
+      preview.setActive(false);
+      results.setActive(false);
+      root.className = "comfy-app-view-error";
+      root.textContent = `App View could not be created: ${message}`;
+    }
+    return true;
+  };
   const sync = () => {
+    if (showBindingUnavailable(reshootHostIsolationError(host))) return;
     promotedBridge.syncFromHost();
     const selected = String(fileWidget?.value ?? "");
     const sourceValues = valuesOf(fileWidget).map(String);
@@ -708,6 +719,11 @@ function buildApp({ host, openPanel }) {
       {id:'results',label:'Output',element:results.root},
     ],
     onPanelChange(id) {
+      if (bindingUnavailable) {
+        preview.setActive(false);
+        results.setActive(false);
+        return;
+      }
       preview.setActive(id === 'camera');
       results.setActive(id === 'results');
     },
@@ -717,6 +733,8 @@ function buildApp({ host, openPanel }) {
       active = true;
       requestAnimationFrame(() => {
         if (!active) return;
+        sync();
+        if (bindingUnavailable) return;
         cameraWidgets.borrow();
         sync();
       });
