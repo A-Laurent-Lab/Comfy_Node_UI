@@ -57,6 +57,22 @@ just to make it visible. Promote only the ordinary Node surface the author wants
 people and agents to see; choose typed composition inputs and outputs
 independently.
 
+The framework supplies `host` and `app`; it does not discover controlled nodes.
+For every binding, choose both a stable selector and a search scope: a promoted
+host widget, a role inside `host.subgraph`, a role in the containing/root graph
+or recursive workflow, or a path from a named host slot. Workflow wires are not
+required for UI access unless the binding deliberately follows those wires.
+
+Visible titles, screen position and node order are not identity. A role binding
+survives title changes and unrelated rewiring; a connection binding does not
+survive retargeting that path. Moving a node inside or outside a subgraph changes
+its scope, so update the binding unless it intentionally performs a unique
+recursive lookup. Scope external roles to the owning host when several App Views
+can coexist. Treat zero or multiple matches as an unavailable binding instead of
+silently choosing the first node. Avoid numeric node IDs except for an explicitly
+version-locked workflow, and resolve bindings per host rather than in module-global
+state.
+
 ## Deliver the workflow and its UI
 
 This version attaches App Views to native subgraph nodes. Inspect or create the
@@ -131,3 +147,7 @@ widget depends on a document listener and prevent duplicate legacy handling.
 For nodes with autogrow inputs, check the exported execution prompt's input
 names and values/connections. A valid node count or a visible cable does not
 prove that width, height or frame count reaches the intended input.
+For each binding strategy, also verify a renamed display title, unrelated
+rewiring, missing and duplicate matches, and two hosts using the same renderer.
+If moving a controlled node across a subgraph boundary is supported, verify that
+move explicitly; otherwise report the binding's scope as a compatibility limit.
