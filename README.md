@@ -1,6 +1,6 @@
-# Comfy_Node_UI
+# ComfyUI-App-View
 
-`ComfyUI-AppView` is a generic extension for custom interfaces on native
+`ComfyUI-App-View` is a generic extension for custom interfaces on native
 ComfyUI subgraphs. Select a subgraph and use **Node ↔ App** to switch between
 its normal node controls and an installed custom UI. Both edit the same workflow.
 The adjacent panel icon expands the App's right-hand workspace. Essential
@@ -11,8 +11,11 @@ Workflow-specific UIs are separate folders. They are not part of the extension.
 
 ## Install
 
-Copy `custom_nodes/ComfyUI-AppView` into your ComfyUI `custom_nodes` folder and
+Copy `custom_nodes/ComfyUI-App-View` into your ComfyUI `custom_nodes` folder and
 restart ComfyUI.
+
+For an existing installation, rename its extension folder to `ComfyUI-App-View`
+before copying the update.
 
 ## Create your own UI
 
@@ -31,14 +34,14 @@ workflow JSON and the complete UI folders listed there.
 ## Open UI
 
 Copy each received UI folder into
-`ComfyUI/custom_nodes/ComfyUI-AppView/web/renderers/`, restart ComfyUI, and open
+`ComfyUI/custom_nodes/ComfyUI-App-View/web/renderers/`, restart ComfyUI, and open
 the received JSON. Select its subgraph and choose **App** in **Node ↔ App**.
 
 Importing a workflow JSON does not install its UI folder.
 
 ## Optional examples
 
-Installing `ComfyUI-AppView` installs no workflow-specific UI. The examples are
+Installing `ComfyUI-App-View` installs no workflow-specific UI. The examples are
 kept separately and can be installed one at a time:
 
 - [MiniMax H3 image-to-video](examples/minimax-h3-i2v/README.md)

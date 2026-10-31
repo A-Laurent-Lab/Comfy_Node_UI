@@ -347,7 +347,7 @@ export function createAppViewExtension({ app, api }) {
     if (!rendererId) return false;
     const renderer = rendererRegistry.get(rendererId);
     if (!renderer) {
-      console.warn(`[Comfy App View] renderer is unavailable: ${rendererId}`);
+      console.warn(`[ComfyUI-App-View] renderer is unavailable: ${rendererId}`);
       return false;
     }
     const packageInfo = rendererPackage(renderer);
@@ -368,7 +368,7 @@ export function createAppViewExtension({ app, api }) {
       // It is not restricted to the public subgraph slots.
       view = renderer.build({ host, app, api, openPanel: id => openPanel(host, id) });
     } catch (error) {
-      console.error(`[Comfy App View] ${rendererId} failed`, error);
+      console.error(`[ComfyUI-App-View] ${rendererId} failed`, error);
       view = buildError(error);
     }
 
@@ -454,7 +454,7 @@ export function createAppViewExtension({ app, api }) {
 
     applyMode(host, host.properties.app_view_mode);
     console.info(
-      `[Comfy App View] attached ${rendererId} to subgraph ${host.id}`,
+      `[ComfyUI-App-View] attached ${rendererId} to subgraph ${host.id}`,
     );
     return true;
   }

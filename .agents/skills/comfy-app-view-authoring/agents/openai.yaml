@@ -1,3 +1,3 @@
 interface:
-  display_name: "Comfy App View Authoring"
-  short_description: "Help with Comfy App View Authoring tasks"
+  display_name: "ComfyUI-App-View Authoring"
+  short_description: "Create and edit UIs for ComfyUI-App-View"

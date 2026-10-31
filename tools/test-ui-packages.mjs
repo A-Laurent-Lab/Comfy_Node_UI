@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
-import { registerAppViewRenderer, listAppViewPackages } from "../custom_nodes/ComfyUI-AppView/web/app-view-core.js";
+import { registerAppViewRenderer, listAppViewPackages } from "../custom_nodes/ComfyUI-App-View/web/app-view-core.js";
 
 // Only registration notifications need a document; no UI rendering is simulated.
 globalThis.document = new EventTarget();
-const moduleRoot = new URL("../custom_nodes/ComfyUI-AppView/web/renderers/", import.meta.url);
+const moduleRoot = new URL("../custom_nodes/ComfyUI-App-View/web/renderers/", import.meta.url);
 const camera = {
   id: "test-camera@1", name: "Camera", build() {},
   source: new URL("author-camera/index.js", moduleRoot).href,

@@ -2,7 +2,7 @@
 
 ## Files to inspect first
 
-- `custom_nodes/ComfyUI-AppView/web/app-view-core.js` — generic registry,
+- `custom_nodes/ComfyUI-App-View/web/app-view-core.js` — generic registry,
   Selection Toolbox command, mounting, view switching, and sizing.
 - `examples/reshoot/ui/comfynodeui-reshoot/` — optional renderer that addresses
   inner workflow nodes by stable roles and reuses a custom DOM widget.
@@ -53,7 +53,7 @@ Do not use screen position or translated title text as identity.
 
 ## Renderer contract
 
-Create `custom_nodes/ComfyUI-AppView/web/renderers/<author-ui>/index.js`. ComfyUI loads
+Create `custom_nodes/ComfyUI-App-View/web/renderers/<author-ui>/index.js`. ComfyUI loads
 the `.js` files in the package's `WEB_DIRECTORY`; each UI module self-registers
 with the shared registry. Do not add per-App imports to the generic entrypoint.
 For the layout in this repository, registration looks like this:
@@ -166,13 +166,13 @@ Distribution is:
 
 ```text
 workflow JSON
-+ named, self-contained UI folders for ComfyUI-AppView/web/renderers
++ named, self-contained UI folders for ComfyUI-App-View/web/renderers
 + normal custom-node/model dependencies of the workflow
 ```
 
-The workflow does not embed JavaScript. Install the ComfyUI-AppView extension
+The workflow does not embed JavaScript. Install the ComfyUI-App-View extension
 once under ComfyUI's `custom_nodes`. To add a UI, copy its whole named folder
-into `ComfyUI-AppView/web/renderers`, restart,
+into `ComfyUI-App-View/web/renderers`, restart,
 and open the JSON. Reusing an already-installed UI needs only the JSON.
 If the extension or renderer is missing, the workflow still opens as a native
 subgraph; this fallback does not supply missing computational nodes or models.
@@ -205,7 +205,7 @@ roles/promoted names used for binding. If controlled nodes/settings change,
 retarget the binding or version an incompatible UI explicitly.
 
 The optional examples live under `examples`, outside the installable
-`custom_nodes/ComfyUI-AppView` folder. Each example keeps its workflow JSON and
+`custom_nodes/ComfyUI-App-View` folder. Each example keeps its workflow JSON and
 named UI folder together. CrossView and the model weights are dependencies of
 the Re-shoot example, not of the generic extension. Keep download URLs in
 workflow model metadata rather than duplicating a list in a separate Markdown
